@@ -26,7 +26,6 @@ PyQt5-Qt5
 PyQt5_sip
 PySocks
 python-dateutil
-python-dotenv
 python-time
 PythonTurtle
 requests
