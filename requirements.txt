@@ -1,4 +1,4 @@
-﻿arrow
+arrow
 asgiref
 attrs
 certifi
