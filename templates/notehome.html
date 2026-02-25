@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Defteri - Gelişmiş Görev Yönetimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        /* İstatistik Kartları */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-card.danger .number { color: #dc3545; }
+        .stat-card.success .number { color: #28a745; }
+        .stat-card.warning .number { color: #ffc107; }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            width: 35%;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .notes-section {
+            width: 65%;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2 i {
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        button, .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        button:hover, .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Filtreleme */
+        .filter-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .search-box {
+            margin-top: 10px;
+        }
+
+        .search-box input {
+            width: 100%;
+        }
+
+        .notes-list {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .notes-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .notes-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .notes-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .note-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .note-item.completed {
+            opacity: 0.7;
+            border-left-color: #28a745;
+            background: #e8f5e9;
+        }
+
+        .note-item.completed .note-title {
+            text-decoration: line-through;
+        }
+
+        .note-item.overdue {
+            border-left-color: #dc3545;
+            background: #ffe6e6;
+        }
+
+        .note-item.priority-high {
+            border-left-width: 6px;
+        }
+
+        .note-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .note-date {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .note-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .note-content {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .note-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-category {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge-priority {
+            color: white;
+        }
+
+        .badge-priority.high {
+            background: #dc3545;
+        }
+
+        .badge-priority.medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-priority.low {
+            background: #28a745;
+        }
+
+        .badge-tag {
+            background: #6c757d;
+            color: white;
+        }
+
+        .due-date-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+        }
+
+        .due-date-badge.overdue {
+            background: #dc3545;
+        }
+
+        .due-date-badge.today {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+            color: white;
+            border: none;
+        }
+
+        .action-btn.edit {
+            background: #17a2b8;
+        }
+
+        .action-btn.edit:hover {
+            background: #138496;
+        }
+
+        .action-btn.complete {
+            background: #28a745;
+        }
+
+        .action-btn.complete:hover {
+            background: #218838;
+        }
+
+        .action-btn.delete {
+            background: #dc3545;
+        }
+
+        .action-btn.delete:hover {
+            background: #c82333;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-export {
+            background: #28a745;
+        }
+
+        .btn-export:hover {
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-import {
+            background: #17a2b8;
+        }
+
+        .btn-import:hover {
+            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.4);
+        }
+
+        .logout {
+            display: inline-block;
+            margin-top: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .logout i {
+            margin-right: 8px;
+        }
+
+        #importFileInput {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .form-section, .notes-section {
+                width: 100%;
+                position: static;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-tasks"></i> Gelişmiş Not Defteri</h1>
+        <p>Görevlerinizi ve fikirlerinizi profesyonelce yönetin</p>
+    </div>
+
+    <!-- İstatistikler -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <i class="fas fa-clipboard-list" style="color: #667eea;"></i>
+            <div class="number">{{ stats.total }}</div>
+            <div class="label">Toplam Not</div>
+        </div>
+        <div class="stat-card success">
+            <i class="fas fa-check-circle"></i>
+            <div class="number">{{ stats.completed }}</div>
+            <div class="label">Tamamlanan</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-hourglass-half" style="color: #17a2b8;"></i>
+            <div class="number">{{ stats.active }}</div>
+            <div class="label">Aktif</div>
+        </div>
+        <div class="stat-card danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="number">{{ stats.overdue }}</div>
+            <div class="label">Gecikmiş</div>
+        </div>
+        <div class="stat-card warning">
+            <i class="fas fa-calendar-day"></i>
+            <div class="number">{{ stats.today }}</div>
+            <div class="label">Bugün</div>
+        </div>
+        <div class="stat-card danger">
+            <i class="fas fa-fire"></i>
+            <div class="number">{{ stats.high_priority }}</div>
+            <div class="label">Yüksek Öncelik</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Form Bölümü -->
+        <div class="form-section">
+            <h2><i class="fas fa-plus-circle"></i> Yeni Not Ekle</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">Başlık:</label>
+                    <input type="text" id="title" name="title" required placeholder="Not başlığını girin...">
+                </div>
+
+                <div class="form-group">
+                    <label for="content">İçerik:</label>
+                    <textarea id="content" name="content" required placeholder="Not içeriğini buraya yazın..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Kategori:</label>
+                    <select id="category" name="category">
+                        {% for value, label in Note.CATEGORY_CHOICES %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Öncelik:</label>
+                    <select id="priority" name="priority">
+                        {% for value, label in Note.PRIORITY_CHOICES %}
+                            <option value="{{ value }}" {% if value == 'medium' %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="due_date">Bitiş Tarihi (İsteğe bağlı):</label>
+                    <input type="date" id="due_date" name="due_date">
+                </div>
+
+                <div class="form-group">
+                    <label for="tags">Etiketler (virgülle ayırın):</label>
+                    <input type="text" id="tags" name="tags" placeholder="örnek: iş, acil, proje">
+                </div>
+
+                <button type="submit"><i class="fas fa-save"></i> Kaydet</button>
+            </form>
+        </div>
+
+        <!-- Notlar Bölümü -->
+        <div class="notes-section">
+            <h2><i class="fas fa-list"></i> Notlarım</h2>
+
+            <!-- Araçlar -->
+            <div class="toolbar">
+                <a href="{% url 'export_notes' %}" class="btn btn-export">
+                    <i class="fas fa-download"></i> Dışa Aktar (JSON)
+                </a>
+                <button onclick="document.getElementById('importFileInput').click()" class="btn btn-import">
+                    <i class="fas fa-upload"></i> İçe Aktar (JSON)
+                </button>
+                <input type="file" id="importFileInput" accept=".json" onchange="importNotes(this)">
+            </div>
+
+            <!-- Filtreler -->
+            <div class="filter-section">
+                <div class="filter-buttons">
+                    <a href="?filter_type=all" class="filter-btn {% if filter_type == 'all' %}active{% endif %}">
+                        <i class="fas fa-th-large"></i> Tümü
+                    </a>
+                    <a href="?filter_type=today" class="filter-btn {% if filter_type == 'today' %}active{% endif %}">
+                        <i class="fas fa-calendar-day"></i> Bugün
+                    </a>
+                    <a href="?filter_type=week" class="filter-btn {% if filter_type == 'week' %}active{% endif %}">
+                        <i class="fas fa-calendar-week"></i> Bu Hafta
+                    </a>
+                    <a href="?filter_type=overdue" class="filter-btn {% if filter_type == 'overdue' %}active{% endif %}">
+                        <i class="fas fa-exclamation-triangle"></i> Gecikmiş
+                    </a>
+                </div>
+
+                <div class="filter-buttons">
+                    <a href="?show_completed=all" class="filter-btn {% if show_completed == 'all' %}active{% endif %}">
+                        Tümü
+                    </a>
+                    <a href="?show_completed=active" class="filter-btn {% if show_completed == 'active' %}active{% endif %}">
+                        <i class="fas fa-tasks"></i> Aktif
+                    </a>
+                    <a href="?show_completed=completed" class="filter-btn {% if show_completed == 'completed' %}active{% endif %}">
+                        <i class="fas fa-check-circle"></i> Tamamlananlar
+                    </a>
+                </div>
+
+                <div class="filter-buttons">
+                    {% for value, label in Note.CATEGORY_CHOICES %}
+                        <a href="?category={{ value }}" class="filter-btn">{{ label }}</a>
+                    {% endfor %}
+                </div>
+
+                <div class="filter-buttons">
+                    <a href="?priority=high" class="filter-btn">🔴 Yüksek</a>
+                    <a href="?priority=medium" class="filter-btn">🟡 Orta</a>
+                    <a href="?priority=low" class="filter-btn">🟢 Düşük</a>
+                </div>
+
+                <div class="search-box">
+                    <form method="get">
+                        <input type="text" name="search" placeholder="Not ara..." value="{{ request.GET.search }}">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Notlar Listesi -->
+            <div class="notes-list">
+                {% for note in notes %}
+                    <div class="note-item {% if note.is_completed %}completed{% elif note.due_date and note.due_date < today %}overdue{% endif %} priority-{{ note.priority }}">
+                        <div class="note-date">
+                            <i class="far fa-calendar"></i> {{ note.created_at|date:"d.m.Y H:i" }}
+                            {% if note.updated_at != note.created_at %}
+                                <span style="color: #999;">| <i class="fas fa-edit"></i> {{ note.updated_at|date:"d.m.Y H:i" }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="note-title">
+                            {% if note.is_completed %}<i class="fas fa-check-circle" style="color: #28a745;"></i>{% endif %}
+                            {{ note.title }}
+                        </div>
+
+                        <div class="note-content">{{ note.content }}</div>
+
+                        <div class="note-meta">
+                            <span class="badge badge-category">
+                                <i class="fas fa-folder"></i> {{ note.get_category_display }}
+                            </span>
+                            <span class="badge badge-priority {{ note.priority }}">
+                                <i class="fas fa-flag"></i> {{ note.get_priority_display }}
+                            </span>
+                            {% if note.due_date %}
+                                <span class="due-date-badge {% if note.due_date < today and not note.is_completed %}overdue{% elif note.due_date == today %}today{% endif %}">
+                                    <i class="fas fa-clock"></i> {{ note.due_date|date:"d.m.Y" }}
+                                </span>
+                            {% endif %}
+                            {% for tag in note.get_tags_list %}
+                                <span class="badge badge-tag">
+                                    <i class="fas fa-tag"></i> {{ tag }}
+                                </span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="note-actions">
+                            <a href="{% url 'note_edit' note.id %}" class="action-btn edit">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+                            <a href="{% url 'note_toggle_complete' note.id %}" class="action-btn complete">
+                                {% if note.is_completed %}
+                                    <i class="fas fa-undo"></i> Aktif Yap
+                                {% else %}
+                                    <i class="fas fa-check"></i> Tamamla
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'note_delete' note.id %}" class="action-btn delete" onclick="return confirm('Bu notu silmek istediğinizden emin misiniz?')">
+                                <i class="fas fa-trash"></i> Sil
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
+                        Henüz hiç not eklenmedi veya filtrelere uygun not bulunamadı.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{% url 'logout' %}" class="logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+    </div>
+
+    <script>
+        function importNotes(input) {
+            if (input.files && input.files[0]) {
+                const formData = new FormData();
+                formData.append('file', input.files[0]);
+
+                fetch("{% url 'import_notes' %}", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`${data.count} not başarıyla içe aktarıldı!`);
+                        window.location.reload();
+                    } else {
+                        alert('Hata: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('Bir hata oluştu: ' + error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

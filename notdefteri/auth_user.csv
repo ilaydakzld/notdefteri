@@ -1,0 +1,5 @@
+id,password,last_login,is_superuser,username,last_name,email,is_staff,is_active,date_joined,first_name
+1,pbkdf2_sha256$1000000$OvT24u4Y3PfAPz1fsayqHT$U6j1Rs3D+UE59DkO6T4sdYxTZyc+IuI7VjnwydDtZOc=,2026-02-09 17:59:07.213425,0,ilayza,,,0,1,2026-02-09 17:59:06.760183,
+2,pbkdf2_sha256$1000000$dl9PdxiNqbCxbjNMq3kMSd$Ciz+JXzb9YhizK5EtLEQzoRGkASCRxi174emc3Qqids=,2026-02-13 16:58:33.192467,0,ilayda,,,0,1,2026-02-09 18:02:50.864090,
+3,pbkdf2_sha256$1000000$6LUmDM25L21rAhzglWYWoY$hPf02oE/1jYIufmIXbTHUPECWvK3wQ6bDFzD/JFjEYc=,2026-02-13 16:59:04.704111,0,deneme,,,0,1,2026-02-09 18:04:57.318198,
+4,pbkdf2_sha256$1000000$zuM98HGsgjk4z1GzTqTqln$NRtaO6mAfqTXr3KZWtiC07prZgiHO0f6UZK8+RDWmPo=,2026-02-25 16:04:39.254043,0,ialofskf,,,0,1,2026-02-19 20:16:49.431977,
