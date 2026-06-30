@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -37,6 +38,75 @@
         .header p {
             color: rgba(255,255,255,0.9);
             font-size: 1.1rem;
+        }
+
+        /* Atatürk Parallax Header */
+        .ataturk-parallax-header {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            aspect-ratio: 1024 / 266;
+            background-image: url('{% static "ataturk_banner.png" %}');
+            background-attachment: scroll;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .parallax-content h1 {
+            font-size: 2.0rem;
+            font-weight: 700;
+            margin-bottom: 8px !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            color: white !important;
+            letter-spacing: 1px;
+        }
+
+        .parallax-content h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .ataturk-parallax-header {
+                aspect-ratio: auto;
+                height: 150px;
+                background-size: cover;
+            }
+            .parallax-content h1 {
+                font-size: 1.25rem;
+            }
+            .parallax-content h2 {
+                font-size: 1.05rem;
+            }
         }
 
         /* İstatistik Kartları */
@@ -180,45 +250,205 @@
             transform: translateY(0);
         }
 
-        /* Filtreleme */
-        .filter-section {
-            margin-bottom: 20px;
-            padding: 15px;
+        /* Yeni Arama ve Filtreleme Düzeni */
+        .filter-wrapper {
+            margin-bottom: 25px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #eef2f5;
         }
 
-        .filter-buttons {
+        .search-filter-bar {
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
+            gap: 12px;
+            padding: 15px;
+            align-items: center;
             background: white;
-            border: 2px solid #667eea;
-            color: #667eea;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            white-space: nowrap;
         }
 
-        .filter-btn:hover, .filter-btn.active {
+        .search-form {
+            flex: 1;
+        }
+
+        .search-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-group .search-icon {
+            position: absolute;
+            left: 12px;
+            color: #a0aec0;
+            font-size: 0.95rem;
+        }
+
+        .search-input-group input {
+            width: 100%;
+            padding: 10px 12px 10px 38px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+            outline: none;
+        }
+
+        .filter-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            width: auto;
+        }
+
+        .filter-toggle-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .filter-toggle-btn.active {
             background: #667eea;
+            border-color: #667eea;
             color: white;
         }
 
-        .search-box {
-            margin-top: 10px;
+        .active-filter-indicator {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 10px;
+            height: 10px;
+            background-color: #ef4444;
+            border: 2px solid white;
+            border-radius: 50%;
         }
 
-        .search-box input {
+        /* Collapsible Panel */
+        .filter-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease-out, padding 0.35s ease-out;
+            background: #f8f9fa;
+        }
+
+        .filter-panel.open {
+            max-height: 500px;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+        }
+
+        .filter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .filter-group label i {
+            margin-right: 4px;
+            color: #667eea;
+        }
+
+        .filter-group select {
             width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            background-color: white;
+            color: #334155;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+
+        .btn-clear-filters {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .btn-clear-filters:hover {
+            color: #ef4444;
+            background: #fee2e2;
+        }
+
+        .btn-apply-filters {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: auto;
+            display: inline-block;
+        }
+
+        .btn-apply-filters:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 640px) {
+            .search-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-toggle-btn {
+                justify-content: center;
+            }
         }
 
         .notes-list {
@@ -492,6 +722,15 @@
     </style>
 </head>
 <body>
+    <!-- Atatürk Parallax Header -->
+    <div class="ataturk-parallax-header">
+        <div class="parallax-overlay"></div>
+        <div class="parallax-content">
+            <h1>Saygı, Sevgi ve Özlemle Anıyoruz</h1>
+            <h2>1881 - 193∞</h2>
+        </div>
+    </div>
+
     <div class="header">
         <h1><i class="fas fa-tasks"></i> Gelişmiş Not Defteri</h1>
         <p>Görevlerinizi ve fikirlerinizi profesyonelce yönetin</p>
@@ -594,50 +833,91 @@
                 <input type="file" id="importFileInput" accept=".json" onchange="importNotes(this)">
             </div>
 
-            <!-- Filtreler -->
-            <div class="filter-section">
-                <div class="filter-buttons">
-                    <a href="?filter_type=all" class="filter-btn {% if filter_type == 'all' %}active{% endif %}">
-                        <i class="fas fa-th-large"></i> Tümü
-                    </a>
-                    <a href="?filter_type=today" class="filter-btn {% if filter_type == 'today' %}active{% endif %}">
-                        <i class="fas fa-calendar-day"></i> Bugün
-                    </a>
-                    <a href="?filter_type=week" class="filter-btn {% if filter_type == 'week' %}active{% endif %}">
-                        <i class="fas fa-calendar-week"></i> Bu Hafta
-                    </a>
-                    <a href="?filter_type=overdue" class="filter-btn {% if filter_type == 'overdue' %}active{% endif %}">
-                        <i class="fas fa-exclamation-triangle"></i> Gecikmiş
-                    </a>
+            <!-- Filtreler ve Arama Alanı -->
+            <div class="filter-wrapper">
+                <!-- Arama ve Filtre Açma Çubuğu -->
+                <div class="search-filter-bar">
+                    <form method="get" action="{% url 'notehome' %}" class="search-form">
+                        <div class="search-input-group">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="search" placeholder="Notlarında ara..." value="{{ request.GET.search }}">
+                        </div>
+                        <!-- Arama yapılırken diğer aktif filtreleri koru -->
+                        {% if filter_type and filter_type != 'all' %}<input type="hidden" name="filter_type" value="{{ filter_type }}">{% endif %}
+                        {% if show_completed and show_completed != 'all' %}<input type="hidden" name="show_completed" value="{{ show_completed }}">{% endif %}
+                        {% if request.GET.priority %}<input type="hidden" name="priority" value="{{ request.GET.priority }}">{% endif %}
+                        {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+                    </form>
+                    
+                    <button type="button" id="filter-toggle-btn" class="filter-toggle-btn">
+                        <i class="fas fa-filter"></i> Filtrele
+                        {% if filter_type != 'all' or show_completed != 'all' or request.GET.priority or request.GET.category %}
+                            <span class="active-filter-indicator"></span>
+                        {% endif %}
+                    </button>
                 </div>
 
-                <div class="filter-buttons">
-                    <a href="?show_completed=all" class="filter-btn {% if show_completed == 'all' %}active{% endif %}">
-                        Tümü
-                    </a>
-                    <a href="?show_completed=active" class="filter-btn {% if show_completed == 'active' %}active{% endif %}">
-                        <i class="fas fa-tasks"></i> Aktif
-                    </a>
-                    <a href="?show_completed=completed" class="filter-btn {% if show_completed == 'completed' %}active{% endif %}">
-                        <i class="fas fa-check-circle"></i> Tamamlananlar
-                    </a>
-                </div>
+                <!-- Açılır Filtre Paneli -->
+                <div id="filter-panel" class="filter-panel">
+                    <form method="get" action="{% url 'notehome' %}" class="filter-form">
+                        <div class="filter-grid">
+                            <!-- Zaman Filtresi -->
+                            <div class="filter-group">
+                                <label><i class="far fa-calendar-alt"></i> Zaman</label>
+                                <select name="filter_type">
+                                    <option value="all" {% if filter_type == 'all' %}selected{% endif %}>Tümü</option>
+                                    <option value="today" {% if filter_type == 'today' %}selected{% endif %}>Bugün</option>
+                                    <option value="week" {% if filter_type == 'week' %}selected{% endif %}>Bu Hafta</option>
+                                    <option value="overdue" {% if filter_type == 'overdue' %}selected{% endif %}>Gecikmiş</option>
+                                </select>
+                            </div>
 
-                <div class="filter-buttons">
-                    {% for value, label in Note.CATEGORY_CHOICES %}
-                        <a href="?category={{ value }}" class="filter-btn">{{ label }}</a>
-                    {% endfor %}
-                </div>
+                            <!-- Durum Filtresi -->
+                            <div class="filter-group">
+                                <label><i class="fas fa-tasks"></i> Durum</label>
+                                <select name="show_completed">
+                                    <option value="all" {% if show_completed == 'all' %}selected{% endif %}>Tümü</option>
+                                    <option value="active" {% if show_completed == 'active' %}selected{% endif %}>Aktif</option>
+                                    <option value="completed" {% if show_completed == 'completed' %}selected{% endif %}>Tamamlananlar</option>
+                                </select>
+                            </div>
 
-                <div class="filter-buttons">
-                    <a href="?priority=high" class="filter-btn">🔴 Yüksek</a>
-                    <a href="?priority=medium" class="filter-btn">🟡 Orta</a>
-                    <a href="?priority=low" class="filter-btn">🟢 Düşük</a>
-                </div>
+                            <!-- Kategori Filtresi -->
+                            <div class="filter-group">
+                                <label><i class="fas fa-folder"></i> Kategori</label>
+                                <select name="category">
+                                    <option value="" {% if not request.GET.category %}selected{% endif %}>Tümü</option>
+                                    {% for value, label in Note.CATEGORY_CHOICES %}
+                                        <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-                <div class="search-box">
-                    <form method="get">
-                        <input type="text" name="search" placeholder="Not ara..." value="{{ request.GET.search }}">
+                            <!-- Öncelik Filtresi -->
+                            <div class="filter-group">
+                                <label><i class="fas fa-flag"></i> Öncelik</label>
+                                <select name="priority">
+                                    <option value="" {% if not request.GET.priority %}selected{% endif %}>Tümü</option>
+                                    <option value="high" {% if request.GET.priority == 'high' %}selected{% endif %}>Yüksek</option>
+                                    <option value="medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Orta</option>
+                                    <option value="low" {% if request.GET.priority == 'low' %}selected{% endif %}>Düşük</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Filtreleri uygularken aramayı koru -->
+                        {% if request.GET.search %}
+                            <input type="hidden" name="search" value="{{ request.GET.search }}">
+                        {% endif %}
+
+                        <div class="filter-actions">
+                            <a href="{% url 'notehome' %}" class="btn-clear-filters">
+                                Temizle
+                            </a>
+                            <button type="submit" class="btn-apply-filters">
+                                Uygula
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -710,6 +990,24 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('filter-toggle-btn');
+            const filterPanel = document.getElementById('filter-panel');
+            
+            // Eğer herhangi bir filtre aktif ise paneli açık olarak yükle
+            const hasActiveFilters = {% if filter_type != 'all' or show_completed != 'all' or request.GET.priority or request.GET.category %}true{% else %}false{% endif %};
+            
+            if (hasActiveFilters) {
+                filterPanel.classList.add('open');
+                toggleBtn.classList.add('active');
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                filterPanel.classList.toggle('open');
+                toggleBtn.classList.toggle('active');
+            });
+        });
+
         function importNotes(input) {
             if (input.files && input.files[0]) {
                 const formData = new FormData();
