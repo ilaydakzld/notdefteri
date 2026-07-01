@@ -1,0 +1,12 @@
+{
+  "name": "notdefteri",
+  "version": "1.0.0",
+  "description": "Django Note Taking Application with Vercel Analytics",
+  "private": true,
+  "scripts": {
+    "build": "echo 'No build required for Django backend'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
