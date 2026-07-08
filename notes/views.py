@@ -227,3 +227,10 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect('notehome')
+    return render(request, 'landing.html')
+
+

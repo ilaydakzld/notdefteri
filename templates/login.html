@@ -124,6 +124,26 @@
             color: #764ba2;
             text-decoration: underline;
         }
+
+        .btn-features {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 18px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            color: #667eea !important;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-features:hover {
+            background: #667eea;
+            color: white !important;
+            text-decoration: none !important;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        }
         
         .alert-danger {
             background-color: #fde8e8;
@@ -148,9 +168,11 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">
-            <i class="fas fa-sticky-note"></i>
-        </div>
+        <a href="{% url 'landing' %}" style="text-decoration: none;">
+            <div class="logo">
+                <i class="fas fa-sticky-note"></i>
+            </div>
+        </a>
         <h1>Hesaba Giriş</h1>
         {% if form.non_field_errors %}
             <div class="alert-danger">
@@ -181,6 +203,11 @@
         </form>
         <div class="login-footer">
             <p>Hesabın yok mu? <a href="{% url 'register' %}">Kayıt Ol</a></p>
+            <p style="margin-top: 12px;">
+                <a href="{% url 'landing' %}#features" class="btn-features">
+                    <i class="fas fa-info-circle"></i> Özellikleri İncele
+                </a>
+            </p>
         </div>
     </div>
 </body>
