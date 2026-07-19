@@ -4,61 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Defteri - Hoş Geldiniz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Not Defteri - Kusursuz Kişisel Asistanınız</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* CSS resets & basic settings */
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --glass-blur: 16px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Outfit', 'Poppins', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 50%, #f1f5f9 100%);
             min-height: 100vh;
-            color: white;
+            color: #1e293b;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Navigation Header */
+        /* Glass Header Navigation */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--glass-border);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            box-shadow: var(--glass-shadow);
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--dark);
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
         
         .logo:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .logo i {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #ffed4a 0%, #ff7675 100%);
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -70,105 +87,107 @@
 
         .nav-btn {
             text-decoration: none;
-            padding: 10px 22px;
+            padding: 10px 24px;
             border-radius: 30px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .nav-btn.login {
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: var(--primary);
+            border: 2px solid var(--primary);
         }
 
         .nav-btn.login:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: white;
+            background: rgba(99, 102, 241, 0.08);
+            transform: translateY(-1px);
         }
 
         .nav-btn.register {
-            background: white;
-            color: #764ba2;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
         }
 
         .nav-btn.register:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
         }
 
         /* Hero Section */
         .hero {
-            padding: 160px 20px 80px;
+            padding: 180px 20px 80px;
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 25px;
+            gap: 24px;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            animation: fadeInUp 1s ease;
+            font-size: 3.6rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: var(--dark);
+            letter-spacing: -1px;
+            animation: fadeInUp 0.8s ease;
         }
         
         .hero h1 span {
-            background: linear-gradient(120deg, #c7d2fe 0%, #fbcfe8 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.85);
-            max-width: 700px;
+            font-size: 1.2rem;
+            color: #475569;
+            max-width: 750px;
             line-height: 1.6;
-            animation: fadeInUp 1s ease 0.2s both;
+            font-weight: 500;
+            animation: fadeInUp 0.8s ease 0.15s both;
         }
 
         .cta-group {
             display: flex;
             gap: 20px;
             margin-top: 15px;
-            animation: fadeInUp 1s ease 0.4s both;
+            animation: fadeInUp 0.8s ease 0.3s both;
         }
 
         .cta-btn {
             text-decoration: none;
-            padding: 15px 35px;
+            padding: 16px 36px;
             border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
         }
 
         .cta-btn.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
         }
 
         .cta-btn.primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
         }
 
         .cta-btn.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--dark);
+            border: 1px solid var(--glass-border);
             backdrop-filter: blur(5px);
+            box-shadow: var(--glass-shadow);
         }
 
         .cta-btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: white;
+            background: rgba(255, 255, 255, 0.8);
             transform: translateY(-3px);
         }
 
@@ -176,9 +195,10 @@
         .section-title {
             text-align: center;
             font-size: 2.2rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 50px;
-            position: relative;
+            color: var(--dark);
+            letter-spacing: -0.5px;
         }
 
         .section-title::after {
@@ -186,7 +206,7 @@
             display: block;
             width: 60px;
             height: 4px;
-            background: #c7d2fe;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             margin: 15px auto 0;
             border-radius: 2px;
         }
@@ -200,7 +220,7 @@
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         @media (max-width: 992px) {
@@ -216,72 +236,76 @@
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             padding: 35px 25px;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            box-shadow: var(--glass-shadow);
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.65);
+            border-color: rgba(99, 102, 241, 0.25);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.08);
         }
 
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #c7d2fe 0%, #e0e7ff 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
         }
 
         .feature-card h3 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             margin-bottom: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            color: var(--dark);
         }
 
         .feature-card p {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            color: #64748b;
             line-height: 1.5;
+            font-weight: 500;
         }
 
-        /* How it works (Vertical Steps) */
+        /* How it works Steps */
         .tutorial-container {
             padding: 80px 20px;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.25);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
             width: 100%;
         }
 
         .tutorial-wrapper {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .step-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             padding: 40px;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
             display: flex;
             align-items: center;
             gap: 40px;
-            animation: fadeInUp 0.8s ease;
+            box-shadow: var(--glass-shadow);
         }
 
         .step-card:nth-child(even) {
@@ -289,102 +313,123 @@
         }
 
         .tab-text {
-            flex: 1;
+            flex: 1.2;
         }
 
         .tab-text h3 {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             margin-bottom: 15px;
-            color: #c7d2fe;
+            font-weight: 800;
+            color: var(--dark);
         }
 
         .tab-text p {
             font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: #475569;
             line-height: 1.6;
             margin-bottom: 20px;
+            font-weight: 500;
         }
 
         .tab-text ul {
             list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .tab-text ul li {
-            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e293b;
         }
 
         .tab-text ul li i {
-            color: #c7d2fe;
+            color: var(--primary);
         }
 
         .tab-preview {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
+            flex: 0.9;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 16px;
             padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
             gap: 15px;
-            min-width: 300px;
+            min-width: 320px;
         }
 
-        /* Mock UI components inside preview */
+        /* Mock UI elements */
         .mock-note {
             background: white;
-            color: #333;
-            border-radius: 8px;
-            padding: 15px;
-            border-left: 5px solid #667eea;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            animation: bounceIn 0.5s ease;
+            color: var(--dark);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            position: relative;
         }
 
-        .mock-note.high {
-            border-left-color: #ff7675;
+        .mock-note.event {
+            background: linear-gradient(135deg, #fdf4ff 0%, #fce7f3 100%);
+            border-left-color: var(--secondary);
         }
 
-        .mock-note.completed {
-            opacity: 0.6;
-            text-decoration: line-through;
-            border-left-color: #2ecc71;
+        .mock-note.event::after {
+            content: '⭐';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            font-size: 0.75rem;
+        }
+
+        .mock-note.agenda {
+            background: #fffdf9;
+            border-left-color: #ef4444;
+            background-image: linear-gradient(#e5e7eb 1.5px, transparent 1.5px);
+            background-size: 100% 28px;
+            line-height: 28px;
+            padding-left: 30px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.15rem;
         }
 
         .mock-title {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 5px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .mock-badge {
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
-        .mock-badge.high {
-            background: #ffebeb;
-            color: #ff7675;
+        .mock-badge.work {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
         }
 
-        .mock-badge.work {
-            background: #e8f4fd;
-            color: #3498db;
+        .mock-badge.time {
+            background: rgba(236, 72, 153, 0.1);
+            color: var(--secondary);
         }
 
         .mock-desc {
-            font-size: 0.85rem;
-            color: #666;
+            font-size: 0.8rem;
+            color: #64748b;
+            line-height: 1.4;
         }
 
         .mock-meta {
@@ -392,18 +437,21 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.75rem;
-            color: #999;
+            color: #94a3b8;
+            border-top: 1px solid rgba(0,0,0,0.03);
+            padding-top: 8px;
         }
 
         /* Footer */
         footer {
             margin-top: auto;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.2);
             padding: 30px;
             text-align: center;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #64748b;
+            font-weight: 600;
+            border-top: 1px solid var(--glass-border);
         }
 
         /* Animations */
@@ -418,27 +466,16 @@
             }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
         /* Responsive Styles */
         @media (max-width: 768px) {
             header {
                 padding: 15px 20px;
             }
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.4rem;
             }
             .hero p {
-                font-size: 1.1rem;
+                font-size: 1.05rem;
             }
             .cta-group {
                 flex-direction: column;
@@ -448,9 +485,9 @@
             .cta-btn {
                 text-align: center;
             }
-            .tab-content.active {
-                flex-direction: column;
-                padding: 20px;
+            .step-card {
+                flex-direction: column !important;
+                padding: 24px;
             }
             .tab-preview {
                 width: 100%;
@@ -461,6 +498,7 @@
 </head>
 <body>
 
+    <!-- Header Navigation -->
     <header>
         <a href="#" class="logo">
             <i class="fas fa-sticky-note"></i>
@@ -475,153 +513,145 @@
     <main>
         <!-- Hero Section -->
         <section class="hero">
-            <h1>Fikirlerinizi ve Görevlerinizi <br><span>Kusursuzca Yönetin</span></h1>
-            <p>Not Defteri, günlük işlerinizi planlamanızı, notlarınızı kategorize etmenizi, son teslim tarihlerini takip etmenizi ve verilerinizi kolayca yedeklemenizi sağlayan gelişmiş bir asistan uygulamasıdır.</p>
+            <h1>Zamanınızı ve Notlarınızı <br><span>Tek Arayüzden Yönetin</span></h1>
+            <p>Not Defteri, günlük programınızı 8 günlük akıllı planlama takvimiyle takip etmenizi, defter görünümlü kişisel ajandanızı yazmanızı ve güvenli ortak çalışma odalarında ekip arkadaşlarınızla birlikte not almanızı sağlar.</p>
             <div class="cta-group">
-                <a href="{% url 'register' %}" class="cta-btn primary">Ücretsiz Başla</a>
-                <a href="#features" class="cta-btn secondary">Özellikleri Keşfet</a>
+                <a href="{% url 'register' %}" class="cta-btn primary">Şimdi Keşfet</a>
+                <a href="#features" class="cta-btn secondary">Nasıl Çalışır?</a>
             </div>
         </section>
 
         <!-- Features Grid -->
         <section class="features-container" id="features">
-            <h2 class="section-title">Neden Not Defteri?</h2>
+            <h2 class="section-title">Kusursuz Arayüz Özellikleri</h2>
             <div class="features-grid">
                 <!-- Feature 1 -->
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-folder-open"></i></div>
-                    <h3>Akıllı Kategorilendirme</h3>
-                    <p>İş, Kişisel, Alışveriş gibi önceden tanımlanmış kategoriler veya özel etiketler ile tüm notlarınızı düzenli tutun.</p>
+                    <div class="feature-icon"><i class="far fa-calendar-alt"></i></div>
+                    <h3>8 Günlük Akıllı Takvim</h3>
+                    <p>Bugün dahil gelecek 7 günü kapsayan yatay zaman çizelgesiyle haftalık programınızı anlık olarak takip edin.</p>
                 </div>
                 <!-- Feature 2 -->
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <h3>Öncelik Derecelendirme</h3>
-                    <p>Notlarınıza Düşük, Orta veya Yüksek öncelik seviyeleri vererek hangi işe odaklanmanız gerektiğini anında görün.</p>
+                    <div class="feature-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>El Yazısı stili Ajanda</h3>
+                    <p>Tamamen çizgili, spiral ciltli gerçekçi defter tasarımı ve değiştirilebilir el yazısı/daktilo fontlarıyla günlük tutun.</p>
                 </div>
                 <!-- Feature 3 -->
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <h3>Bitiş Tarihi ve Alarm</h3>
-                    <p>Görevlerinize bitiş tarihleri ekleyin. Yaklaşan veya vadesi geçmiş görevleri panelinizde anında tespit edin.</p>
+                    <div class="feature-icon"><i class="fas fa-user-friends"></i></div>
+                    <h3>Ortak Çalışma Odaları</h3>
+                    <p>12 haneli tamamen güvenli, rastgele üretilen oda kodlarıyla ortak alanlar kurarak arkadaşlarınızla ortak notlar alın.</p>
                 </div>
                 <!-- Feature 4 -->
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-file-export"></i></div>
-                    <h3>Kolay Veri Transferi</h3>
-                    <p>Notlarınızı tek tıkla JSON formatında bilgisayarınıza indirin veya yedeklerinizi sisteme yükleyerek kaldığınız yerden devam edin.</p>
+                    <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Saat Aralıklı Görevler</h3>
+                    <p>Görev ve not eklerken başlangıç/bitiş saatlerini belirleyin ve takviminizde yıldızlı etkinlikler oluşturun.</p>
                 </div>
             </div>
         </section>
 
-        <!-- How it works / Tutorial Section -->
+        <!-- How it works Steps -->
         <section class="tutorial-container">
             <div class="tutorial-wrapper">
-                <h2 class="section-title">Nasıl Çalışır?</h2>
+                <h2 class="section-title">Neler Yapabilirsiniz?</h2>
 
-                <!-- Step 1 -->
-                <div class="step-card" id="step-add">
+                <!-- Step 1: Programım -->
+                <div class="step-card">
                     <div class="tab-text">
-                        <span style="font-size: 0.9rem; font-weight: 700; color: #c7d2fe; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">ADIM 1</span>
-                        <h3>Fikirlerinizi Anında Kaydedin</h3>
-                        <p>Zihninizdekileri unutmadan hemen yazın. Başlık ve içerik girerek saniyeler içinde yeni bir not oluşturabilirsiniz.</p>
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">BÖLÜM 1</span>
+                        <h3>Haftalık Zaman Çizelgenizi Kurun</h3>
+                        <p>Zaman kolonları sayesinde görevlerinize saat aralıkları belirleyerek planlayın. Etkinliklerinizi ve projelerinizi takvim üzerinde listeleyin.</p>
                         <ul>
-                            <li><i class="fas fa-check-circle"></i> Hızlı başlık ve içerik girişi</li>
-                            <li><i class="fas fa-check-circle"></i> Gelişmiş form yapısı</li>
-                            <li><i class="fas fa-check-circle"></i> Otomatik oluşturma tarihi atama</li>
+                            <li><i class="fas fa-check-circle"></i> Saat aralık belirtmeli görev kartları</li>
+                            <li><i class="fas fa-check-circle"></i> Yıldızlı (⭐) ve öncelikli etkinlik rozetleri</li>
+                            <li><i class="fas fa-check-circle"></i> Günlük not sayacı ve hızlı görev ekleme</li>
                         </ul>
                     </div>
                     <div class="tab-preview">
                         <div class="mock-note">
                             <div class="mock-title">
-                                Yeni Proje Fikirleri
-                                <span class="mock-badge work">İş</span>
+                                Arayüz Tasarım İncelemesi
+                                <span class="mock-badge work">Proje</span>
                             </div>
-                            <div class="mock-desc">Yeni web uygulaması için arayüz tasarımlarını araştır ve not al.</div>
+                            <div class="mock-desc">Vite ve Next.js şablonlarının tasarım kalitesini değerlendir.</div>
                             <div class="mock-meta">
-                                <span><i class="far fa-clock"></i> Şimdi</span>
-                                <span>Yazar: Siz</span>
+                                <span><i class="far fa-clock"></i> 🕒 14:00 - 15:30</span>
+                                <span>Kategori: İş</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 2 -->
-                <div class="step-card" id="step-organize">
+                <!-- Step 2: Defter Ajanda -->
+                <div class="step-card">
                     <div class="tab-text">
-                        <span style="font-size: 0.9rem; font-weight: 700; color: #c7d2fe; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">ADIM 2</span>
-                        <h3>Öncelik Seviyelerini Belirleyin</h3>
-                        <p>Hangi görevin daha acil olduğunu renk kodlu öncelik kartlarıyla ayırt edin. Yüksek öncelikli notlar panelinizde hemen göze çarpar.</p>
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">BÖLÜM 2</span>
+                        <h3>Klasik Notebook Hissiyatı</h3>
+                        <p>Ajanda sekmesinde, dijital ortamdan uzaklaşıp gerçek bir ajanda sayfasına yazıyormuş gibi hissedeceksiniz. Üstelik dilediğiniz el yazısı fontunu seçerek!</p>
                         <ul>
-                            <li><i class="fas fa-check-circle"></i> Kırmızı, sarı ve mavi renk kodları</li>
-                            <li><i class="fas fa-check-circle"></i> Önceliğe göre filtreleme yeteneği</li>
-                            <li><i class="fas fa-check-circle"></i> Tamamlanan görevleri tek tıklamayla arşivleme</li>
+                            <li><i class="fas fa-check-circle"></i> Çizgili kağıt ve spiral cilt tasarımı</li>
+                            <li><i class="fas fa-check-circle"></i> 4 Farklı yazı tipi (El Yazısı, Daktilo, vb.)</li>
+                            <li><i class="fas fa-check-circle"></i> Seçili tarihe göre hafızaya otomatik kaydetme</li>
                         </ul>
                     </div>
                     <div class="tab-preview">
-                        <div class="mock-note high">
+                        <div class="mock-note agenda">
+                            Bugün harika bir arayüz tasarımı tamamladık. Defterime el yazımla not alıp kaydetmek çok gerçekçi hissettiriyor...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Ortak Çalışma -->
+                <div class="step-card">
+                    <div class="tab-text">
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">BÖLÜM 3</span>
+                        <h3>Güvenli Eş Zamanlı Not Alma</h3>
+                        <p>Ortak alan bölmesinde ürettiğiniz 12 haneli güvenli kodu arkadaşınızla paylaşarak anında aynı odaya katılın ve paylaşımlı notları birlikte düzenleyin.</p>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Benzersiz güvenli oda kimliği oluşturma</li>
+                            <li><i class="fas fa-check-circle"></i> Oda koduyla anında hızlı katılım</li>
+                            <li><i class="fas fa-check-circle"></i> Ortak alınmış notların listelenmesi</li>
+                        </ul>
+                    </div>
+                    <div class="tab-preview">
+                        <div class="mock-note event">
                             <div class="mock-title">
-                                Sunum Hazırlığı
-                                <span class="mock-badge high">Yüksek</span>
+                                Ortak Alışveriş Listesi
+                                <span class="mock-badge time">Room: xP9Lq1Nz3</span>
                             </div>
-                            <div class="mock-desc">Yarınki toplantı için satış grafiklerini tamamla.</div>
+                            <div class="mock-desc">Toplantı öncesi alınacak kahve ve atıştırmalık malzemeler listesi.</div>
                             <div class="mock-meta">
-                                <span><i class="far fa-clock"></i> 5 dk önce</span>
-                                <span>Öncelik: Yüksek</span>
+                                <span><i class="fas fa-users"></i> Ortak Not</span>
+                                <span>Oda: xP9L...</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 3 -->
-                <div class="step-card" id="step-track">
+                <!-- Step 4: Projeler & Kayıt -->
+                <div class="step-card">
                     <div class="tab-text">
-                        <span style="font-size: 0.9rem; font-weight: 700; color: #c7d2fe; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">ADIM 3</span>
-                        <h3>Teslim Tarihlerini Asla Kaçırmayın</h3>
-                        <p>Görevlerinize bitiş tarihleri atayarak planlı çalışın. Süresi geçen işler panonuzda uyarı olarak gösterilir.</p>
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">BÖLÜM 4</span>
+                        <h3>Esnek Üyelik Seçenekleri</h3>
+                        <p>Kayıt olma sayfasında ister E-posta ister Telefon numaranızı kullanarak kolayca yeni hesabınızı oluşturabilir ve projelerinizi düzenlemeye başlayabilirsiniz.</p>
                         <ul>
-                            <li><i class="fas fa-check-circle"></i> Bitiş tarihi (Due Date) atama</li>
-                            <li><i class="fas fa-check-circle"></i> Bugün ve bu hafta bitecek görev filtreleri</li>
-                            <li><i class="fas fa-check-circle"></i> Süresi geçen (Overdue) görev sayacı</li>
+                            <li><i class="fas fa-check-circle"></i> Sekmeli kayıt yapısı (E-posta veya Telefon)</li>
+                            <li><i class="fas fa-check-circle"></i> Projelerim sekmesiyle notları gruplama</li>
+                            <li><i class="fas fa-check-circle"></i> Verilerinizi JSON olarak yedekleme</li>
                         </ul>
                     </div>
                     <div class="tab-preview">
-                        <div class="mock-note" style="border-left-color: #e67e22;">
+                        <div class="mock-note" style="border-left-color: #10b981;">
                             <div class="mock-title">
-                                Fatura Ödemesi
-                                <span class="mock-badge" style="background:#fef5ec; color:#e67e22;">Bugün</span>
+                                Proje: Web Tasarım
+                                <span class="mock-badge" style="background:#eafaf1; color:#10b981;">Aktif</span>
                             </div>
-                            <div class="mock-desc">İnternet ve elektrik faturalarını son gün gelmeden öde.</div>
+                            <div class="mock-desc">Gelişmiş CSS grid ve esnek sütun yapıları kullanılarak landing page yenilendi.</div>
                             <div class="mock-meta">
-                                <span style="color:#e67e22;"><i class="fas fa-exclamation-triangle"></i> Bitiş: Bugün</span>
-                                <span>Kişisel</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="step-card" id="step-export">
-                    <div class="tab-text">
-                        <span style="font-size: 0.9rem; font-weight: 700; color: #c7d2fe; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">ADIM 4</span>
-                        <h3>Verilerinizi Yedekleyin</h3>
-                        <p>Not Defteri verilerinizi dilediğiniz zaman JSON formatında dışa aktararak yedekleyebilirsiniz. İhtiyaç anında bu yedeği geri yükleyebilirsiniz.</p>
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Tek tıkla tüm notları JSON olarak indirme</li>
-                            <li><i class="fas fa-check-circle"></i> Kolay dosya seçimiyle yedek geri yükleme</li>
-                            <li><i class="fas fa-check-circle"></i> Güvenli ve şifreli yerel depolama entegrasyonu</li>
-                        </ul>
-                    </div>
-                    <div class="tab-preview">
-                        <div class="mock-note completed">
-                            <div class="mock-title">
-                                JSON Yedekleme Testi
-                                <span class="mock-badge" style="background:#eafaf1; color:#2ecc71;">Başarılı</span>
-                            </div>
-                            <div class="mock-desc">Notlar başarıyla dışa aktarıldı ve yedek dosyası oluşturuldu.</div>
-                            <div class="mock-meta">
-                                <span><i class="fas fa-check"></i> Tamamlandı</span>
-                                <span>Yedekleme</span>
+                                <span><i class="fas fa-folder"></i> Projelerim</span>
+                                <span>Üyelik: Telefon</span>
                             </div>
                         </div>
                     </div>
@@ -631,6 +661,7 @@
         </section>
     </main>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2026 Not Defteri Uygulaması. Tüm Hakları Saklıdır.</p>
     </footer>

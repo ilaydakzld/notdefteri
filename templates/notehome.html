@@ -389,44 +389,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Atatürk Parallax Banner */
-        .ataturk-banner {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            height: 140px;
-            margin-bottom: 24px;
-            background-image: url('{% static "ataturk_banner.png" %}');
-            background-position: center;
-            background-size: cover;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .ataturk-banner-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(15, 23, 42, 0.8) 0%, rgba(99, 102, 241, 0.3) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 40px;
-            color: white;
-        }
-
-        .ataturk-banner-overlay h2 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .ataturk-banner-overlay p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
         /* Dates Horizontal View (Programım Tab) */
         .section-header {
             margin-bottom: 20px;
@@ -1418,14 +1380,6 @@
 
             <!-- Scrollable Content Body -->
             <div class="content-body">
-                
-                <!-- Atatürk Parallax Banner -->
-                <div class="ataturk-banner">
-                    <div class="ataturk-banner-overlay">
-                        <h2>Fikirler asla ölmez.</h2>
-                        <p>Mustafa Kemal Atatürk | 1881 - 193∞</p>
-                    </div>
-                </div>
 
                 <!-- Hidden data storage to read notes from Django context -->
                 <div id="raw-notes-data" style="display: none;">
@@ -1731,7 +1685,7 @@
                                 <div style="display: flex; flex-direction: column; gap: 6px;">
                                     <label for="collab_join_id" style="font-size: 0.75rem;">Oda Kimliği/Kodu ile Katıl</label>
                                     <div style="display: flex; gap: 8px;">
-                                        <input type="text" id="collab_join_id" placeholder="Kimlik girin (Örn: COLLAB-4872)">
+                                        <input type="text" id="collab_join_id" placeholder="Kimlik girin (Örn: a1B2c3D4e5F6)">
                                         <button class="btn-save" onclick="joinCollabRoom()" style="width: auto; padding: 8px 16px;">Katıl</button>
                                     </div>
                                 </div>
@@ -1739,7 +1693,7 @@
 
                             <div id="active-room-display" style="display: none; background: rgba(99, 102, 241, 0.1); border: 1.5px solid var(--primary-light); padding: 16px; border-radius: 12px; margin-top: 10px;">
                                 <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Aktif Oda:</span>
-                                <h4 id="active-room-code-text" style="font-size: 1.25rem; font-weight: 800; margin: 4px 0; color: var(--dark);">COLLAB-XXXX</h4>
+                                <h4 id="active-room-code-text" style="font-size: 1.25rem; font-weight: 800; margin: 4px 0; color: var(--dark);">Oda Kodu</h4>
                                 <button class="btn-cancel" onclick="copyCollabCode()" style="width: 100%; font-size: 0.8rem; padding: 6px; margin-top: 6px;"><i class="far fa-copy"></i> Kodu Kopyala</button>
                             </div>
                         </div>
@@ -1933,7 +1887,7 @@
     <script>
         // Global variables and state
         let currentTheme = localStorage.getItem('theme') || 'light';
-        let activeTab = 'programim';
+        let activeTab = localStorage.getItem('active_tab') || 'programim';
 
         // Load project, events, notes, collab rooms and agenda data from localStorage
         let projects = JSON.parse(localStorage.getItem('projects')) || ["Web Tasarım", "Kişisel Planlar"];
@@ -1974,6 +1928,7 @@
             document.getElementById('agenda_font').value = selectedAgendaFont;
             
             reloadAllData();
+            switchTab(activeTab);
         });
 
         // Profile updates saving
@@ -2033,6 +1988,7 @@
         // Tab Switcher
         function switchTab(tabId) {
             activeTab = tabId;
+            localStorage.setItem('active_tab', tabId);
             
             // Hide all tab panels
             document.querySelectorAll('.tab-panel').forEach(panel => {
@@ -2716,7 +2672,11 @@
 
         // NEW: 5. ORTAK ALAN LOGIC (Room Create/Join and shared Notes)
         function createCollabRoom() {
-            const roomId = 'COLLAB-' + Math.floor(1000 + Math.random() * 9000);
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let roomId = '';
+            for (let i = 0; i < 12; i++) {
+                roomId += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
             activeCollabRoom = roomId;
             localStorage.setItem('active_collab_room', roomId);
             

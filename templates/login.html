@@ -3,155 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Yap</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Giriş Yap - Not Defteri</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --glass-blur: 16px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Outfit', 'Poppins', sans-serif;
         }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 50%, #f1f5f9 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
-        
+
         .login-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 24px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
+            transition: all 0.3s ease;
         }
-        
+
         .logo {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: transform 0.3s;
         }
-        
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
         .logo i {
             font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
+
         h1 {
-            color: #333;
+            color: var(--dark);
+            font-weight: 800;
+            margin-bottom: 24px;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* Login Tabs */
+        .login-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
             font-weight: 600;
-            margin-bottom: 30px;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
-        
+
         label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
         }
-        
+
         input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--dark);
             outline: none;
+            transition: all 0.2s;
         }
-        
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        button.btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s, box-shadow 0.2s;
             font-size: 1rem;
             width: 100%;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
         }
-        
-        button:hover {
+
+        button.btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
         }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .errorlist {
-            color: #dc3545;
-            list-style-type: none;
-            padding: 0;
-            margin-top: 5px;
+
+        .login-footer {
+            margin-top: 24px;
+            color: #64748b;
             font-size: 0.9rem;
         }
-        
-        .login-footer {
-            margin-top: 30px;
-            color: #555;
-        }
-        
+
         .login-footer a {
-            color: #667eea;
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-weight: 600;
+            transition: color 0.2s;
         }
-        
+
         .login-footer a:hover {
-            color: #764ba2;
+            color: var(--secondary);
             text-decoration: underline;
         }
 
         .btn-features {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             margin-top: 15px;
             padding: 8px 18px;
-            border: 2px solid #667eea;
+            border: 1.5px solid var(--primary);
             border-radius: 20px;
-            color: #667eea !important;
-            font-size: 0.85rem;
-            font-weight: 600;
+            color: var(--primary) !important;
+            font-size: 0.8rem;
+            font-weight: 700;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
         
         .btn-features:hover {
-            background: #667eea;
+            background: var(--primary);
             color: white !important;
-            text-decoration: none !important;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
         }
-        
+
         .alert-danger {
-            background-color: #fde8e8;
-            border: 1px solid #f8b4b4;
-            color: #9b1c1c;
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #b91c1c;
             padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
             margin-bottom: 20px;
             text-align: left;
             display: flex;
@@ -159,21 +212,25 @@
             gap: 10px;
         }
 
-        .alert-danger i {
-            font-size: 1.1rem;
-            color: #e02424;
-            flex-shrink: 0;
+        .login-fields {
+            animation: slideFade 0.3s ease;
+        }
+
+        @keyframes slideFade {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <a href="{% url 'landing' %}" style="text-decoration: none;">
+        <a href="{% url 'landing' %}">
             <div class="logo">
                 <i class="fas fa-sticky-note"></i>
             </div>
         </a>
         <h1>Hesaba Giriş</h1>
+
         {% if form.non_field_errors %}
             <div class="alert-danger">
                 <i class="fas fa-exclamation-circle"></i>
@@ -184,25 +241,42 @@
                 </div>
             </div>
         {% endif %}
-        <form method="post">
+
+        <!-- Login Tabs -->
+        <div class="login-tabs">
+            <button class="tab-btn active" id="tab-username" onclick="setLoginMethod('username')">Kullanıcı Adı / E-posta</button>
+            <button class="tab-btn" id="tab-phone" onclick="setLoginMethod('phone')">Telefon ile</button>
+        </div>
+
+        <form method="post" action="{% url 'notehome' %}">
             {% csrf_token %}
-            {% for field in form %}
+            
+            <!-- Username/Email Field Container -->
+            <div id="username-fields-container" class="login-fields">
                 <div class="form-group">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    {% if field.errors %}
-                        <ul class="errorlist">
-                            {% for error in field.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                    <label for="username_input">Kullanıcı Adı veya E-posta</label>
+                    <input type="text" id="username_input" name="username" placeholder="Kullanıcı adı veya e-posta...">
                 </div>
-            {% endfor %}
-            <button type="submit"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+            </div>
+
+            <!-- Phone Field Container (hidden by default) -->
+            <div id="phone-fields-container" class="login-fields" style="display: none;">
+                <div class="form-group">
+                    <label for="phone_input">Telefon Numarası</label>
+                    <input type="tel" id="phone_input" name="phone" placeholder="0555 555 55 55">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" name="password" required placeholder="Şifrenizi girin...">
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
         </form>
+
         <div class="login-footer">
-            <p>Hesabın yok mu? <a href="{% url 'register' %}">Kayıt Ol</a></p>
+            <p>Hesabınız yok mu? <a href="{% url 'register' %}">Kayıt Ol</a></p>
             <p style="margin-top: 12px;">
                 <a href="{% url 'landing' %}#features" class="btn-features">
                     <i class="fas fa-info-circle"></i> Özellikleri İncele
@@ -210,5 +284,40 @@
             </p>
         </div>
     </div>
+
+    <script>
+        function setLoginMethod(method) {
+            const tabUsername = document.getElementById('tab-username');
+            const tabPhone = document.getElementById('tab-phone');
+            const usernameContainer = document.getElementById('username-fields-container');
+            const phoneContainer = document.getElementById('phone-fields-container');
+            
+            const usernameInput = document.getElementById('username_input');
+            const phoneInput = document.getElementById('phone_input');
+
+            if (method === 'username') {
+                tabUsername.classList.add('active');
+                tabPhone.classList.remove('active');
+                usernameContainer.style.display = 'block';
+                phoneContainer.style.display = 'none';
+                
+                usernameInput.setAttribute('required', 'required');
+                phoneInput.removeAttribute('required');
+            } else {
+                tabUsername.classList.remove('active');
+                tabPhone.classList.add('active');
+                usernameContainer.style.display = 'none';
+                phoneContainer.style.display = 'block';
+                
+                phoneInput.setAttribute('required', 'required');
+                usernameInput.removeAttribute('required');
+            }
+        }
+
+        // Initialize default fields on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setLoginMethod('username');
+        });
+    </script>
 </body>
 </html>
