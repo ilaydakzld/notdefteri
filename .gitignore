@@ -19,7 +19,7 @@ var/
 .venv/
 venv/
 ENV/
-
+.env*.local
 # Django
 *.log
 local_settings.py

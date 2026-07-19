@@ -4,1035 +4,2858 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Defteri - Gelişmiş Görev Yönetimi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Not Defteri - Kişisel Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Architects+Daughter&family=Special+Elite&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --transition-speed: 0.3s;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --glass-blur: 16px;
+        }
+
+        [data-theme="dark"] {
+            --light: #0f172a;
+            --dark: #f8fafc;
+            --glass-bg: rgba(15, 23, 42, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Outfit', 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 50%, #f1f5f9 100%);
             min-height: 100vh;
-            padding: 20px;
-            color: #333;
+            color: #1e293b;
+            display: flex;
+            overflow-x: hidden;
+            transition: background var(--transition-speed);
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+        body[data-theme="dark"] {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%);
+            color: #f1f5f9;
         }
 
-        h1 {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
-        }
-
-        /* Atatürk Parallax Header */
-        .ataturk-parallax-header {
+        /* App Layout */
+        .app-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             position: relative;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto 30px;
-            aspect-ratio: 1024 / 266;
-            background-image: url('{% static "ataturk_banner.png" %}');
-            background-attachment: scroll;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-right: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        body[data-theme="dark"] .sidebar {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        /* Profile Area */
+        .profile-container {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+            transition: padding var(--transition-speed);
+        }
+
+        .sidebar.collapsed .profile-container {
+            padding: 20px 10px;
+            justify-content: center;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            text-align: center;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        .parallax-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.45);
-            z-index: 1;
-        }
-
-        .parallax-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-        }
-
-        .parallax-content h1 {
-            font-size: 2.0rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 8px !important;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            color: white !important;
-            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+            flex-shrink: 0;
         }
 
-        .parallax-content h2 {
-            font-size: 1.6rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 2px 6px rgba(0,0,0,0.5);
-            margin: 0;
+        .profile-avatar-wrapper:hover {
+            transform: scale(1.05);
         }
 
-        @media (max-width: 768px) {
-            .ataturk-parallax-header {
-                aspect-ratio: auto;
-                height: 150px;
-                background-size: cover;
-            }
-            .parallax-content h1 {
-                font-size: 1.25rem;
-            }
-            .parallax-content h2 {
-                font-size: 1.05rem;
-            }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.2s ease;
         }
 
-        /* İstatistik Kartları */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto 30px;
+        .sidebar.collapsed .profile-info {
+            opacity: 0;
+            width: 0;
+            pointer-events: none;
         }
 
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .profile-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .profile-btn {
+            font-size: 0.75rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+
+        .profile-btn:hover {
+            color: var(--secondary);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        body[data-theme="dark"] .menu-item a {
+            color: #94a3b8;
+        }
+
+        .sidebar.collapsed .menu-item a {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .menu-item a i {
+            font-size: 1.15rem;
+            width: 24px;
             text-align: center;
             transition: transform 0.2s;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
+        .menu-item.active a, .menu-item a:hover {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--primary);
         }
 
-        .stat-card i {
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .menu-item.active a {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
         }
 
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #667eea;
+        .menu-item a:hover i {
+            transform: scale(1.15);
         }
 
-        .stat-card .label {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .stat-card.danger .number { color: #dc3545; }
-        .stat-card.success .number { color: #28a745; }
-        .stat-card.warning .number { color: #ffc107; }
-
-        .container {
+        /* Main Content Container */
+        .main-container {
+            flex-grow: 1;
+            height: 100%;
             display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
 
-        .form-section {
-            width: 35%;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .notes-section {
-            width: 65%;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #667eea;
-            font-weight: 600;
-            font-size: 1.5rem;
+        /* Top Bar */
+        .topbar {
+            height: 70px;
+            padding: 0 30px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 90;
         }
 
-        h2 i {
-            margin-right: 10px;
+        body[data-theme="dark"] .topbar {
+            background: rgba(15, 23, 42, 0.45);
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-            font-size: 0.9rem;
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
         }
 
-        input[type="text"], input[type="date"], select, textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        .sidebar-toggle:hover {
+            background: rgba(0, 0, 0, 0.05);
         }
 
-        input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            outline: none;
+        body[data-theme="dark"] .sidebar-toggle:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        textarea {
-            height: 100px;
-            resize: vertical;
+        .page-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        button, .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-theme-toggle {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 1.15rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--primary);
+        }
+
+        .btn-add-note-shortcut {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            font-size: 1rem;
-            width: 100%;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-
-        button:hover, .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        /* Yeni Arama ve Filtreleme Düzeni */
-        .filter-wrapper {
-            margin-bottom: 25px;
-            background: #f8f9fa;
+            padding: 10px 18px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border: 1px solid #eef2f5;
-        }
-
-        .search-filter-bar {
-            display: flex;
-            gap: 12px;
-            padding: 15px;
-            align-items: center;
-            background: white;
-        }
-
-        .search-form {
-            flex: 1;
-        }
-
-        .search-input-group {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-input-group .search-icon {
-            position: absolute;
-            left: 12px;
-            color: #a0aec0;
-            font-size: 0.95rem;
-        }
-
-        .search-input-group input {
-            width: 100%;
-            padding: 10px 12px 10px 38px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input-group input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-            outline: none;
-        }
-
-        .filter-toggle-btn {
+            font-weight: 600;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            background: #f1f5f9;
-            color: #475569;
-            border: 2px solid #e2e8f0;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            white-space: nowrap;
-            width: auto;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            transition: all 0.2s;
         }
 
-        .filter-toggle-btn:hover {
-            background: #e2e8f0;
-            color: #1e293b;
-            transform: none;
-            box-shadow: none;
+        .btn-add-note-shortcut:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.3);
         }
 
-        .filter-toggle-btn.active {
-            background: #667eea;
-            border-color: #667eea;
+        .btn-logout-shortcut {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: none;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-logout-shortcut:hover {
+            background: var(--danger);
             color: white;
         }
 
-        .active-filter-indicator {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 10px;
-            height: 10px;
-            background-color: #ef4444;
-            border: 2px solid white;
-            border-radius: 50%;
+        /* Content Area Panels */
+        .content-body {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+            position: relative;
         }
 
-        /* Collapsible Panel */
-        .filter-panel {
-            max-height: 0;
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+            height: 100%;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Atatürk Parallax Banner */
+        .ataturk-banner {
+            position: relative;
+            border-radius: 20px;
             overflow: hidden;
-            transition: max-height 0.35s ease-out, padding 0.35s ease-out;
-            background: #f8f9fa;
+            height: 140px;
+            margin-bottom: 24px;
+            background-image: url('{% static "ataturk_banner.png" %}');
+            background-position: center;
+            background-size: cover;
+            box-shadow: var(--glass-shadow);
         }
 
-        .filter-panel.open {
-            max-height: 500px;
-            border-top: 1px solid #e2e8f0;
-            padding: 20px;
-        }
-
-        .filter-form {
+        .ataturk-banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.8) 0%, rgba(99, 102, 241, 0.3) 100%);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            justify-content: center;
+            padding: 0 40px;
+            color: white;
         }
 
-        .filter-grid {
+        .ataturk-banner-overlay h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .ataturk-banner-overlay p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Dates Horizontal View (Programım Tab) */
+        .section-header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 40px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .calendar-row {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            scroll-behavior: smooth;
+        }
+
+        .calendar-row::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .calendar-row::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .calendar-row::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .calendar-column {
+            flex: 0 0 280px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+            max-height: 520px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        body[data-theme="dark"] .calendar-column {
+            background: rgba(30, 41, 59, 0.45);
+        }
+
+        .calendar-column:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.08);
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+
+        .column-header {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body[data-theme="dark"] .column-header {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .column-date-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column-date {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .column-day {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .column-task-count {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .column-tasks-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 4px;
+        }
+
+        .column-tasks-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .column-tasks-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .column-add-btn {
+            margin-top: 14px;
+            background: none;
+            border: 1px dashed var(--primary-light);
+            color: var(--primary);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .column-add-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-style: solid;
+            border-color: var(--primary);
+        }
+
+        /* Task Cards */
+        .task-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body[data-theme="dark"] .task-card {
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .task-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .task-card.priority-high {
+            border-left-color: var(--danger);
+        }
+
+        .task-card.priority-medium {
+            border-left-color: var(--warning);
+        }
+
+        .task-card.priority-low {
+            border-left-color: var(--success);
+        }
+
+        .task-card.completed {
+            border-left-color: #cbd5e1;
+            opacity: 0.65;
+        }
+
+        .task-card.completed .task-card-title {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        /* Event card special styling */
+        .task-card.is-event {
+            background: linear-gradient(135deg, rgba(253, 244, 255, 0.9) 0%, rgba(252, 231, 243, 0.9) 100%);
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.1);
+        }
+
+        body[data-theme="dark"] .task-card.is-event {
+            background: linear-gradient(135deg, rgba(30, 18, 36, 0.9) 0%, rgba(35, 16, 26, 0.9) 100%);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .task-card.is-event::after {
+            content: '⭐';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .task-card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .task-card-content {
+            font-size: 0.8rem;
+            color: #64748b;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        body[data-theme="dark"] .task-card-content {
+            color: #94a3b8;
+        }
+
+        .task-card-meta {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .task-badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .task-badge.category {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        .task-badge.time-badge {
+            background: rgba(236, 72, 153, 0.1);
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .task-badge.project-badge {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--info);
+        }
+
+        .task-badge.tag {
+            background: rgba(0, 0, 0, 0.05);
+            color: #475569;
+        }
+
+        body[data-theme="dark"] .task-badge.tag {
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+        }
+
+        .task-card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 8px;
+            margin-top: 4px;
+        }
+
+        body[data-theme="dark"] .task-card-actions {
+            border-top-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .task-action-btn {
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .task-action-btn:hover {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        .task-action-btn.delete-btn:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .task-action-btn.complete-btn:hover {
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .empty-column-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            border: 1px dashed rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            margin: auto 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        body[data-theme="dark"] .empty-column-state {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Classic Notes tab (Notlarım) */
+        .notes-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Stats Cards (Analiz Tab) */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .filter-group {
+        .stat-card {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+
+        body[data-theme="dark"] .stat-card {
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); }
+        .stat-icon.success { background: linear-gradient(135deg, var(--success) 0%, #34d399 100%); }
+        .stat-icon.warning { background: linear-gradient(135deg, var(--warning) 0%, #fbbf24 100%); }
+        .stat-icon.danger { background: linear-gradient(135deg, var(--danger) 0%, #f87171 100%); }
+        .stat-icon.info { background: linear-gradient(135deg, var(--info) 0%, #22d3ee 100%); }
+        .stat-icon.secondary { background: linear-gradient(135deg, var(--secondary) 0%, #f472b6 100%); }
+
+        .stat-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        body[data-theme="dark"] .stat-label {
+            color: #94a3b8;
+        }
+
+        /* Analytics charts placeholder styling */
+        .analytics-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .analytics-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body[data-theme="dark"] .chart-box {
+            background: rgba(30, 41, 59, 0.45);
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .progress-circle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-grow: 1;
+        }
+
+        .progress-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(closest-side, white 79%, transparent 80% 100%), conic-gradient(var(--primary) calc(var(--percent) * 1%), #e2e8f0 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body[data-theme="dark"] .progress-circle {
+            background: radial-gradient(closest-side, #1e293b 79%, transparent 80% 100%), conic-gradient(var(--primary) calc(var(--percent) * 1%), #334155 0);
+        }
+
+        .progress-circle-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        /* Filter Panel (Notlarım Tab) */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+        }
+
+        body[data-theme="dark"] .filter-section {
+            background: rgba(30, 41, 59, 0.45);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+            min-width: 150px;
+        }
+
+        .filter-item label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        body[data-theme="dark"] .filter-item label {
+            color: #94a3b8;
+        }
+
+        .filter-item select, .filter-item input {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: var(--dark);
+            outline: none;
+            font-family: inherit;
+        }
+
+        body[data-theme="dark"] .filter-item select, body[data-theme="dark"] .filter-item input {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .filter-item select:focus, .filter-item input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Interactive Modal (Yeni Not Ekle) */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        body[data-theme="dark"] .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body[data-theme="dark"] .modal-header {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-header h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
 
-        .filter-group label {
-            font-size: 0.85rem;
-            font-weight: 600;
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
             color: #64748b;
         }
 
-        .filter-group label i {
-            margin-right: 4px;
-            color: #667eea;
+        body[data-theme="dark"] .form-group label {
+            color: #94a3b8;
         }
 
-        .filter-group select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            background-color: white;
-            color: #334155;
-            font-family: 'Poppins', sans-serif;
+        .form-group input, .form-group select, .form-group textarea {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            color: var(--dark);
+            outline: none;
+            font-family: inherit;
         }
 
-        .filter-actions {
+        body[data-theme="dark"] .form-group input, body[data-theme="dark"] .form-group select, body[data-theme="dark"] .form-group textarea {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(0,0,0,0.08);
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 10px;
-            align-items: center;
+            gap: 12px;
         }
 
-        .btn-clear-filters {
-            font-size: 0.85rem;
+        body[data-theme="dark"] .modal-footer {
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-cancel {
+            background: rgba(0, 0, 0, 0.05);
             color: #64748b;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            display: inline-block;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        .btn-clear-filters:hover {
-            color: #ef4444;
-            background: #fee2e2;
+        body[data-theme="dark"] .btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
         }
 
-        .btn-apply-filters {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-save {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            width: auto;
-            display: inline-block;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
 
-        .btn-apply-filters:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        /* Feedback / Wishes and complaints form styling */
+        .feedback-form {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 0 auto;
         }
 
-        @media (max-width: 640px) {
-            .search-filter-bar {
-                flex-direction: column;
-                align-items: stretch;
+        body[data-theme="dark"] .feedback-form {
+            background: rgba(30, 41, 59, 0.45);
+        }
+
+        /* Split layout for Projects and Events */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            height: 100%;
+            min-height: 480px;
+        }
+
+        @media (max-width: 768px) {
+            .split-layout {
+                grid-template-columns: 1fr;
             }
-            .filter-toggle-btn {
-                justify-content: center;
-            }
         }
 
-        .notes-list {
-            max-height: 600px;
+        .split-left-panel {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 520px;
             overflow-y: auto;
-            padding-right: 10px;
         }
 
-        .notes-list::-webkit-scrollbar {
-            width: 8px;
+        body[data-theme="dark"] .split-left-panel {
+            background: rgba(30, 41, 59, 0.35);
         }
 
-        .notes-list::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
+        .split-right-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 520px;
+            overflow-y: auto;
         }
 
-        .notes-list::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 10px;
+        body[data-theme="dark"] .split-right-panel {
+            background: rgba(30, 41, 59, 0.45);
         }
 
-        .note-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            position: relative;
-        }
-
-        .note-item.completed {
-            opacity: 0.7;
-            border-left-color: #28a745;
-            background: #e8f5e9;
-        }
-
-        .note-item.completed .note-title {
-            text-decoration: line-through;
-        }
-
-        .note-item.overdue {
-            border-left-color: #dc3545;
-            background: #ffe6e6;
-        }
-
-        .note-item.priority-high {
-            border-left-width: 6px;
-        }
-
-        .note-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .note-header {
+        .panel-list-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
-            align-items: start;
-            margin-bottom: 8px;
-        }
-
-        .note-date {
-            font-size: 0.8rem;
-            color: #6c757d;
-            margin-bottom: 5px;
-        }
-
-        .note-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-
-        .note-content {
-            color: #555;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .note-meta {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .badge-category {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .badge-priority {
-            color: white;
-        }
-
-        .badge-priority.high {
-            background: #dc3545;
-        }
-
-        .badge-priority.medium {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .badge-priority.low {
-            background: #28a745;
-        }
-
-        .badge-tag {
-            background: #6c757d;
-            color: white;
-        }
-
-        .due-date-badge {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.75rem;
-        }
-
-        .due-date-badge.overdue {
-            background: #dc3545;
-        }
-
-        .due-date-badge.today {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .note-actions {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
+            align-items: center;
             transition: all 0.2s;
+            border: 1px solid transparent;
+            color: var(--dark);
+        }
+
+        .panel-list-item:hover {
+            background: rgba(99, 102, 241, 0.08);
+            color: var(--primary);
+        }
+
+        .panel-list-item.selected {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            border: none;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
 
-        .action-btn.edit {
-            background: #17a2b8;
-        }
-
-        .action-btn.edit:hover {
-            background: #138496;
-        }
-
-        .action-btn.complete {
-            background: #28a745;
-        }
-
-        .action-btn.complete:hover {
-            background: #218838;
-        }
-
-        .action-btn.delete {
-            background: #dc3545;
-        }
-
-        .action-btn.delete:hover {
-            background: #c82333;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
-            font-style: italic;
-        }
-
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .toolbar .btn {
-            flex: 1;
-            min-width: 150px;
-            padding: 8px 15px;
+        .panel-list-item i {
             font-size: 0.9rem;
         }
 
-        .btn-export {
-            background: #28a745;
+        .project-note-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.2s;
         }
 
-        .btn-export:hover {
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        body[data-theme="dark"] .project-note-card {
+            background: rgba(15, 23, 42, 0.7);
+            border-color: rgba(255, 255, 255, 0.06);
         }
 
-        .btn-import {
-            background: #17a2b8;
+        .project-note-card:hover {
+            transform: translateY(-2px);
         }
 
-        .btn-import:hover {
-            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.4);
+        /* NEW: Notebook / Leather Journal Styling for Ajanda */
+        .notebook-container {
+            background: #e8d8c8;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15), inset 0 0 30px rgba(0,0,0,0.1);
+            border: 12px solid #5c3a21; /* Rich leather border */
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            min-height: 520px;
         }
 
-        .logout {
-            display: inline-block;
-            margin-top: 30px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px 20px;
+        .notebook-spiral {
+            position: absolute;
+            left: 32px;
+            top: 0;
+            bottom: 0;
+            width: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            z-index: 10;
+            padding: 20px 0;
+        }
+
+        .spiral-ring {
+            width: 32px;
+            height: 14px;
+            background: linear-gradient(to bottom, #f3f4f6 0%, #9ca3af 50%, #d1d5db 100%);
             border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            text-align: center;
+            box-shadow: 2px 3px 6px rgba(0,0,0,0.25);
         }
 
-        .logout:hover {
-            background: rgba(255,255,255,0.3);
+        .notebook-page {
+            background: #fffdf9;
+            background-image: linear-gradient(#e5e7eb 1.5px, transparent 1.5px);
+            background-size: 100% 36px;
+            line-height: 36px;
+            padding: 40px 40px 40px 75px;
+            border-left: 2px solid #ef4444; /* Traditional Red notebook margin line */
+            min-height: 440px;
+            color: #2c3e50;
+            outline: none;
+            font-size: 1.25rem;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+            font-family: 'Caveat', cursive; /* Default script font */
         }
 
-        .logout i {
-            margin-right: 8px;
+        .agenda-font-selector-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        #importFileInput {
-            display: none;
-        }
-
-        @media (max-width: 1024px) {
-            .container {
-                flex-direction: column;
+        /* Responsive Settings */
+        @media (max-width: 992px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                transform: translateX(-100%);
             }
-
-            .form-section, .notes-section {
-                width: 100%;
-                position: static;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .stats-container {
-                grid-template-columns: 1fr;
+            .sidebar.open-mobile {
+                transform: translateX(0);
+                width: var(--sidebar-width);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Atatürk Parallax Header -->
-    <div class="ataturk-parallax-header">
-        <div class="parallax-overlay"></div>
-        <div class="parallax-content">
-            <h1>Saygı, Sevgi ve Özlemle Anıyoruz</h1>
-            <h2>1881 - 193∞</h2>
-        </div>
+
+    <div class="app-container">
+        
+        <!-- Sidebar -->
+        <aside id="app-sidebar" class="sidebar">
+            <div class="profile-container">
+                <div class="profile-avatar-wrapper" id="profile-avatar-char">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <div class="profile-info">
+                    <span class="profile-name" id="profile-display-name">@{{ user.username }}</span>
+                    <a href="#" onclick="switchTab('ayarlar')" class="profile-btn">
+                        <i class="fas fa-user-cog"></i> Profil Ayarları
+                    </a>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item active" id="menu-programim">
+                    <a href="#" onclick="switchTab('programim')">
+                        <i class="far fa-calendar-alt"></i> <span>Programım</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-notlarim">
+                    <a href="#" onclick="switchTab('notlarim')">
+                        <i class="far fa-clipboard"></i> <span>Notlarım</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-ajandam">
+                    <a href="#" onclick="switchTab('ajandam')">
+                        <i class="far fa-calendar-check"></i> <span>Ajandam (Tarihli)</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-etkinlikler">
+                    <a href="#" onclick="switchTab('etkinlikler')">
+                        <i class="fas fa-glass-cheers"></i> <span>Etkinlikler</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-analiz">
+                    <a href="#" onclick="switchTab('analiz')">
+                        <i class="fas fa-chart-line"></i> <span>Analiz</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-projelerim">
+                    <a href="#" onclick="switchTab('projelerim')">
+                        <i class="fas fa-tasks"></i> <span>Projelerim</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-ortakalan">
+                    <a href="#" onclick="switchTab('ortakalan')">
+                        <i class="fas fa-users"></i> <span>Ortak Alan</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-dilek">
+                    <a href="#" onclick="switchTab('dilek')">
+                        <i class="far fa-envelope"></i> <span>Dilek ve Şikayet</span>
+                    </a>
+                </li>
+                <li class="menu-item" id="menu-ayarlar">
+                    <a href="#" onclick="switchTab('ayarlar')">
+                        <i class="fas fa-sliders-h"></i> <span>Ayarlar</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-container">
+            
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="page-title" id="current-tab-title">Programım</span>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn-theme-toggle" onclick="toggleTheme()" title="Temayı Değiştir">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                    </button>
+                    <button class="btn-add-note-shortcut" onclick="openAddNoteModal()">
+                        <i class="fas fa-plus"></i> Yeni Not Ekle
+                    </button>
+                    <a href="{% url 'logout' %}" class="btn-logout-shortcut" title="Çıkış Yap">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Body -->
+            <div class="content-body">
+                
+                <!-- Atatürk Parallax Banner -->
+                <div class="ataturk-banner">
+                    <div class="ataturk-banner-overlay">
+                        <h2>Fikirler asla ölmez.</h2>
+                        <p>Mustafa Kemal Atatürk | 1881 - 193∞</p>
+                    </div>
+                </div>
+
+                <!-- Hidden data storage to read notes from Django context -->
+                <div id="raw-notes-data" style="display: none;">
+                    {% for note in notes %}
+                        <div class="raw-note" 
+                             data-id="{{ note.id }}"
+                             data-title="{{ note.title }}"
+                             data-content="{{ note.content }}"
+                             data-priority="{{ note.priority }}"
+                             data-priority-display="{{ note.get_priority_display }}"
+                             data-category="{{ note.category }}"
+                             data-category-display="{{ note.get_category_display }}"
+                             data-due-date="{% if note.due_date %}{{ note.due_date|date:'Y-m-d' }}{% endif %}"
+                             data-due-date-display="{% if note.due_date %}{{ note.due_date|date:'d.m.Y' }}{% endif %}"
+                             data-completed="{% if note.is_completed %}true{% else %}false{% endif %}"
+                             data-tags="{{ note.tags }}"
+                             data-edit-url="{% url 'note_edit' note.id %}"
+                             data-toggle-url="{% url 'note_toggle_complete' note.id %}"
+                             data-delete-url="{% url 'note_delete' note.id %}">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- TAB: Programım (Horizontal Dates Columns) -->
+                <div class="tab-panel active" id="panel-programim">
+                    <div class="section-header">
+                        <h2>Tarihler</h2>
+                    </div>
+                    
+                    <!-- Horizontal Columns -->
+                    <div class="calendar-row" id="calendar-columns-row">
+                        <!-- Will be dynamically populated with dates and corresponding cards in JS -->
+                    </div>
+                </div>
+
+                <!-- TAB: Notlarım (Classic Grid View with filters) -->
+                <div class="tab-panel" id="panel-notlarim">
+                    <div class="section-header">
+                        <h2>Notlarım</h2>
+                    </div>
+
+                    <!-- Search and filters -->
+                    <div class="filter-section">
+                        <form method="get" id="search-filter-form" action="{% url 'notehome' %}">
+                            <div class="filter-row">
+                                <div class="filter-item" style="flex-grow: 2;">
+                                    <label>Ara</label>
+                                    <input type="text" name="search" placeholder="Başlık veya içerikte ara..." value="{{ request.GET.search }}">
+                                </div>
+                                <div class="filter-item">
+                                    <label>Öncelik</label>
+                                    <select name="priority">
+                                        <option value="">Tümü</option>
+                                        <option value="high" {% if request.GET.priority == 'high' %}selected{% endif %}>Yüksek</option>
+                                        <option value="medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Orta</option>
+                                        <option value="low" {% if request.GET.priority == 'low' %}selected{% endif %}>Düşük</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label>Kategori</label>
+                                    <select name="category">
+                                        <option value="">Tümü</option>
+                                        {% for value, label in Note.CATEGORY_CHOICES %}
+                                            <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="filter-item" style="align-self: flex-end;">
+                                    <button type="submit" class="btn-save" style="padding: 8px 16px;"><i class="fas fa-search"></i> Filtrele</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Grid of all notes -->
+                    <div class="notes-grid-container" id="all-notes-grid">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB: Ajandam (Notebook Style) -->
+                <div class="tab-panel" id="panel-ajandam">
+                    <div class="section-header">
+                        <h2>Ajandam (Tarihli)</h2>
+                    </div>
+                    
+                    <!-- Font and date picker row -->
+                    <div class="agenda-font-selector-row">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="agenda_date" style="font-weight: 700;">Ajanda Tarihi:</label>
+                            <input type="date" id="agenda_date" onchange="loadAgendaPage()" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="agenda_font" style="font-weight: 700;">Yazı Tipi:</label>
+                            <select id="agenda_font" onchange="changeAgendaFont()" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border); font-family: inherit;">
+                                <option value="'Caveat', cursive">✍️ El Yazısı (Caveat)</option>
+                                <option value="'Architects Daughter', cursive">✏️ Mimarlık Yazısı (Architects)</option>
+                                <option value="'Special Elite', monospace">🖨️ Daktilo (Special Elite)</option>
+                                <option value="'Outfit', sans-serif">💻 Sistem Yazısı (Outfit)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Notebook Mockup -->
+                    <div class="notebook-container">
+                        <div class="notebook-spiral">
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                            <div class="spiral-ring"></div>
+                        </div>
+
+                        <!-- Editable Lined Paper Page -->
+                        <div contenteditable="true" id="notebook-page-content" class="notebook-page" oninput="saveAgendaPage()">
+                            Bugün yapacaklarımı buraya gerçek bir ajanda gibi yazıyorum...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: Etkinlikler -->
+                <div class="tab-panel" id="panel-etkinlikler">
+                    <div class="section-header">
+                        <h2>Etkinlikler</h2>
+                    </div>
+                    
+                    <div class="split-layout">
+                        <!-- Left Panel: Add Event Form -->
+                        <div class="split-left-panel">
+                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Ekle</h3>
+                            
+                            <div class="form-group">
+                                <label for="event_title">Etkinlik Adı</label>
+                                <input type="text" id="event_title" placeholder="Konser, Tiyatro, Toplantı...">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="event_date">Tarih</label>
+                                <input type="date" id="event_date">
+                            </div>
+
+                            <div style="display: flex; gap: 10px;">
+                                <div class="form-group" style="flex: 1;">
+                                    <label for="event_start">Başlangıç</label>
+                                    <input type="time" id="event_start">
+                                </div>
+                                <div class="form-group" style="flex: 1;">
+                                    <label for="event_end">Bitiş</label>
+                                    <input type="time" id="event_end">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="event_description">Açıklama / Konum</label>
+                                <textarea id="event_description" style="height: 60px;" placeholder="Konum ve notlar..."></textarea>
+                            </div>
+
+                            <button type="button" class="btn-save" onclick="addCustomEvent()">Etkinlik Ekle</button>
+                        </div>
+
+                        <!-- Right Panel: Events List -->
+                        <div class="split-right-panel">
+                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Listesi</h3>
+                            <div id="events-display-container" style="display: flex; flex-direction: column; gap: 14px;">
+                                <!-- Events will be rendered here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: Analiz (Completion Statistics) -->
+                <div class="tab-panel" id="panel-analiz">
+                    <div class="section-header">
+                        <h2>Analiz</h2>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="stats-total">{{ stats.total }}</span>
+                                <span class="stat-label">Toplam Not</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="stats-completed">{{ stats.completed }}</span>
+                                <span class="stat-label">Tamamlanan</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon info">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="stats-active">{{ stats.active }}</span>
+                                <span class="stat-label">Aktif</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="stats-overdue">{{ stats.overdue }}</span>
+                                <span class="stat-label">Gecikmiş</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics visual blocks -->
+                    <div class="analytics-content">
+                        <div class="chart-box">
+                            <h4 class="chart-title">Tamamlama Oranı</h4>
+                            <div class="progress-circle-container">
+                                <div class="progress-circle" id="completion-circle" style="--percent: 0;">
+                                    <div class="progress-circle-value" id="completion-percent-text">0%</div>
+                                </div>
+                                <div>
+                                    <p style="font-weight: 600;" id="completion-description">Kayıtlı görevlerinizin analizi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-box">
+                            <h4 class="chart-title">Öncelik Dağılımı</h4>
+                            <div style="display: flex; flex-direction: column; gap: 12px; justify-content: center; height: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Yüksek Öncelikli</span>
+                                    <span style="font-weight: 700; color: var(--danger)">{{ stats.high_priority }}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Bugünkü Görevler</span>
+                                    <span style="font-weight: 700; color: var(--warning)">{{ stats.today }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: Projelerim -->
+                <div class="tab-panel" id="panel-projelerim">
+                    <div class="section-header">
+                        <h2>Projelerim</h2>
+                    </div>
+                    
+                    <div class="split-layout">
+                        <!-- Left Panel: Projects list -->
+                        <div class="split-left-panel">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Projeler</h3>
+                                <button class="task-action-btn" onclick="addNewProject()" title="Yeni Proje Ekle"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div id="projects-list-container" style="display: flex; flex-direction: column; gap: 8px;">
+                                <!-- Projects will be listed here -->
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Selected Project Notes -->
+                        <div class="split-right-panel">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 id="selected-project-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Proje Notları</h3>
+                                <button class="btn-save" id="btn-add-project-note" style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;" onclick="openAddNoteForProject()">
+                                    <i class="fas fa-plus"></i> Bu Projeye Not Ekle
+                                </button>
+                            </div>
+                            <div id="project-notes-container" style="display: flex; flex-direction: column; gap: 14px;">
+                                <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
+                                    Lütfen sol panelden bir proje seçin veya yeni bir tane ekleyin.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: Ortak Alan (Shared Area Workspace) -->
+                <div class="tab-panel" id="panel-ortakalan">
+                    <div class="section-header">
+                        <h2>Ortak Alan</h2>
+                    </div>
+                    
+                    <div class="split-layout">
+                        <!-- Left Panel: Room Management -->
+                        <div class="split-left-panel">
+                            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">Ortak Çalışma Odası</h3>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                                <button class="btn-save" onclick="createCollabRoom()"><i class="fas fa-plus-circle"></i> Yeni Ortak Alan Oluştur</button>
+                                
+                                <div style="text-align: center; font-size: 0.85rem; color: #64748b; font-weight: 600;">- veya -</div>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <label for="collab_join_id" style="font-size: 0.75rem;">Oda Kimliği/Kodu ile Katıl</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" id="collab_join_id" placeholder="Kimlik girin (Örn: COLLAB-4872)">
+                                        <button class="btn-save" onclick="joinCollabRoom()" style="width: auto; padding: 8px 16px;">Katıl</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="active-room-display" style="display: none; background: rgba(99, 102, 241, 0.1); border: 1.5px solid var(--primary-light); padding: 16px; border-radius: 12px; margin-top: 10px;">
+                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Aktif Oda:</span>
+                                <h4 id="active-room-code-text" style="font-size: 1.25rem; font-weight: 800; margin: 4px 0; color: var(--dark);">COLLAB-XXXX</h4>
+                                <button class="btn-cancel" onclick="copyCollabCode()" style="width: 100%; font-size: 0.8rem; padding: 6px; margin-top: 6px;"><i class="far fa-copy"></i> Kodu Kopyala</button>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Shared Notes -->
+                        <div class="split-right-panel">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 id="collab-notes-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Ortak Notlar</h3>
+                                <button class="btn-save" id="btn-add-collab-note" style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;" onclick="openCollabNoteInputs()">
+                                    <i class="fas fa-plus"></i> Not Ekle
+                                </button>
+                            </div>
+
+                            <!-- Inline note addition form (collapsible) -->
+                            <div id="collab-note-form-area" style="display: none; background: rgba(0,0,0,0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 12px; margin-bottom: 15px;">
+                                <div class="form-group">
+                                    <label for="collab_note_title">Not Başlığı</label>
+                                    <input type="text" id="collab_note_title" placeholder="Başlık...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collab_note_content">Not Detayı</label>
+                                    <textarea id="collab_note_content" style="height: 60px;" placeholder="Birlikte alınacak not..."></textarea>
+                                </div>
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button class="btn-cancel" onclick="document.getElementById('collab-note-form-area').style.display='none'">İptal</button>
+                                    <button class="btn-save" onclick="addCollabNote()" style="width: auto;">Odaya Not Ekle</button>
+                                </div>
+                            </div>
+
+                            <div id="collab-notes-container" style="display: flex; flex-direction: column; gap: 14px;">
+                                <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
+                                    Lütfen sol taraftan bir ortak çalışma odasına katılın veya yeni bir tane oluşturun.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: Ortak Alan (Backup/Removed static view placeholder, replaced above) -->
+
+                <!-- TAB: Dilek ve Şikayet -->
+                <div class="tab-panel" id="panel-dilek">
+                    <div class="section-header">
+                        <h2>Dilek ve Şikayet</h2>
+                    </div>
+                    <div class="feedback-form">
+                        <div class="form-group">
+                            <label>Konu</label>
+                            <input type="text" placeholder="Görüşünüzün başlığı...">
+                        </div>
+                        <div class="form-group">
+                            <label>Mesajınız</label>
+                            <textarea placeholder="Geliştirilmesini istediğiniz özellikleri veya karşılaştığınız sorunları buraya yazabilirsiniz..."></textarea>
+                        </div>
+                        <button type="button" class="btn-save" onclick="alert('Geri bildiriminiz gönderildi! Teşekkür ederiz.')">Geri Bildirim Gönder</button>
+                    </div>
+                </div>
+
+                <!-- TAB: Ayarlar & Profil Ayarları -->
+                <div class="tab-panel" id="panel-ayarlar">
+                    <div class="section-header">
+                        <h2>Ayarlar ve Profil</h2>
+                    </div>
+                    
+                    <div class="feedback-form">
+                        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 16px;"><i class="fas fa-user-circle"></i> Profil Ayarları</h3>
+                        
+                        <div class="form-group">
+                            <label for="profile_username">Kullanıcı Adı</label>
+                            <input type="text" id="profile_username" value="{{ user.username }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile_email">E-posta Adresi</label>
+                            <input type="email" id="profile_email" placeholder="E-posta tanımlanmamış">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile_phone">Telefon Numarası</label>
+                            <input type="tel" id="profile_phone" placeholder="Telefon tanımlanmamış">
+                        </div>
+                        <button type="button" class="btn-save" onclick="updateProfileSettings()" style="margin-bottom: 25px;">Bilgileri Kaydet</button>
+
+                        <h4 style="margin-bottom: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px;">Tema ve Görünüm</h4>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.08);">
+                            <span>Koyu Tema</span>
+                            <button class="btn-save" onclick="toggleTheme()" style="width: auto; padding: 6px 12px;">Değiştir</button>
+                        </div>
+                        
+                        <h4 style="margin-top: 25px; margin-bottom: 15px;">Veri Yönetimi</h4>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a href="{% url 'export_notes' %}" class="btn-cancel" style="text-decoration: none; display: inline-block; text-align: center;">
+                                <i class="fas fa-download"></i> Dışa Aktar (JSON)
+                            </a>
+                            <button onclick="document.getElementById('modalImportInput').click()" class="btn-cancel">
+                                <i class="fas fa-upload"></i> İçe Aktar (JSON)
+                            </button>
+                            <input type="file" id="modalImportInput" accept=".json" onchange="importNotes(this)" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
-    <div class="header">
-        <h1><i class="fas fa-tasks"></i> Gelişmiş Not Defteri</h1>
-        <p>Görevlerinizi ve fikirlerinizi profesyonelce yönetin</p>
-    </div>
-
-    <!-- İstatistikler -->
-    <div class="stats-container">
-        <div class="stat-card">
-            <i class="fas fa-clipboard-list" style="color: #667eea;"></i>
-            <div class="number">{{ stats.total }}</div>
-            <div class="label">Toplam Not</div>
-        </div>
-        <div class="stat-card success">
-            <i class="fas fa-check-circle"></i>
-            <div class="number">{{ stats.completed }}</div>
-            <div class="label">Tamamlanan</div>
-        </div>
-        <div class="stat-card">
-            <i class="fas fa-hourglass-half" style="color: #17a2b8;"></i>
-            <div class="number">{{ stats.active }}</div>
-            <div class="label">Aktif</div>
-        </div>
-        <div class="stat-card danger">
-            <i class="fas fa-exclamation-triangle"></i>
-            <div class="number">{{ stats.overdue }}</div>
-            <div class="label">Gecikmiş</div>
-        </div>
-        <div class="stat-card warning">
-            <i class="fas fa-calendar-day"></i>
-            <div class="number">{{ stats.today }}</div>
-            <div class="label">Bugün</div>
-        </div>
-        <div class="stat-card danger">
-            <i class="fas fa-fire"></i>
-            <div class="number">{{ stats.high_priority }}</div>
-            <div class="label">Yüksek Öncelik</div>
-        </div>
-    </div>
-
-    <div class="container">
-        <!-- Form Bölümü -->
-        <div class="form-section">
-            <h2><i class="fas fa-plus-circle"></i> Yeni Not Ekle</h2>
-            <form method="post">
+    <!-- Add Note Modal -->
+    <div id="add-note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title-text">Yeni Not Oluştur</h3>
+                <button class="modal-close" onclick="closeAddNoteModal()">&times;</button>
+            </div>
+            <!-- Custom dynamic JS handler onsubmit to support new local states -->
+            <form method="post" action="{% url 'notehome' %}" onsubmit="handleFormSubmit(event)">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="title">Başlık:</label>
-                    <input type="text" id="title" name="title" required placeholder="Not başlığını girin...">
-                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title">Başlık</label>
+                        <input type="text" id="title" name="title" required placeholder="Not veya görev başlığı...">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Detaylar</label>
+                        <textarea id="content" name="content" required placeholder="Detayları buraya yazın..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Kategori</label>
+                        <select id="category" name="category">
+                            {% for value, label in Note.CATEGORY_CHOICES %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Öncelik</label>
+                        <select id="priority" name="priority">
+                            {% for value, label in Note.PRIORITY_CHOICES %}
+                                <option value="{{ value }}" {% if value == 'medium' %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="due_date">Bitiş Tarihi</label>
+                        <input type="date" id="due_date" name="due_date">
+                    </div>
+                    
+                    <!-- NEW: Time inputs toggle -->
+                    <div style="display: flex; gap: 8px; align-items: center; margin: 8px 0;">
+                        <input type="checkbox" id="has_time_range" style="width: auto; cursor: pointer;" onchange="toggleTimeInputs()">
+                        <label for="has_time_range" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Saat aralığı belirt</label>
+                    </div>
+                    
+                    <div id="time-range-inputs" style="display: none; gap: 10px; margin-bottom: 16px;">
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                            <label for="start_time" style="font-size: 0.75rem;">Başlangıç</label>
+                            <input type="time" id="start_time" name="start_time">
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                            <label for="end_time" style="font-size: 0.75rem;">Bitiş</label>
+                            <input type="time" id="end_time" name="end_time">
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="content">İçerik:</label>
-                    <textarea id="content" name="content" required placeholder="Not içeriğini buraya yazın..."></textarea>
-                </div>
+                    <!-- NEW: Project Select association -->
+                    <div class="form-group">
+                        <label for="project_select">Proje İlişkisi</label>
+                        <select id="project_select" name="project_name">
+                            <option value="">Proje Yok</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="category">Kategori:</label>
-                    <select id="category" name="category">
-                        {% for value, label in Note.CATEGORY_CHOICES %}
-                            <option value="{{ value }}">{{ label }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                    <!-- NEW: Tags Input -->
+                    <div class="form-group">
+                        <label for="tags">Etiketler (Virgülle ayırın)</label>
+                        <input type="text" id="tags" name="tags" placeholder="örnek: iş, acil, sunum">
+                    </div>
 
-                <div class="form-group">
-                    <label for="priority">Öncelik:</label>
-                    <select id="priority" name="priority">
-                        {% for value, label in Note.PRIORITY_CHOICES %}
-                            <option value="{{ value }}" {% if value == 'medium' %}selected{% endif %}>{{ label }}</option>
-                        {% endfor %}
-                    </select>
+                    <!-- NEW: Is Event toggle -->
+                    <div style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
+                        <input type="checkbox" id="is_event_cb" name="is_event" style="width: auto; cursor: pointer;">
+                        <label for="is_event_cb" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Bu bir Etkinliktir</label>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="due_date">Bitiş Tarihi (İsteğe bağlı):</label>
-                    <input type="date" id="due_date" name="due_date">
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeAddNoteModal()">İptal</button>
+                    <button type="submit" class="btn-save">Kaydet</button>
                 </div>
-
-                <div class="form-group">
-                    <label for="tags">Etiketler (virgülle ayırın):</label>
-                    <input type="text" id="tags" name="tags" placeholder="örnek: iş, acil, proje">
-                </div>
-
-                <button type="submit"><i class="fas fa-save"></i> Kaydet</button>
             </form>
         </div>
-
-        <!-- Notlar Bölümü -->
-        <div class="notes-section">
-            <h2><i class="fas fa-list"></i> Notlarım</h2>
-
-            <!-- Araçlar -->
-            <div class="toolbar">
-                <a href="{% url 'export_notes' %}" class="btn btn-export">
-                    <i class="fas fa-download"></i> Dışa Aktar (JSON)
-                </a>
-                <button onclick="document.getElementById('importFileInput').click()" class="btn btn-import">
-                    <i class="fas fa-upload"></i> İçe Aktar (JSON)
-                </button>
-                <input type="file" id="importFileInput" accept=".json" onchange="importNotes(this)">
-            </div>
-
-            <!-- Filtreler ve Arama Alanı -->
-            <div class="filter-wrapper">
-                <!-- Arama ve Filtre Açma Çubuğu -->
-                <div class="search-filter-bar">
-                    <form method="get" action="{% url 'notehome' %}" class="search-form">
-                        <div class="search-input-group">
-                            <i class="fas fa-search search-icon"></i>
-                            <input type="text" name="search" placeholder="Notlarında ara..." value="{{ request.GET.search }}">
-                        </div>
-                        <!-- Arama yapılırken diğer aktif filtreleri koru -->
-                        {% if filter_type and filter_type != 'all' %}<input type="hidden" name="filter_type" value="{{ filter_type }}">{% endif %}
-                        {% if show_completed and show_completed != 'all' %}<input type="hidden" name="show_completed" value="{{ show_completed }}">{% endif %}
-                        {% if request.GET.priority %}<input type="hidden" name="priority" value="{{ request.GET.priority }}">{% endif %}
-                        {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
-                    </form>
-                    
-                    <button type="button" id="filter-toggle-btn" class="filter-toggle-btn">
-                        <i class="fas fa-filter"></i> Filtrele
-                        {% if filter_type != 'all' or show_completed != 'all' or request.GET.priority or request.GET.category %}
-                            <span class="active-filter-indicator"></span>
-                        {% endif %}
-                    </button>
-                </div>
-
-                <!-- Açılır Filtre Paneli -->
-                <div id="filter-panel" class="filter-panel">
-                    <form method="get" action="{% url 'notehome' %}" class="filter-form">
-                        <div class="filter-grid">
-                            <!-- Zaman Filtresi -->
-                            <div class="filter-group">
-                                <label><i class="far fa-calendar-alt"></i> Zaman</label>
-                                <select name="filter_type">
-                                    <option value="all" {% if filter_type == 'all' %}selected{% endif %}>Tümü</option>
-                                    <option value="today" {% if filter_type == 'today' %}selected{% endif %}>Bugün</option>
-                                    <option value="week" {% if filter_type == 'week' %}selected{% endif %}>Bu Hafta</option>
-                                    <option value="overdue" {% if filter_type == 'overdue' %}selected{% endif %}>Gecikmiş</option>
-                                </select>
-                            </div>
-
-                            <!-- Durum Filtresi -->
-                            <div class="filter-group">
-                                <label><i class="fas fa-tasks"></i> Durum</label>
-                                <select name="show_completed">
-                                    <option value="all" {% if show_completed == 'all' %}selected{% endif %}>Tümü</option>
-                                    <option value="active" {% if show_completed == 'active' %}selected{% endif %}>Aktif</option>
-                                    <option value="completed" {% if show_completed == 'completed' %}selected{% endif %}>Tamamlananlar</option>
-                                </select>
-                            </div>
-
-                            <!-- Kategori Filtresi -->
-                            <div class="filter-group">
-                                <label><i class="fas fa-folder"></i> Kategori</label>
-                                <select name="category">
-                                    <option value="" {% if not request.GET.category %}selected{% endif %}>Tümü</option>
-                                    {% for value, label in Note.CATEGORY_CHOICES %}
-                                        <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <!-- Öncelik Filtresi -->
-                            <div class="filter-group">
-                                <label><i class="fas fa-flag"></i> Öncelik</label>
-                                <select name="priority">
-                                    <option value="" {% if not request.GET.priority %}selected{% endif %}>Tümü</option>
-                                    <option value="high" {% if request.GET.priority == 'high' %}selected{% endif %}>Yüksek</option>
-                                    <option value="medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Orta</option>
-                                    <option value="low" {% if request.GET.priority == 'low' %}selected{% endif %}>Düşük</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Filtreleri uygularken aramayı koru -->
-                        {% if request.GET.search %}
-                            <input type="hidden" name="search" value="{{ request.GET.search }}">
-                        {% endif %}
-
-                        <div class="filter-actions">
-                            <a href="{% url 'notehome' %}" class="btn-clear-filters">
-                                Temizle
-                            </a>
-                            <button type="submit" class="btn-apply-filters">
-                                Uygula
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Notlar Listesi -->
-            <div class="notes-list">
-                {% for note in notes %}
-                    <div class="note-item {% if note.is_completed %}completed{% elif note.due_date and note.due_date < today %}overdue{% endif %} priority-{{ note.priority }}">
-                        <div class="note-date">
-                            <i class="far fa-calendar"></i> {{ note.created_at|date:"d.m.Y H:i" }}
-                            {% if note.updated_at != note.created_at %}
-                                <span style="color: #999;">| <i class="fas fa-edit"></i> {{ note.updated_at|date:"d.m.Y H:i" }}</span>
-                            {% endif %}
-                        </div>
-
-                        <div class="note-title">
-                            {% if note.is_completed %}<i class="fas fa-check-circle" style="color: #28a745;"></i>{% endif %}
-                            {{ note.title }}
-                        </div>
-
-                        <div class="note-content">{{ note.content }}</div>
-
-                        <div class="note-meta">
-                            <span class="badge badge-category">
-                                <i class="fas fa-folder"></i> {{ note.get_category_display }}
-                            </span>
-                            <span class="badge badge-priority {{ note.priority }}">
-                                <i class="fas fa-flag"></i> {{ note.get_priority_display }}
-                            </span>
-                            {% if note.due_date %}
-                                <span class="due-date-badge {% if note.due_date < today and not note.is_completed %}overdue{% elif note.due_date == today %}today{% endif %}">
-                                    <i class="fas fa-clock"></i> {{ note.due_date|date:"d.m.Y" }}
-                                </span>
-                            {% endif %}
-                            {% for tag in note.get_tags_list %}
-                                <span class="badge badge-tag">
-                                    <i class="fas fa-tag"></i> {{ tag }}
-                                </span>
-                            {% endfor %}
-                        </div>
-
-                        <div class="note-actions">
-                            <a href="{% url 'note_edit' note.id %}" class="action-btn edit">
-                                <i class="fas fa-edit"></i> Düzenle
-                            </a>
-                            <a href="{% url 'note_toggle_complete' note.id %}" class="action-btn complete">
-                                {% if note.is_completed %}
-                                    <i class="fas fa-undo"></i> Aktif Yap
-                                {% else %}
-                                    <i class="fas fa-check"></i> Tamamla
-                                {% endif %}
-                            </a>
-                            <a href="{% url 'note_delete' note.id %}" class="action-btn delete" onclick="return confirm('Bu notu silmek istediğinizden emin misiniz?')">
-                                <i class="fas fa-trash"></i> Sil
-                            </a>
-                        </div>
-                    </div>
-                {% empty %}
-                    <div class="empty-state">
-                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
-                        Henüz hiç not eklenmedi veya filtrelere uygun not bulunamadı.
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
     </div>
 
-    <div style="text-align: center;">
-        <a href="{% url 'logout' %}" class="logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
-    </div>
-
+    <!-- JS Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('filter-toggle-btn');
-            const filterPanel = document.getElementById('filter-panel');
-            
-            // Eğer herhangi bir filtre aktif ise paneli açık olarak yükle
-            const hasActiveFilters = {% if filter_type != 'all' or show_completed != 'all' or request.GET.priority or request.GET.category %}true{% else %}false{% endif %};
-            
-            if (hasActiveFilters) {
-                filterPanel.classList.add('open');
-                toggleBtn.classList.add('active');
-            }
+        // Global variables and state
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        let activeTab = 'programim';
 
-            toggleBtn.addEventListener('click', function() {
-                filterPanel.classList.toggle('open');
-                toggleBtn.classList.toggle('active');
-            });
+        // Load project, events, notes, collab rooms and agenda data from localStorage
+        let projects = JSON.parse(localStorage.getItem('projects')) || ["Web Tasarım", "Kişisel Planlar"];
+        let customEvents = JSON.parse(localStorage.getItem('custom_events')) || [];
+        let customNotes = JSON.parse(localStorage.getItem('custom_notes')) || [];
+        
+        let selectedProject = projects[0] || null;
+
+        // NEW: Collaborative room & Agenda state
+        let activeCollabRoom = localStorage.getItem('active_collab_room') || null;
+        let selectedAgendaDate = localStorage.getItem('selected_agenda_date') || new Date().toISOString().split('T')[0];
+        let selectedAgendaFont = localStorage.getItem('selected_agenda_font') || "'Caveat', cursive";
+
+        // Apply saved theme on load
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+
+        // Initialize profile elements from localStorage on startup
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUsername = localStorage.getItem('profile_username') || "{{ user.username }}";
+            const savedEmail = localStorage.getItem('profile_email') || "";
+            const savedPhone = localStorage.getItem('profile_phone') || "";
+
+            // Update UI profile display
+            document.getElementById('profile-display-name').textContent = `@${savedUsername}`;
+            document.getElementById('profile-avatar-char').textContent = savedUsername.charAt(0).toUpperCase();
+
+            // Populate form fields
+            document.getElementById('profile_username').value = savedUsername;
+            document.getElementById('profile_email').value = savedEmail;
+            document.getElementById('profile_phone').value = savedPhone;
+
+            // Load initial tab data
+            document.getElementById('agenda_date').value = selectedAgendaDate;
+            document.getElementById('agenda_font').value = selectedAgendaFont;
+            
+            reloadAllData();
         });
 
-        function importNotes(input) {
-            if (input.files && input.files[0]) {
-                const formData = new FormData();
-                formData.append('file', input.files[0]);
+        // Profile updates saving
+        function updateProfileSettings() {
+            const usr = document.getElementById('profile_username').value;
+            const email = document.getElementById('profile_email').value;
+            const phone = document.getElementById('profile_phone').value;
 
-                fetch("{% url 'import_notes' %}", {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(`${data.count} not başarıyla içe aktarıldı!`);
-                        window.location.reload();
-                    } else {
-                        alert('Hata: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    alert('Bir hata oluştu: ' + error);
+            if (!usr.trim()) {
+                alert('Kullanıcı adı boş olamaz.');
+                return;
+            }
+
+            localStorage.setItem('profile_username', usr.trim());
+            localStorage.setItem('profile_email', email.trim());
+            localStorage.setItem('profile_phone', phone.trim());
+
+            // Instantly update header display
+            document.getElementById('profile-display-name').textContent = `@${usr.trim()}`;
+            document.getElementById('profile-avatar-char').textContent = usr.trim().charAt(0).toUpperCase();
+
+            alert('Profil bilgileriniz başarıyla güncellendi!');
+        }
+
+        // Toggle Time inputs in Modal
+        function toggleTimeInputs() {
+            const hasRange = document.getElementById('has_time_range').checked;
+            document.getElementById('time-range-inputs').style.display = hasRange ? 'flex' : 'none';
+        }
+
+        // Toggle Theme
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                if (icon) icon.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                if (icon) icon.className = 'fas fa-sun';
+            }
+        }
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('app-sidebar');
+            if (window.innerWidth <= 992) {
+                sidebar.classList.toggle('open-mobile');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            activeTab = tabId;
+            
+            // Hide all tab panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Show selected tab panel
+            const activePanel = document.getElementById(`panel-${tabId}`);
+            if (activePanel) activePanel.classList.add('active');
+
+            // Update menu active states
+            document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeMenu = document.getElementById(`menu-${tabId}`);
+            if (activeMenu) activeMenu.classList.add('active');
+
+            // Update page title
+            const titles = {
+                'programim': 'Programım',
+                'notlarim': 'Notlarım',
+                'ajandam': 'Ajandam (Tarihli)',
+                'etkinlikler': 'Etkinlikler',
+                'analiz': 'Analiz ve İstatistikler',
+                'projelerim': 'Projelerim',
+                'ortakalan': 'Ortak Çalışma Alanı',
+                'dilek': 'Dilek ve Şikayet',
+                'ayarlar': 'Ayarlar'
+            };
+            document.getElementById('current-tab-title').textContent = titles[tabId] || 'Not Defteri';
+
+            // Special updates for specific tabs
+            if (tabId === 'projelerim') {
+                renderProjectsSection();
+            } else if (tabId === 'etkinlikler') {
+                renderEventsList();
+            } else if (tabId === 'programim') {
+                reloadAllData();
+            } else if (tabId === 'ajandam') {
+                loadAgendaPage();
+            } else if (tabId === 'ortakalan') {
+                renderCollabRoomDetails();
+            }
+
+            // Close mobile sidebar after navigation
+            if (window.innerWidth <= 992) {
+                document.getElementById('app-sidebar').classList.remove('open-mobile');
+            }
+        }
+
+        // Modal triggers
+        function openAddNoteModal(prefillDate = '', prefillProject = '') {
+            populateProjectDropdown();
+
+            const modal = document.getElementById('add-note-modal');
+            modal.classList.add('open');
+            if (prefillDate) {
+                document.getElementById('due_date').value = prefillDate;
+            }
+            if (prefillProject) {
+                document.getElementById('project_select').value = prefillProject;
+            }
+        }
+
+        function closeAddNoteModal() {
+            document.getElementById('add-note-modal').classList.remove('open');
+            document.getElementById('due_date').value = '';
+            document.getElementById('project_select').value = '';
+            document.getElementById('has_time_range').checked = false;
+            document.getElementById('is_event_cb').checked = false;
+            toggleTimeInputs();
+        }
+
+        // Populate projects select input in note creation modal
+        function populateProjectDropdown() {
+            const dropdown = document.getElementById('project_select');
+            if (!dropdown) return;
+            
+            dropdown.innerHTML = '<option value="">Proje Yok</option>';
+            projects.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                dropdown.appendChild(opt);
+            });
+        }
+
+        // Form Submit interception for custom hybrid data saving
+        function handleFormSubmit(event) {
+            const hasTime = document.getElementById('has_time_range').checked;
+            const isEvent = document.getElementById('is_event_cb').checked;
+            const projectName = document.getElementById('project_select') ? document.getElementById('project_select').value : '';
+
+            if (hasTime || isEvent || projectName) {
+                event.preventDefault();
+                
+                const title = document.getElementById('title') ? document.getElementById('title').value : '';
+                const content = document.getElementById('content') ? document.getElementById('content').value : '';
+                const category = document.getElementById('category') ? document.getElementById('category').value : 'other';
+                const priority = document.getElementById('priority') ? document.getElementById('priority').value : 'medium';
+                const due_date = document.getElementById('due_date') ? document.getElementById('due_date').value : '';
+                const tags = document.getElementById('tags') ? document.getElementById('tags').value : '';
+                
+                const start_time = (hasTime && document.getElementById('start_time')) ? document.getElementById('start_time').value : null;
+                const end_time = (hasTime && document.getElementById('end_time')) ? document.getElementById('end_time').value : null;
+
+                const customNoteObj = {
+                    id: 'custom-' + Date.now(),
+                    title: title,
+                    content: content,
+                    priority: priority,
+                    priorityDisplay: priority === 'high' ? 'Yüksek' : (priority === 'medium' ? 'Orta' : 'Düşük'),
+                    category: category,
+                    categoryDisplay: category, 
+                    dueDate: due_date || null,
+                    dueDateDisplay: due_date ? due_date.split('-').reverse().join('.') : null,
+                    completed: false,
+                    tags: tags ? tags.split(',') : [],
+                    start_time: start_time,
+                    end_time: end_time,
+                    is_event: isEvent,
+                    projectName: projectName || null,
+                    editUrl: '#',
+                    toggleUrl: '#',
+                    deleteUrl: '#'
+                };
+
+                customNotes.push(customNoteObj);
+                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+                
+                if (isEvent) {
+                    customEvents.push({
+                        id: customNoteObj.id,
+                        title: title,
+                        date: due_date,
+                        start: start_time,
+                        end: end_time,
+                        description: content
+                    });
+                    localStorage.setItem('custom_events', JSON.stringify(customEvents));
+                }
+
+                alert('Görev başarıyla eklendi!');
+                closeAddNoteModal();
+                reloadAllData();
+            }
+        }
+
+        // Reload data and redraw interfaces
+        function reloadAllData() {
+            const notes = getCombinedNotes();
+            buildProgramimCalendar(notes);
+            buildNotlarimGrid(notes);
+            updateCompletionStats(notes);
+            
+            if (activeTab === 'projelerim') {
+                renderProjectsSection();
+            } else if (activeTab === 'etkinlikler') {
+                renderEventsList();
+            } else if (activeTab === 'ortakalan') {
+                renderCollabRoomDetails();
+            }
+        }
+
+        // Get Django notes merged with custom localStorage notes
+        function getCombinedNotes() {
+            const djangoNotes = [];
+            document.querySelectorAll('.raw-note').forEach(element => {
+                djangoNotes.push({
+                    id: element.dataset.id,
+                    title: element.dataset.title,
+                    content: element.dataset.content,
+                    priority: element.dataset.priority,
+                    priorityDisplay: element.dataset.priorityDisplay,
+                    category: element.dataset.category,
+                    categoryDisplay: element.dataset.categoryDisplay,
+                    dueDate: element.dataset.dueDate,
+                    dueDateDisplay: element.dataset.dueDateDisplay,
+                    completed: element.dataset.completed === 'true',
+                    tags: element.dataset.tags ? element.dataset.tags.split(',') : [],
+                    editUrl: element.dataset.editUrl,
+                    toggleUrl: element.dataset.toggleUrl,
+                    deleteUrl: element.dataset.deleteUrl,
+                    start_time: null,
+                    end_time: null,
+                    is_event: false,
+                    projectName: null
+                });
+            });
+
+            const deletedCustomIds = JSON.parse(localStorage.getItem('deleted_custom_ids')) || [];
+            const activeCustomNotes = customNotes.filter(n => !deletedCustomIds.includes(n.id));
+
+            return [...djangoNotes, ...activeCustomNotes];
+        }
+
+        // Delete custom note
+        function deleteCustomNote(id) {
+            if (confirm('Bu notu silmek istediğinizden emin misiniz?')) {
+                const deletedCustomIds = JSON.parse(localStorage.getItem('deleted_custom_ids')) || [];
+                deletedCustomIds.push(id);
+                localStorage.setItem('deleted_custom_ids', JSON.stringify(deletedCustomIds));
+                
+                customNotes = customNotes.filter(n => n.id !== id);
+                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+                customEvents = customEvents.filter(e => e.id !== id);
+                localStorage.setItem('custom_events', JSON.stringify(customEvents));
+
+                reloadAllData();
+            }
+        }
+
+        // Toggle custom note status
+        function toggleCustomNoteStatus(id) {
+            const note = customNotes.find(n => n.id === id);
+            if (note) {
+                note.completed = !note.completed;
+                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+                reloadAllData();
+            }
+        }
+
+        // 1. Build Programım horizontal dates view
+        function buildProgramimCalendar(notes) {
+            const container = document.getElementById('calendar-columns-row');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            // Days of the week in Turkish
+            const turkishDays = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+            
+            // Generate columns for today and next 7 days (8 days total, including the same day next week)
+            const today = new Date();
+            const dateColumns = [];
+
+            for (let i = 0; i < 8; i++) {
+                const colDate = new Date();
+                colDate.setDate(today.getDate() + i);
+                
+                const yyyy = colDate.getFullYear();
+                const mm = String(colDate.getMonth() + 1).padStart(2, '0');
+                const dd = String(colDate.getDate()).padStart(2, '0');
+                
+                const isoDateStr = `${yyyy}-${mm}-${dd}`;
+                const displayDateStr = `${dd}.${mm}.${yyyy}`;
+                const dayName = turkishDays[colDate.getDay()];
+                
+                dateColumns.push({
+                    iso: isoDateStr,
+                    display: displayDateStr,
+                    dayName: dayName,
+                    isToday: i === 0,
+                    notes: []
                 });
             }
+
+            // Create a general column for items with no date or other dates
+            const otherColumn = {
+                iso: 'other',
+                display: 'Genel Notlar',
+                dayName: 'Bitiş Tarihi Olmayanlar',
+                isToday: false,
+                notes: []
+            };
+
+            // Distribute notes into columns
+            notes.forEach(note => {
+                if (note.dueDate) {
+                    const col = dateColumns.find(c => c.iso === note.dueDate);
+                    if (col) {
+                        col.notes.push(note);
+                    } else {
+                        otherColumn.notes.push(note);
+                    }
+                } else {
+                    otherColumn.notes.push(note);
+                }
+            });
+
+            // Append columns to DOM
+            [...dateColumns, otherColumn].forEach(col => {
+                const colEl = document.createElement('div');
+                colEl.className = 'calendar-column';
+                if (col.isToday) {
+                    colEl.style.borderColor = 'var(--primary)';
+                }
+
+                // Column header
+                let headerHtml = `
+                    <div class="column-header">
+                        <div class="column-date-info">
+                            <span class="column-date">${col.display}</span>
+                            <span class="column-day">${col.dayName}</span>
+                        </div>
+                        <span class="column-task-count">${col.notes.length} Not</span>
+                    </div>
+                `;
+
+                // Tasks list
+                let tasksHtml = '<div class="column-tasks-container">';
+                if (col.notes.length === 0) {
+                    tasksHtml += `
+                        <div class="empty-column-state">
+                            <i class="far fa-clipboard" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                            Görev bulunmuyor
+                        </div>
+                    `;
+                } else {
+                    col.notes.forEach(note => {
+                        tasksHtml += renderTaskCard(note);
+                    });
+                }
+                tasksHtml += '</div>';
+
+                // Add button
+                const dateParam = col.iso === 'other' ? '' : col.iso;
+                const addBtnHtml = `
+                    <button class="column-add-btn" onclick="openAddNoteModal('${dateParam}')">
+                        <i class="fas fa-plus"></i> Görev Ekle
+                    </button>
+                `;
+
+                colEl.innerHTML = headerHtml + tasksHtml + addBtnHtml;
+                container.appendChild(colEl);
+            });
+        }
+
+        // Render individual task card HTML
+        function renderTaskCard(note) {
+            const isCustom = String(note.id).startsWith('custom-');
+            
+            const toggleHandler = isCustom ? `toggleCustomNoteStatus('${note.id}')` : `window.location.href='${note.toggleUrl}'`;
+            const editHandler = isCustom ? `alert('Bu yerel veya özel bir nottur, detaylarını açarak görebilirsiniz.')` : `window.location.href='${note.editUrl}'`;
+            const deleteHandler = isCustom ? `deleteCustomNote('${note.id}')` : `if(confirm('Bu notu silmek istediğinizden emin misiniz?')) { window.location.href='${note.deleteUrl}'; }`;
+
+            const timeBadge = (note.start_time && note.end_time) ? 
+                `<span class="task-badge time-badge"><i class="far fa-clock"></i> ${note.start_time} - ${note.end_time}</span>` : '';
+
+            const projectBadge = note.projectName ? 
+                `<span class="task-badge project-badge"><i class="fas fa-folder"></i> ${note.projectName}</span>` : '';
+
+            return `
+                <div class="task-card priority-${note.priority} ${note.completed ? 'completed' : ''} ${note.is_event ? 'is-event' : ''}" onclick="${editHandler}">
+                    <div class="task-card-title">
+                        ${note.completed ? '<i class="fas fa-check-circle" style="color: var(--success);"></i>' : ''}
+                        ${note.title}
+                    </div>
+                    <div class="task-card-content">${note.content}</div>
+                    <div class="task-card-meta">
+                        <span class="task-badge category">${note.categoryDisplay}</span>
+                        ${timeBadge}
+                        ${projectBadge}
+                        ${note.tags.map(t => t.trim() ? `<span class="task-badge tag">#${t.trim()}</span>` : '').join('')}
+                    </div>
+                    <div class="task-card-actions" onclick="event.stopPropagation();">
+                        <button class="task-action-btn complete-btn" onclick="${toggleHandler}" title="Durum Değiştir">
+                            <i class="fas ${note.completed ? 'fa-undo' : 'fa-check'}"></i>
+                        </button>
+                        <button class="task-action-btn" onclick="${editHandler}" title="Düzenle">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button class="task-action-btn delete-btn" onclick="${deleteHandler}" title="Sil">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Build Notlarım Grid view
+        function buildNotlarimGrid(notes) {
+            const grid = document.getElementById('all-notes-grid');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+            if (notes.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
+                        Gösterilecek not bulunamadı.
+                    </div>
+                `;
+                return;
+            }
+
+            notes.forEach(note => {
+                const cardEl = document.createElement('div');
+                cardEl.innerHTML = renderTaskCard(note);
+                grid.appendChild(cardEl.firstElementChild);
+            });
+        }
+
+        // Update statistics completion percentage circle
+        function updateCompletionStats(notes) {
+            const total = notes.length;
+            if (total === 0) return;
+
+            const completed = notes.filter(n => n.completed).length;
+            const percentage = Math.round((completed / total) * 100);
+
+            const circle = document.getElementById('completion-circle');
+            const percentText = document.getElementById('completion-percent-text');
+            const desc = document.getElementById('completion-description');
+
+            if (circle) {
+                circle.style.setProperty('--percent', percentage);
+            }
+            if (percentText) {
+                percentText.textContent = `${percentage}%`;
+            }
+            if (desc) {
+                desc.textContent = `Toplam ${total} notunuzdan ${completed} tanesi tamamlandı. Hedeflerinize ulaşmak için devam edin!`;
+            }
+        }
+
+        // 2. ETKİNLİKLER TAB LOGIC
+        function addCustomEvent() {
+            const title = document.getElementById('event_title').value;
+            const date = document.getElementById('event_date').value;
+            const start = document.getElementById('event_start').value;
+            const end = document.getElementById('event_end').value;
+            const desc = document.getElementById('event_description').value;
+
+            if (!title || !date) {
+                alert('Lütfen etkinlik adını ve tarihini doldurun.');
+                return;
+            }
+
+            const newEvent = {
+                id: 'custom-event-' + Date.now(),
+                title: title,
+                date: date,
+                start: start || null,
+                end: end || null,
+                description: desc
+            };
+
+            customEvents.push(newEvent);
+            localStorage.setItem('custom_events', JSON.stringify(customEvents));
+
+            const customEventNote = {
+                id: newEvent.id,
+                title: `[Etkinlik] ${title}`,
+                content: desc || 'Etkinlik Açıklaması',
+                priority: 'medium',
+                priorityDisplay: 'Orta',
+                category: 'other',
+                categoryDisplay: 'Etkinlik',
+                dueDate: date,
+                dueDateDisplay: date.split('-').reverse().join('.'),
+                completed: false,
+                tags: ['etkinlik'],
+                start_time: start || null,
+                end_time: end || null,
+                is_event: true,
+                projectName: null,
+                editUrl: '#',
+                toggleUrl: '#',
+                deleteUrl: '#'
+            };
+
+            customNotes.push(customEventNote);
+            localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+
+            document.getElementById('event_title').value = '';
+            document.getElementById('event_date').value = '';
+            document.getElementById('event_start').value = '';
+            document.getElementById('event_end').value = '';
+            document.getElementById('event_description').value = '';
+
+            alert('Etkinlik eklendi ve Programım kısmına yansıtıldı!');
+            renderEventsList();
+            reloadAllData();
+        }
+
+        function deleteCustomEvent(id) {
+            if (confirm('Bu etkinliği silmek istediğinizden emin misiniz?')) {
+                customEvents = customEvents.filter(e => e.id !== id);
+                localStorage.setItem('custom_events', JSON.stringify(customEvents));
+                
+                customNotes = customNotes.filter(n => n.id !== id);
+                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+
+                renderEventsList();
+                reloadAllData();
+            }
+        }
+
+        function renderEventsList() {
+            const container = document.getElementById('events-display-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            if (customEvents.length === 0) {
+                container.innerHTML = `
+                    <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
+                        Kayıtlı etkinlik bulunmuyor. Sol taraftan hemen ekleyebilirsiniz!
+                    </div>
+                `;
+                return;
+            }
+
+            const sortedEvents = [...customEvents].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            sortedEvents.forEach(e => {
+                const dateFormatted = e.date ? e.date.split('-').reverse().join('.') : 'Tarihsiz';
+                const timeStr = (e.start && e.end) ? ` | 🕒 ${e.start} - ${e.end}` : '';
+                
+                const item = document.createElement('div');
+                item.className = 'project-note-card';
+                item.style.borderLeft = '4px solid var(--secondary)';
+                
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h4 style="font-weight: 700; color: var(--dark);"><i class="fas fa-glass-cheers" style="color: var(--secondary); margin-right: 6px;"></i>${e.title}</h4>
+                        <button class="task-action-btn delete-btn" onclick="deleteCustomEvent('${e.id}')" title="Etkinliği Sil"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #64748b; font-weight: 600;"><i class="far fa-calendar-alt"></i> ${dateFormatted}${timeStr}</p>
+                    <p style="font-size: 0.85rem; color: var(--dark); margin-top: 4px;">${e.description || 'Açıklama girilmedi.'}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+
+        // 3. PROJELERİM TAB LOGIC
+        function addNewProject() {
+            const name = prompt("Yeni proje adını girin:");
+            if (name && name.trim()) {
+                if (projects.includes(name.trim())) {
+                    alert('Bu isimde bir proje zaten mevcut.');
+                    return;
+                }
+                projects.push(name.trim());
+                localStorage.setItem('projects', JSON.stringify(projects));
+                selectedProject = name.trim();
+                renderProjectsSection();
+            }
+        }
+
+        function selectProject(name) {
+            selectedProject = name;
+            renderProjectsSection();
+        }
+
+        function deleteProject(name, event) {
+            if (event) event.stopPropagation();
+            if (confirm(`"${name}" projesini silmek istediğinizden emin misiniz? Bu projeyle ilişkili notlar silinmez.`)) {
+                projects = projects.filter(p => p !== name);
+                localStorage.setItem('projects', JSON.stringify(projects));
+                
+                if (selectedProject === name) {
+                    selectedProject = projects[0] || null;
+                }
+                
+                customNotes.forEach(n => {
+                    if (n.projectName === name) n.projectName = null;
+                });
+                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+
+                renderProjectsSection();
+            }
+        }
+
+        function openAddNoteForProject() {
+            if (selectedProject) {
+                openAddNoteModal('', selectedProject);
+            }
+        }
+
+        function renderProjectsSection() {
+            const listContainer = document.getElementById('projects-list-container');
+            if (listContainer) {
+                listContainer.innerHTML = '';
+                if (projects.length === 0) {
+                    listContainer.innerHTML = '<div style="font-size: 0.8rem; color: #64748b; text-align: center; padding: 10px;">Henüz proje yok.</div>';
+                } else {
+                    projects.forEach(p => {
+                        const item = document.createElement('div');
+                        item.className = `panel-list-item ${selectedProject === p ? 'selected' : ''}`;
+                        item.onclick = () => selectProject(p);
+                        
+                        item.innerHTML = `
+                            <span><i class="fas fa-folder" style="margin-right: 8px;"></i>${p}</span>
+                            <i class="fas fa-trash-alt" style="opacity: 0.7; cursor: pointer;" onclick="deleteProject('${p}', event)"></i>
+                        `;
+                        listContainer.appendChild(item);
+                    });
+                }
+            }
+
+            const notesContainer = document.getElementById('project-notes-container');
+            const addBtn = document.getElementById('btn-add-project-note');
+            const titleEl = document.getElementById('selected-project-title');
+
+            if (notesContainer) {
+                notesContainer.innerHTML = '';
+                
+                if (!selectedProject) {
+                    titleEl.textContent = 'Proje Notları';
+                    if (addBtn) addBtn.style.display = 'none';
+                    notesContainer.innerHTML = '<div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">Hiçbir proje seçilmedi.</div>';
+                    return;
+                }
+
+                titleEl.textContent = `"${selectedProject}" Proje Notları`;
+                if (addBtn) addBtn.style.display = 'block';
+
+                const allNotes = getCombinedNotes();
+                const projectNotes = allNotes.filter(n => n.projectName === selectedProject);
+
+                if (projectNotes.length === 0) {
+                    notesContainer.innerHTML = `
+                        <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
+                            Bu projeye ait henüz bir not bulunmuyor. Sağ üstteki butondan ilk notunuzu ekleyin!
+                        </div>
+                    `;
+                } else {
+                    projectNotes.forEach(note => {
+                        const noteCard = document.createElement('div');
+                        noteCard.className = 'project-note-card';
+                        
+                        const isCustom = String(note.id).startsWith('custom-');
+                        const deleteHandler = isCustom ? `deleteCustomNote('${note.id}')` : `if(confirm('Bu notu silmek istediğinizden emin misiniz?')) { window.location.href='${note.deleteUrl}'; }`;
+                        
+                        noteCard.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <h4 style="font-weight: 700; color: var(--dark);">${note.title}</h4>
+                                <button class="task-action-btn delete-btn" onclick="${deleteHandler}"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--dark);">${note.content}</p>
+                            <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+                                <span class="task-badge category">${note.categoryDisplay}</span>
+                                <span class="task-badge" style="background: rgba(99,102,241,0.1); color: var(--primary);">Öncelik: ${note.priorityDisplay}</span>
+                                ${note.dueDateDisplay ? `<span class="task-badge" style="background: rgba(16,185,129,0.1); color: var(--success);"><i class="far fa-calendar"></i> Bitiş: ${note.dueDateDisplay}</span>` : ''}
+                            </div>
+                        `;
+                        notesContainer.appendChild(noteCard);
+                    });
+                }
+            }
+        }
+
+        // NEW: 4. AJANDA LOGIC (Notebook Style with Font selector & Date picker)
+        function loadAgendaPage() {
+            selectedAgendaDate = document.getElementById('agenda_date').value;
+            localStorage.setItem('selected_agenda_date', selectedAgendaDate);
+
+            // Load saved note for this specific date
+            const agendaData = JSON.parse(localStorage.getItem('agenda_diary_data')) || {};
+            const text = agendaData[selectedAgendaDate] || `Bugün (${selectedAgendaDate.split('-').reverse().join('.')}) yapacaklarımı buraya gerçek bir ajanda gibi yazıyorum...`;
+            
+            const editor = document.getElementById('notebook-page-content');
+            if (editor) {
+                editor.innerHTML = text;
+                editor.style.fontFamily = selectedAgendaFont;
+            }
+        }
+
+        function saveAgendaPage() {
+            const editor = document.getElementById('notebook-page-content');
+            if (!editor) return;
+
+            const text = editor.innerHTML;
+            const agendaData = JSON.parse(localStorage.getItem('agenda_diary_data')) || {};
+            
+            agendaData[selectedAgendaDate] = text;
+            localStorage.setItem('agenda_diary_data', JSON.stringify(agendaData));
+        }
+
+        function changeAgendaFont() {
+            selectedAgendaFont = document.getElementById('agenda_font').value;
+            localStorage.setItem('selected_agenda_font', selectedAgendaFont);
+            
+            const editor = document.getElementById('notebook-page-content');
+            if (editor) {
+                editor.style.fontFamily = selectedAgendaFont;
+            }
+        }
+
+        // NEW: 5. ORTAK ALAN LOGIC (Room Create/Join and shared Notes)
+        function createCollabRoom() {
+            const roomId = 'COLLAB-' + Math.floor(1000 + Math.random() * 9000);
+            activeCollabRoom = roomId;
+            localStorage.setItem('active_collab_room', roomId);
+            
+            alert(`Oda oluşturuldu: ${roomId}`);
+            renderCollabRoomDetails();
+        }
+
+        function joinCollabRoom() {
+            const inputVal = document.getElementById('collab_join_id').value.trim().toUpperCase();
+            if (!inputVal) {
+                alert('Lütfen geçerli bir Oda Kimliği girin.');
+                return;
+            }
+
+            activeCollabRoom = inputVal;
+            localStorage.setItem('active_collab_room', inputVal);
+            
+            document.getElementById('collab_join_id').value = '';
+            alert(`Odaya katılın dı: ${inputVal}`);
+            renderCollabRoomDetails();
+        }
+
+        function copyCollabCode() {
+            if (!activeCollabRoom) return;
+            navigator.clipboard.writeText(activeCollabRoom).then(() => {
+                alert('Oda kodu panoya kopyalandı!');
+            });
+        }
+
+        function openCollabNoteInputs() {
+            const formArea = document.getElementById('collab-note-form-area');
+            if (formArea) {
+                formArea.style.display = formArea.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function addCollabNote() {
+            const title = document.getElementById('collab_note_title').value.trim();
+            const content = document.getElementById('collab_note_content').value.trim();
+
+            if (!title) {
+                alert('Lütfen bir başlık girin.');
+                return;
+            }
+
+            const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
+            if (!collabNotesData[activeCollabRoom]) {
+                collabNotesData[activeCollabRoom] = [];
+            }
+
+            const newNote = {
+                id: 'collab-note-' + Date.now(),
+                title: title,
+                content: content,
+                date: new Date().toLocaleString('tr-TR')
+            };
+
+            collabNotesData[activeCollabRoom].push(newNote);
+            localStorage.setItem('collab_rooms_notes', JSON.stringify(collabNotesData));
+
+            // Clear inputs
+            document.getElementById('collab_note_title').value = '';
+            document.getElementById('collab_note_content').value = '';
+            document.getElementById('collab-note-form-area').style.display = 'none';
+
+            renderCollabNotesList();
+        }
+
+        function deleteCollabNote(noteId) {
+            if (confirm('Bu ortak notu silmek istediğinizden emin misiniz?')) {
+                const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
+                if (collabNotesData[activeCollabRoom]) {
+                    collabNotesData[activeCollabRoom] = collabNotesData[activeCollabRoom].filter(n => n.id !== noteId);
+                    localStorage.setItem('collab_rooms_notes', JSON.stringify(collabNotesData));
+                    renderCollabNotesList();
+                }
+            }
+        }
+
+        function renderCollabRoomDetails() {
+            const displayBox = document.getElementById('active-room-display');
+            const codeText = document.getElementById('active-room-code-text');
+            const addBtn = document.getElementById('btn-add-collab-note');
+            
+            if (!activeCollabRoom) {
+                if (displayBox) displayBox.style.display = 'none';
+                if (addBtn) addBtn.style.display = 'none';
+                return;
+            }
+
+            if (displayBox) displayBox.style.display = 'block';
+            if (codeText) codeText.textContent = activeCollabRoom;
+            if (addBtn) addBtn.style.display = 'block';
+
+            renderCollabNotesList();
+        }
+
+        function renderCollabNotesList() {
+            const container = document.getElementById('collab-notes-container');
+            const titleEl = document.getElementById('collab-notes-title');
+            
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!activeCollabRoom) {
+                titleEl.textContent = 'Ortak Notlar';
+                container.innerHTML = '<div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">Lütfen sol taraftan bir odaya katılın veya yeni bir tane oluşturun.</div>';
+                return;
+            }
+
+            titleEl.textContent = `"${activeCollabRoom}" Odası Ortak Notları`;
+
+            const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
+            const notes = collabNotesData[activeCollabRoom] || [];
+
+            if (notes.length === 0) {
+                container.innerHTML = `
+                    <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
+                        Bu odada henüz ortak bir not yok. Sağ üstteki butondan ilk ortak notu ekleyin!
+                    </div>
+                `;
+                return;
+            }
+
+            notes.forEach(n => {
+                const card = document.createElement('div');
+                card.className = 'project-note-card';
+                card.style.borderLeft = '4px solid var(--primary)';
+                
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h4 style="font-weight: 700; color: var(--dark);">${n.title}</h4>
+                        <button class="task-action-btn delete-btn" onclick="deleteCollabNote('${n.id}')"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--dark);">${n.content}</p>
+                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px;"><i class="far fa-clock"></i> Eklendi: ${n.date}</p>
+                `;
+                container.appendChild(card);
+            });
         }
     </script>
 </body>
