@@ -49,7 +49,7 @@
             padding: 40px;
             border-radius: 24px;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -122,7 +122,8 @@
             text-transform: uppercase;
         }
 
-        input {
+        /* Style Django Form Inputs */
+        .form-group input {
             width: 100%;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.8);
@@ -134,9 +135,40 @@
             transition: all 0.2s;
         }
 
-        input:focus {
+        .form-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Error block styles */
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #b91c1c;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .errorlist {
+            color: #dc3545;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .helptext {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.4;
         }
 
         button.btn-submit {
@@ -197,16 +229,6 @@
             color: white !important;
             box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
         }
-
-        /* Slide Animation for Form Fields toggle */
-        .register-fields {
-            animation: slideFade 0.3s ease;
-        }
-
-        @keyframes slideFade {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
@@ -218,43 +240,49 @@
         </a>
         <h1>Yeni Hesap Oluştur</h1>
 
+        <!-- Show validation errors -->
+        {% if form.errors %}
+            <div class="alert-danger">
+                <div style="font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-exclamation-circle"></i> Lütfen hataları düzeltin:
+                </div>
+                <div style="margin-left: 20px; font-size: 0.8rem;">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>• {{ field.label }}: {{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p>• {{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
         <!-- Register Method Tabs -->
         <div class="register-tabs">
             <button class="tab-btn active" id="tab-email" onclick="setRegisterMethod('email')">E-posta ile</button>
             <button class="tab-btn" id="tab-phone" onclick="setRegisterMethod('phone')">Telefon ile</button>
         </div>
 
-        <form method="post" action="{% url 'notehome' %}">
+        <form method="post" action="">
             {% csrf_token %}
             
-            <div class="form-group">
-                <label for="username">Kullanıcı Adı</label>
-                <input type="text" id="username" name="username" required placeholder="Kullanıcı adınızı belirleyin...">
-            </div>
-
-            <!-- E-mail Fields Container -->
-            <div id="email-fields-container" class="register-fields">
-                <div class="form-group">
-                    <label for="email">E-posta Adresi</label>
-                    <input type="email" id="email" name="email" placeholder="örnek@eposta.com">
+            {% for field in form %}
+                <div class="form-group" id="group-{{ field.name }}">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="helptext">{{ field.help_text }}</div>
+                    {% endif %}
                 </div>
-            </div>
+            {% endfor %}
 
-            <!-- Phone Fields Container (hidden by default) -->
-            <div id="phone-fields-container" class="register-fields" style="display: none;">
-                <div class="form-group">
-                    <label for="phone">Telefon Numarası</label>
-                    <input type="tel" id="phone" name="phone" placeholder="0555 555 55 55">
-                </div>
+            <!-- Mock phone field for demonstration, toggled by tabs -->
+            <div class="form-group" id="mock-phone-group" style="display: none;">
+                <label for="mock_phone">Telefon Numarası</label>
+                <input type="tel" id="mock_phone" placeholder="0555 555 55 55">
             </div>
-
-            <div class="form-group">
-                <label for="password">Şifre</label>
-                <input type="password" id="password" name="password" required placeholder="Güçlü bir şifre belirleyin...">
-            </div>
-
-            <!-- Hidden input indicating chosen register method -->
-            <input type="hidden" id="register_method" name="register_method" value="email">
 
             <button type="submit" class="btn-submit"><i class="fas fa-user-plus"></i> Kayıt Ol</button>
         </form>
@@ -271,40 +299,21 @@
 
     <script>
         function setRegisterMethod(method) {
-            // Update inputs and active tab style
             const tabEmail = document.getElementById('tab-email');
             const tabPhone = document.getElementById('tab-phone');
-            const emailContainer = document.getElementById('email-fields-container');
-            const phoneContainer = document.getElementById('phone-fields-container');
-            const methodInput = document.getElementById('register_method');
-            const emailInput = document.getElementById('email');
-            const phoneInput = document.getElementById('phone');
-
-            methodInput.value = method;
-
+            const mockPhoneGroup = document.getElementById('mock-phone-group');
+            
+            // Django registration typically expects username, so let's keep username but toggle description
             if (method === 'email') {
                 tabEmail.classList.add('active');
                 tabPhone.classList.remove('active');
-                emailContainer.style.display = 'block';
-                phoneContainer.style.display = 'none';
-                
-                emailInput.setAttribute('required', 'required');
-                phoneInput.removeAttribute('required');
+                if (mockPhoneGroup) mockPhoneGroup.style.display = 'none';
             } else {
                 tabEmail.classList.remove('active');
                 tabPhone.classList.add('active');
-                emailContainer.style.display = 'none';
-                phoneContainer.style.display = 'block';
-                
-                phoneInput.setAttribute('required', 'required');
-                emailInput.removeAttribute('required');
+                if (mockPhoneGroup) mockPhoneGroup.style.display = 'flex';
             }
         }
-
-        // Initialize default constraints
-        document.addEventListener('DOMContentLoaded', () => {
-            setRegisterMethod('email');
-        });
     </script>
 </body>
 </html>
