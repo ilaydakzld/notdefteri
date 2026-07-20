@@ -57,7 +57,7 @@ def notehome(request):
             Q(tags__icontains=search_query)
         )
 
-    # Öncelik filtresi
+    # Önem filtresi
     if priority_filter:
         notes = notes.filter(priority=priority_filter)
 

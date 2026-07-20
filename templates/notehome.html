@@ -1,15 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Not Defteri - Kişisel Dashboard</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Architects+Daughter&family=Special+Elite&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Architects+Daughter&family=Special+Elite&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
             --primary: #6366f1;
@@ -218,7 +221,8 @@
             transition: transform 0.2s;
         }
 
-        .menu-item.active a, .menu-item a:hover {
+        .menu-item.active a,
+        .menu-item a:hover {
             background: rgba(99, 102, 241, 0.12);
             color: var(--primary);
         }
@@ -385,8 +389,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Dates Horizontal View (Programım Tab) */
@@ -554,7 +565,7 @@
             border-left: 4px solid var(--primary);
             border-radius: 12px;
             padding: 12px 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
             transition: transform 0.2s, box-shadow 0.2s;
             cursor: pointer;
             position: relative;
@@ -684,7 +695,7 @@
             display: flex;
             justify-content: flex-end;
             gap: 8px;
-            border-top: 1px solid rgba(0,0,0,0.05);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
             padding-top: 8px;
             margin-top: 4px;
         }
@@ -764,7 +775,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
             transition: transform 0.2s;
         }
 
@@ -787,12 +798,29 @@
             color: white;
         }
 
-        .stat-icon.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); }
-        .stat-icon.success { background: linear-gradient(135deg, var(--success) 0%, #34d399 100%); }
-        .stat-icon.warning { background: linear-gradient(135deg, var(--warning) 0%, #fbbf24 100%); }
-        .stat-icon.danger { background: linear-gradient(135deg, var(--danger) 0%, #f87171 100%); }
-        .stat-icon.info { background: linear-gradient(135deg, var(--info) 0%, #22d3ee 100%); }
-        .stat-icon.secondary { background: linear-gradient(135deg, var(--secondary) 0%, #f472b6 100%); }
+        .stat-icon.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .stat-icon.success {
+            background: linear-gradient(135deg, var(--success) 0%, #34d399 100%);
+        }
+
+        .stat-icon.warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #fbbf24 100%);
+        }
+
+        .stat-icon.danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #f87171 100%);
+        }
+
+        .stat-icon.info {
+            background: linear-gradient(135deg, var(--info) 0%, #22d3ee 100%);
+        }
+
+        .stat-icon.secondary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #f472b6 100%);
+        }
 
         .stat-details {
             display: flex;
@@ -921,7 +949,8 @@
             color: #94a3b8;
         }
 
-        .filter-item select, .filter-item input {
+        .filter-item select,
+        .filter-item input {
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid var(--glass-border);
             border-radius: 10px;
@@ -932,11 +961,13 @@
             font-family: inherit;
         }
 
-        body[data-theme="dark"] .filter-item select, body[data-theme="dark"] .filter-item input {
+        body[data-theme="dark"] .filter-item select,
+        body[data-theme="dark"] .filter-item input {
             background: rgba(15, 23, 42, 0.6);
         }
 
-        .filter-item select:focus, .filter-item input:focus {
+        .filter-item select:focus,
+        .filter-item input:focus {
             border-color: var(--primary);
         }
 
@@ -969,7 +1000,7 @@
             border-radius: 20px;
             width: 100%;
             max-width: 500px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
             transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             overflow: hidden;
@@ -985,7 +1016,7 @@
 
         .modal-header {
             padding: 20px 24px;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1032,7 +1063,9 @@
             color: #94a3b8;
         }
 
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid var(--glass-border);
             border-radius: 10px;
@@ -1043,11 +1076,15 @@
             font-family: inherit;
         }
 
-        body[data-theme="dark"] .form-group input, body[data-theme="dark"] .form-group select, body[data-theme="dark"] .form-group textarea {
+        body[data-theme="dark"] .form-group input,
+        body[data-theme="dark"] .form-group select,
+        body[data-theme="dark"] .form-group textarea {
             background: rgba(15, 23, 42, 0.6);
         }
 
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
@@ -1059,7 +1096,7 @@
 
         .modal-footer {
             padding: 16px 24px;
-            border-top: 1px solid rgba(0,0,0,0.08);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
             display: flex;
             justify-content: flex-end;
             gap: 12px;
@@ -1211,8 +1248,9 @@
         .notebook-container {
             background: #e8d8c8;
             border-radius: 24px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15), inset 0 0 30px rgba(0,0,0,0.1);
-            border: 12px solid #5c3a21; /* Rich leather border */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(0, 0, 0, 0.1);
+            border: 12px solid #5c3a21;
+            /* Rich leather border */
             padding: 24px;
             position: relative;
             overflow: hidden;
@@ -1237,7 +1275,7 @@
             height: 14px;
             background: linear-gradient(to bottom, #f3f4f6 0%, #9ca3af 50%, #d1d5db 100%);
             border-radius: 8px;
-            box-shadow: 2px 3px 6px rgba(0,0,0,0.25);
+            box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
         }
 
         .notebook-page {
@@ -1246,15 +1284,17 @@
             background-size: 100% 36px;
             line-height: 36px;
             padding: 40px 40px 40px 75px;
-            border-left: 2px solid #ef4444; /* Traditional Red notebook margin line */
+            border-left: 2px solid #ef4444;
+            /* Traditional Red notebook margin line */
             min-height: 440px;
             color: #2c3e50;
             outline: none;
             font-size: 1.25rem;
             position: relative;
             border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
-            font-family: 'Caveat', cursive; /* Default script font */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
+            font-family: 'Caveat', cursive;
+            /* Default script font */
         }
 
         .agenda-font-selector-row {
@@ -1280,6 +1320,7 @@
                 bottom: 0;
                 transform: translateX(-100%);
             }
+
             .sidebar.open-mobile {
                 transform: translateX(0);
                 width: var(--sidebar-width);
@@ -1287,10 +1328,11 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="app-container">
-        
+
         <!-- Sidebar -->
         <aside id="app-sidebar" class="sidebar">
             <div class="profile-container">
@@ -1356,7 +1398,7 @@
 
         <!-- Main Workspace -->
         <main class="main-container">
-            
+
             <!-- Topbar -->
             <header class="topbar">
                 <div class="topbar-left">
@@ -1369,7 +1411,7 @@
                     <button class="btn-theme-toggle" onclick="toggleTheme()" title="Temayı Değiştir">
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
-                    <button class="btn-add-note-shortcut" onclick="openAddNoteModal()">
+                    <button class="btn-add-note-shortcut" id="btn-add-note-shortcut" onclick="openAddNoteModal()">
                         <i class="fas fa-plus"></i> Yeni Not Ekle
                     </button>
                     <a href="{% url 'logout' %}" class="btn-logout-shortcut" title="Çıkış Yap">
@@ -1384,31 +1426,26 @@
                 <!-- Hidden data storage to read notes from Django context -->
                 <div id="raw-notes-data" style="display: none;">
                     {% for note in notes %}
-                        <div class="raw-note" 
-                             data-id="{{ note.id }}"
-                             data-title="{{ note.title }}"
-                             data-content="{{ note.content }}"
-                             data-priority="{{ note.priority }}"
-                             data-priority-display="{{ note.get_priority_display }}"
-                             data-category="{{ note.category }}"
-                             data-category-display="{{ note.get_category_display }}"
-                             data-due-date="{% if note.due_date %}{{ note.due_date|date:'Y-m-d' }}{% endif %}"
-                             data-due-date-display="{% if note.due_date %}{{ note.due_date|date:'d.m.Y' }}{% endif %}"
-                             data-completed="{% if note.is_completed %}true{% else %}false{% endif %}"
-                             data-tags="{{ note.tags }}"
-                             data-edit-url="{% url 'note_edit' note.id %}"
-                             data-toggle-url="{% url 'note_toggle_complete' note.id %}"
-                             data-delete-url="{% url 'note_delete' note.id %}">
-                        </div>
+                    <div class="raw-note" data-id="{{ note.id }}" data-title="{{ note.title }}"
+                        data-content="{{ note.content }}" data-priority="{{ note.priority }}"
+                        data-priority-display="{{ note.get_priority_display }}" data-category="{{ note.category }}"
+                        data-category-display="{{ note.get_category_display }}"
+                        data-due-date="{% if note.due_date %}{{ note.due_date|date:'Y-m-d' }}{% endif %}"
+                        data-due-date-display="{% if note.due_date %}{{ note.due_date|date:'d.m.Y' }}{% endif %}"
+                        data-completed="{% if note.is_completed %}true{% else %}false{% endif %}"
+                        data-tags="{{ note.tags }}" data-edit-url="{% url 'note_edit' note.id %}"
+                        data-toggle-url="{% url 'note_toggle_complete' note.id %}"
+                        data-delete-url="{% url 'note_delete' note.id %}">
+                    </div>
                     {% endfor %}
                 </div>
 
                 <!-- TAB: Programım (Horizontal Dates Columns) -->
                 <div class="tab-panel active" id="panel-programim">
                     <div class="section-header">
-                        <h2>Tarihler</h2>
+                        <h2 id="header-dates">Tarihler</h2>
                     </div>
-                    
+
                     <!-- Horizontal Columns -->
                     <div class="calendar-row" id="calendar-columns-row">
                         <!-- Will be dynamically populated with dates and corresponding cards in JS -->
@@ -1418,7 +1455,7 @@
                 <!-- TAB: Notlarım (Classic Grid View with filters) -->
                 <div class="tab-panel" id="panel-notlarim">
                     <div class="section-header">
-                        <h2>Notlarım</h2>
+                        <h2 id="header-notes">Notlarım</h2>
                     </div>
 
                     <!-- Search and filters -->
@@ -1426,29 +1463,29 @@
                         <form method="get" id="search-filter-form" action="{% url 'notehome' %}">
                             <div class="filter-row">
                                 <div class="filter-item" style="flex-grow: 2;">
-                                    <label>Ara</label>
-                                    <input type="text" name="search" placeholder="Başlık veya içerikte ara..." value="{{ request.GET.search }}">
+                                    <label id="label-filter-search">Ara</label>
+                                    <input type="text" id="search-input-field" name="search"
+                                        placeholder="Başlık veya içerikte ara..." value="{{ request.GET.search }}">
                                 </div>
                                 <div class="filter-item">
-                                    <label>Öncelik</label>
-                                    <select name="priority">
-                                        <option value="">Tümü</option>
-                                        <option value="high" {% if request.GET.priority == 'high' %}selected{% endif %}>Yüksek</option>
-                                        <option value="medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Orta</option>
-                                        <option value="low" {% if request.GET.priority == 'low' %}selected{% endif %}>Düşük</option>
+                                    <label id="label-filter-priority">Önem Seviyesi</label>
+                                    <select name="priority" id="filter-priority-select">
+                                        <option value="" id="filter-priority-all">Tümü</option>
+                                        <option value="high" id="filter-priority-high" {% if request.GET.priority == 'high' %}selected{% endif %}>Yüksek</option>
+                                        <option value="medium" id="filter-priority-medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Orta</option>
+                                        <option value="low" id="filter-priority-low" {% if request.GET.priority == 'low' %}selected{% endif %}>Düşük</option>
                                     </select>
                                 </div>
                                 <div class="filter-item">
-                                    <label>Kategori</label>
+                                    <label id="label-filter-category">Kategori</label>
                                     <select name="category">
                                         <option value="">Tümü</option>
-                                        {% for value, label in Note.CATEGORY_CHOICES %}
-                                            <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
-                                        {% endfor %}
+                                        {% for value, label in Note.CATEGORY_CHOICES %}<option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
                                     </select>
                                 </div>
                                 <div class="filter-item" style="align-self: flex-end;">
-                                    <button type="submit" class="btn-save" style="padding: 8px 16px;"><i class="fas fa-search"></i> Filtrele</button>
+                                    <button type="submit" class="btn-save" style="padding: 8px 16px;"><i
+                                            class="fas fa-search"></i> Filtrele</button>
                                 </div>
                             </div>
                         </form>
@@ -1463,18 +1500,20 @@
                 <!-- TAB: Ajandam (Notebook Style) -->
                 <div class="tab-panel" id="panel-ajandam">
                     <div class="section-header">
-                        <h2>Ajandam (Tarihli)</h2>
+                        <h2 id="header-agenda">Ajandam (Tarihli)</h2>
                     </div>
-                    
+
                     <!-- Font and date picker row -->
                     <div class="agenda-font-selector-row">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <label for="agenda_date" style="font-weight: 700;">Ajanda Tarihi:</label>
-                            <input type="date" id="agenda_date" onchange="loadAgendaPage()" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                            <label for="agenda_date" id="label-agenda-date" style="font-weight: 700;">Ajanda Tarihi:</label>
+                            <input type="date" id="agenda_date" onchange="loadAgendaPage()"
+                                style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border);">
                         </div>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <label for="agenda_font" style="font-weight: 700;">Yazı Tipi:</label>
-                            <select id="agenda_font" onchange="changeAgendaFont()" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border); font-family: inherit;">
+                            <label for="agenda_font" id="label-agenda-font" style="font-weight: 700;">Yazı Tipi:</label>
+                            <select id="agenda_font" onchange="changeAgendaFont()"
+                                style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border); font-family: inherit;">
                                 <option value="'Caveat', cursive">✍️ El Yazısı (Caveat)</option>
                                 <option value="'Architects Daughter', cursive">✏️ Mimarlık Yazısı (Architects)</option>
                                 <option value="'Special Elite', monospace">🖨️ Daktilo (Special Elite)</option>
@@ -1499,7 +1538,8 @@
                         </div>
 
                         <!-- Editable Lined Paper Page -->
-                        <div contenteditable="true" id="notebook-page-content" class="notebook-page" oninput="saveAgendaPage()">
+                        <div contenteditable="true" id="notebook-page-content" class="notebook-page"
+                            oninput="saveAgendaPage()">
                             Bugün yapacaklarımı buraya gerçek bir ajanda gibi yazıyorum...
                         </div>
                     </div>
@@ -1508,47 +1548,49 @@
                 <!-- TAB: Etkinlikler -->
                 <div class="tab-panel" id="panel-etkinlikler">
                     <div class="section-header">
-                        <h2>Etkinlikler</h2>
+                        <h2 id="header-events">Etkinlikler</h2>
                     </div>
-                    
+
                     <div class="split-layout">
                         <!-- Left Panel: Add Event Form -->
                         <div class="split-left-panel">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Ekle</h3>
-                            
+                            <h3 id="label-add-event" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Ekle</h3>
+
                             <div class="form-group">
-                                <label for="event_title">Etkinlik Adı</label>
+                                <label for="event_title" id="label-event-title">Etkinlik Adı</label>
                                 <input type="text" id="event_title" placeholder="Konser, Tiyatro, Toplantı...">
                             </div>
-                            
+
                             <div class="form-group">
-                                <label for="event_date">Tarih</label>
+                                <label for="event_date" id="label-event-date">Tarih</label>
                                 <input type="date" id="event_date">
                             </div>
 
                             <div style="display: flex; gap: 10px;">
                                 <div class="form-group" style="flex: 1;">
-                                    <label for="event_start">Başlangıç</label>
+                                    <label for="event_start" id="label-event-start-time">Başlangıç</label>
                                     <input type="time" id="event_start">
                                 </div>
                                 <div class="form-group" style="flex: 1;">
-                                    <label for="event_end">Bitiş</label>
+                                    <label for="event_end" id="label-event-end-time">Bitiş</label>
                                     <input type="time" id="event_end">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="event_description">Açıklama / Konum</label>
-                                <textarea id="event_description" style="height: 60px;" placeholder="Konum ve notlar..."></textarea>
+                                <label for="event_description" id="label-event-desc">Açıklama / Konum</label>
+                                <textarea id="event_description" style="height: 60px;"
+                                    placeholder="Konum ve notlar..."></textarea>
                             </div>
 
-                            <button type="button" class="btn-save" onclick="addCustomEvent()">Etkinlik Ekle</button>
+                            <button type="button" class="btn-save" id="btn-add-event-submit" onclick="addCustomEvent()">Etkinlik Ekle</button>
                         </div>
 
                         <!-- Right Panel: Events List -->
                         <div class="split-right-panel">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Listesi</h3>
-                            <div id="events-display-container" style="display: flex; flex-direction: column; gap: 14px;">
+                            <h3 id="label-events-list" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Listesi</h3>
+                            <div id="events-display-container"
+                                style="display: flex; flex-direction: column; gap: 14px;">
                                 <!-- Events will be rendered here dynamically -->
                             </div>
                         </div>
@@ -1558,7 +1600,7 @@
                 <!-- TAB: Analiz (Completion Statistics) -->
                 <div class="tab-panel" id="panel-analiz">
                     <div class="section-header">
-                        <h2>Analiz</h2>
+                        <h2 id="header-analysis">Analiz</h2>
                     </div>
 
                     <!-- Stats Row -->
@@ -1569,7 +1611,7 @@
                             </div>
                             <div class="stat-details">
                                 <span class="stat-value" id="stats-total">{{ stats.total }}</span>
-                                <span class="stat-label">Toplam Not</span>
+                                <span class="stat-label" id="label-stat-total">Toplam Not</span>
                             </div>
                         </div>
                         <div class="stat-card">
@@ -1578,7 +1620,7 @@
                             </div>
                             <div class="stat-details">
                                 <span class="stat-value" id="stats-completed">{{ stats.completed }}</span>
-                                <span class="stat-label">Tamamlanan</span>
+                                <span class="stat-label" id="label-stat-completed">Tamamlanan</span>
                             </div>
                         </div>
                         <div class="stat-card">
@@ -1587,7 +1629,7 @@
                             </div>
                             <div class="stat-details">
                                 <span class="stat-value" id="stats-active">{{ stats.active }}</span>
-                                <span class="stat-label">Aktif</span>
+                                <span class="stat-label" id="label-stat-active">Aktif</span>
                             </div>
                         </div>
                         <div class="stat-card">
@@ -1596,7 +1638,7 @@
                             </div>
                             <div class="stat-details">
                                 <span class="stat-value" id="stats-overdue">{{ stats.overdue }}</span>
-                                <span class="stat-label">Gecikmiş</span>
+                                <span class="stat-label" id="label-stat-overdue">Gecikmiş</span>
                             </div>
                         </div>
                     </div>
@@ -1604,26 +1646,28 @@
                     <!-- Analytics visual blocks -->
                     <div class="analytics-content">
                         <div class="chart-box">
-                            <h4 class="chart-title">Tamamlama Oranı</h4>
+                            <h4 class="chart-title" id="label-chart-percent">Tamamlama Oranı</h4>
                             <div class="progress-circle-container">
                                 <div class="progress-circle" id="completion-circle" style="--percent: 0;">
                                     <div class="progress-circle-value" id="completion-percent-text">0%</div>
                                 </div>
                                 <div>
-                                    <p style="font-weight: 600;" id="completion-description">Kayıtlı görevlerinizin analizi.</p>
+                                    <p style="font-weight: 600;" id="completion-description">Kayıtlı görevlerinizin
+                                        analizi.</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="chart-box">
-                            <h4 class="chart-title">Öncelik Dağılımı</h4>
-                            <div style="display: flex; flex-direction: column; gap: 12px; justify-content: center; height: 100%;">
+                            <h4 class="chart-title" id="label-chart-priority">Önem Dağılımı</h4>
+                            <div
+                                style="display: flex; flex-direction: column; gap: 12px; justify-content: center; height: 100%;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span>Yüksek Öncelikli</span>
+                                    <span id="label-chart-high">Yüksek Önemli</span>
                                     <span style="font-weight: 700; color: var(--danger)">{{ stats.high_priority }}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span>Bugünkü Görevler</span>
+                                    <span id="label-chart-today">Bugünkü Görevler</span>
                                     <span style="font-weight: 700; color: var(--warning)">{{ stats.today }}</span>
                                 </div>
                             </div>
@@ -1634,15 +1678,17 @@
                 <!-- TAB: Projelerim -->
                 <div class="tab-panel" id="panel-projelerim">
                     <div class="section-header">
-                        <h2>Projelerim</h2>
+                        <h2 id="header-projects">Projelerim</h2>
                     </div>
-                    
+
                     <div class="split-layout">
                         <!-- Left Panel: Projects list -->
                         <div class="split-left-panel">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Projeler</h3>
-                                <button class="task-action-btn" onclick="addNewProject()" title="Yeni Proje Ekle"><i class="fas fa-plus"></i></button>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 id="label-projects-list-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Projeler</h3>
+                                <button class="task-action-btn" onclick="addNewProject()" title="Yeni Proje Ekle"><i
+                                        class="fas fa-plus"></i></button>
                             </div>
                             <div id="projects-list-container" style="display: flex; flex-direction: column; gap: 8px;">
                                 <!-- Projects will be listed here -->
@@ -1651,9 +1697,13 @@
 
                         <!-- Right Panel: Selected Project Notes -->
                         <div class="split-right-panel">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <h3 id="selected-project-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Proje Notları</h3>
-                                <button class="btn-save" id="btn-add-project-note" style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;" onclick="openAddNoteForProject()">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 id="selected-project-title"
+                                    style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Proje Notları</h3>
+                                <button class="btn-save" id="btn-add-project-note"
+                                    style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;"
+                                    onclick="openAddNoteForProject()">
                                     <i class="fas fa-plus"></i> Bu Projeye Not Ekle
                                 </button>
                             </div>
@@ -1669,57 +1719,70 @@
                 <!-- TAB: Ortak Alan (Shared Area Workspace) -->
                 <div class="tab-panel" id="panel-ortakalan">
                     <div class="section-header">
-                        <h2>Ortak Alan</h2>
+                        <h2 id="header-collab">Ortak Alan</h2>
                     </div>
-                    
+
                     <div class="split-layout">
                         <!-- Left Panel: Room Management -->
                         <div class="split-left-panel">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">Ortak Çalışma Odası</h3>
-                            
+                            <h3 id="label-collab-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">Ortak Çalışma Odası</h3>
+
                             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-                                <button class="btn-save" onclick="createCollabRoom()"><i class="fas fa-plus-circle"></i> Yeni Ortak Alan Oluştur</button>
-                                
-                                <div style="text-align: center; font-size: 0.85rem; color: #64748b; font-weight: 600;">- veya -</div>
-                                
+                                <button class="btn-save" id="btn-create-collab-room" onclick="createCollabRoom()"><i class="fas fa-plus-circle"></i> Yeni Ortak Alan Oluştur</button>
+
+                                <div id="label-collab-or" style="text-align: center; font-size: 0.85rem; color: #64748b; font-weight: 600;">- veya -</div>
+
                                 <div style="display: flex; flex-direction: column; gap: 6px;">
-                                    <label for="collab_join_id" style="font-size: 0.75rem;">Oda Kimliği/Kodu ile Katıl</label>
+                                    <label for="collab_join_id" id="label-collab-join" style="font-size: 0.75rem;">Oda Kimliği/Kodu ile Katıl</label>
                                     <div style="display: flex; gap: 8px;">
                                         <input type="text" id="collab_join_id" placeholder="Kimlik girin (Örn: a1B2c3D4e5F6)">
-                                        <button class="btn-save" onclick="joinCollabRoom()" style="width: auto; padding: 8px 16px;">Katıl</button>
+                                        <button class="btn-save" id="btn-collab-join" onclick="joinCollabRoom()" style="width: auto; padding: 8px 16px;">Katıl</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div id="active-room-display" style="display: none; background: rgba(99, 102, 241, 0.1); border: 1.5px solid var(--primary-light); padding: 16px; border-radius: 12px; margin-top: 10px;">
-                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Aktif Oda:</span>
-                                <h4 id="active-room-code-text" style="font-size: 1.25rem; font-weight: 800; margin: 4px 0; color: var(--dark);">Oda Kodu</h4>
-                                <button class="btn-cancel" onclick="copyCollabCode()" style="width: 100%; font-size: 0.8rem; padding: 6px; margin-top: 6px;"><i class="far fa-copy"></i> Kodu Kopyala</button>
+                            <div id="active-room-display"
+                                style="display: none; background: rgba(99, 102, 241, 0.1); border: 1.5px solid var(--primary-light); padding: 16px; border-radius: 12px; margin-top: 10px;">
+                                <span id="label-collab-active-room"
+                                    style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Aktif Oda:</span>
+                                <h4 id="active-room-code-text"
+                                    style="font-size: 1.25rem; font-weight: 800; margin: 4px 0; color: var(--dark);">Oda Kodu</h4>
+                                <button class="btn-cancel" id="btn-collab-copy-code" onclick="copyCollabCode()"
+                                    style="width: 100%; font-size: 0.8rem; padding: 6px; margin-top: 6px;"><i
+                                        class="far fa-copy"></i> Kodu Kopyala</button>
                             </div>
                         </div>
 
                         <!-- Right Panel: Shared Notes -->
                         <div class="split-right-panel">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <h3 id="collab-notes-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Ortak Notlar</h3>
-                                <button class="btn-save" id="btn-add-collab-note" style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;" onclick="openCollabNoteInputs()">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 id="collab-notes-title"
+                                    style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Ortak Notlar</h3>
+                                <button class="btn-save" id="btn-add-collab-note"
+                                    style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;"
+                                    onclick="openCollabNoteInputs()">
                                     <i class="fas fa-plus"></i> Not Ekle
                                 </button>
                             </div>
 
                             <!-- Inline note addition form (collapsible) -->
-                            <div id="collab-note-form-area" style="display: none; background: rgba(0,0,0,0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 12px; margin-bottom: 15px;">
+                            <div id="collab-note-form-area"
+                                style="display: none; background: rgba(0,0,0,0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 12px; margin-bottom: 15px;">
                                 <div class="form-group">
-                                    <label for="collab_note_title">Not Başlığı</label>
+                                    <label for="collab_note_title" id="label-collab-note-title">Not Başlığı</label>
                                     <input type="text" id="collab_note_title" placeholder="Başlık...">
                                 </div>
                                 <div class="form-group">
-                                    <label for="collab_note_content">Not Detayı</label>
-                                    <textarea id="collab_note_content" style="height: 60px;" placeholder="Birlikte alınacak not..."></textarea>
+                                    <label for="collab_note_content" id="label-collab-note-content">Not Detayı</label>
+                                    <textarea id="collab_note_content" style="height: 60px;"
+                                        placeholder="Birlikte alınacak not..."></textarea>
                                 </div>
                                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                                    <button class="btn-cancel" onclick="document.getElementById('collab-note-form-area').style.display='none'">İptal</button>
-                                    <button class="btn-save" onclick="addCollabNote()" style="width: auto;">Odaya Not Ekle</button>
+                                    <button class="btn-cancel" id="btn-collab-note-cancel"
+                                        onclick="document.getElementById('collab-note-form-area').style.display='none'">İptal</button>
+                                    <button class="btn-save" id="btn-collab-note-save" onclick="addCollabNote()" style="width: auto;">Odaya Not
+                                        Ekle</button>
                                 </div>
                             </div>
 
@@ -1737,59 +1800,80 @@
                 <!-- TAB: Dilek ve Şikayet -->
                 <div class="tab-panel" id="panel-dilek">
                     <div class="section-header">
-                        <h2>Dilek ve Şikayet</h2>
+                        <h2 id="header-feedback">Dilek ve Şikayet</h2>
                     </div>
                     <div class="feedback-form">
                         <div class="form-group">
-                            <label>Konu</label>
+                            <label id="label-feedback-subject">Konu</label>
                             <input type="text" placeholder="Görüşünüzün başlığı...">
                         </div>
                         <div class="form-group">
-                            <label>Mesajınız</label>
-                            <textarea placeholder="Geliştirilmesini istediğiniz özellikleri veya karşılaştığınız sorunları buraya yazabilirsiniz..."></textarea>
+                            <label id="label-feedback-message">Mesajınız</label>
+                            <textarea
+                                placeholder="Geliştirilmesini istediğiniz özellikleri veya karşılaştığınız sorunları buraya yazabilirsiniz..."></textarea>
                         </div>
-                        <button type="button" class="btn-save" onclick="alert('Geri bildiriminiz gönderildi! Teşekkür ederiz.')">Geri Bildirim Gönder</button>
+                        <button type="button" class="btn-save" id="btn-feedback-submit"
+                            onclick="alert('Geri bildiriminiz gönderildi! Teşekkür ederiz.')">Geri Bildirim Gönder</button>
                     </div>
                 </div>
 
                 <!-- TAB: Ayarlar & Profil Ayarları -->
                 <div class="tab-panel" id="panel-ayarlar">
                     <div class="section-header">
-                        <h2>Ayarlar ve Profil</h2>
+                        <h2 id="header-settings">Ayarlar ve Profil</h2>
                     </div>
-                    
+
                     <div class="feedback-form">
-                        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 16px;"><i class="fas fa-user-circle"></i> Profil Ayarları</h3>
-                        
+                        <h3 id="title-profile-settings" style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 16px;"><i
+                                class="fas fa-user-circle"></i> Profil Ayarları</h3>
+
                         <div class="form-group">
-                            <label for="profile_username">Kullanıcı Adı</label>
+                            <label for="profile_username" id="label-username">Kullanıcı Adı</label>
                             <input type="text" id="profile_username" value="{{ user.username }}">
                         </div>
                         <div class="form-group">
-                            <label for="profile_email">E-posta Adresi</label>
+                            <label for="profile_email" id="label-email">E-posta Adresi</label>
                             <input type="email" id="profile_email" placeholder="E-posta tanımlanmamış">
                         </div>
                         <div class="form-group">
-                            <label for="profile_phone">Telefon Numarası</label>
+                            <label for="profile_phone" id="label-phone">Telefon Numarası</label>
                             <input type="tel" id="profile_phone" placeholder="Telefon tanımlanmamış">
                         </div>
-                        <button type="button" class="btn-save" onclick="updateProfileSettings()" style="margin-bottom: 25px;">Bilgileri Kaydet</button>
+                        <button type="button" class="btn-save" id="btn-save-profile" onclick="updateProfileSettings()"
+                            style="margin-bottom: 25px;">Bilgileri Kaydet</button>
 
-                        <h4 style="margin-bottom: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px;">Tema ve Görünüm</h4>
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.08);">
-                            <span>Koyu Tema</span>
-                            <button class="btn-save" onclick="toggleTheme()" style="width: auto; padding: 6px 12px;">Değiştir</button>
+                        <h4 style="margin-bottom: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px;">Tema
+                            ve Görünüm</h4>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.08);">
+                            <span id="label-dark-theme">Koyu Tema</span>
+                            <button class="btn-save" id="btn-theme-change" onclick="toggleTheme()"
+                                style="width: auto; padding: 6px 12px;">Değiştir</button>
                         </div>
-                        
+
+                        <h4 style="margin-top: 25px; margin-bottom: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px;"
+                            id="label-lang-header">Dil / Language</h4>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.08);">
+                            <span id="label-lang-select">Uygulama Dili / App Language</span>
+                            <select id="app_language" onchange="changeLanguage(this.value)"
+                                style="width: auto; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--dark); font-weight: 600;">
+                                <option value="tr">Türkçe</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+
                         <h4 style="margin-top: 25px; margin-bottom: 15px;">Veri Yönetimi</h4>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <a href="{% url 'export_notes' %}" class="btn-cancel" style="text-decoration: none; display: inline-block; text-align: center;">
+                            <a href="{% url 'export_notes' %}" class="btn-cancel"
+                                style="text-decoration: none; display: inline-block; text-align: center;">
                                 <i class="fas fa-download"></i> Dışa Aktar (JSON)
                             </a>
                             <button onclick="document.getElementById('modalImportInput').click()" class="btn-cancel">
                                 <i class="fas fa-upload"></i> İçe Aktar (JSON)
                             </button>
-                            <input type="file" id="modalImportInput" accept=".json" onchange="importNotes(this)" style="display: none;">
+                            <input type="file" id="modalImportInput" accept=".json" onchange="importNotes(this)"
+                                style="display: none;">
                         </div>
                     </div>
                 </div>
@@ -1815,21 +1899,22 @@
                     </div>
                     <div class="form-group">
                         <label for="content">Detaylar</label>
-                        <textarea id="content" name="content" required placeholder="Detayları buraya yazın..."></textarea>
+                        <textarea id="content" name="content" required
+                            placeholder="Detayları buraya yazın..."></textarea>
                     </div>
                     <div class="form-group">
                         <label for="category">Kategori</label>
                         <select id="category" name="category">
                             {% for value, label in Note.CATEGORY_CHOICES %}
-                                <option value="{{ value }}">{{ label }}</option>
+                            <option value="{{ value }}">{{ label }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="priority">Öncelik</label>
+                        <label for="priority" id="label-form-priority">Önem Seviyesi</label>
                         <select id="priority" name="priority">
                             {% for value, label in Note.PRIORITY_CHOICES %}
-                                <option value="{{ value }}" {% if value == 'medium' %}selected{% endif %}>{{ label }}</option>
+                            <option value="{{ value }}" {% if value == 'medium' %}selected{% endif %}>{{ label }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -1837,27 +1922,29 @@
                         <label for="due_date">Bitiş Tarihi</label>
                         <input type="date" id="due_date" name="due_date">
                     </div>
-                    
+
                     <!-- NEW: Time inputs toggle -->
                     <div style="display: flex; gap: 8px; align-items: center; margin: 8px 0;">
-                        <input type="checkbox" id="has_time_range" style="width: auto; cursor: pointer;" onchange="toggleTimeInputs()">
-                        <label for="has_time_range" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Saat aralığı belirt</label>
+                        <input type="checkbox" id="has_time_range" style="width: auto; cursor: pointer;"
+                            onchange="toggleTimeInputs()">
+                        <label for="has_time_range" id="label-form-has-time-range" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Saat
+                            aralığı belirt</label>
                     </div>
-                    
+
                     <div id="time-range-inputs" style="display: none; gap: 10px; margin-bottom: 16px;">
                         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                            <label for="start_time" style="font-size: 0.75rem;">Başlangıç</label>
+                            <label for="start_time" id="label-form-start-time" style="font-size: 0.75rem;">Başlangıç</label>
                             <input type="time" id="start_time" name="start_time">
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                            <label for="end_time" style="font-size: 0.75rem;">Bitiş</label>
+                            <label for="end_time" id="label-form-end-time" style="font-size: 0.75rem;">Bitiş</label>
                             <input type="time" id="end_time" name="end_time">
                         </div>
                     </div>
 
                     <!-- NEW: Project Select association -->
                     <div class="form-group">
-                        <label for="project_select">Proje İlişkisi</label>
+                        <label for="project_select" id="label-form-project">Proje Seçin</label>
                         <select id="project_select" name="project_name">
                             <option value="">Proje Yok</option>
                         </select>
@@ -1872,7 +1959,8 @@
                     <!-- NEW: Is Event toggle -->
                     <div style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
                         <input type="checkbox" id="is_event_cb" name="is_event" style="width: auto; cursor: pointer;">
-                        <label for="is_event_cb" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Bu bir Etkinliktir</label>
+                        <label for="is_event_cb" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Bu bir
+                            Etkinliktir</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1890,10 +1978,10 @@
         let activeTab = localStorage.getItem('active_tab') || 'programim';
 
         // Load project, events, notes, collab rooms and agenda data from localStorage
-        let projects = JSON.parse(localStorage.getItem('projects')) || ["Web Tasarım", "Kişisel Planlar"];
+        let projects = JSON.parse(localStorage.getItem('projects')) || [];
         let customEvents = JSON.parse(localStorage.getItem('custom_events')) || [];
         let customNotes = JSON.parse(localStorage.getItem('custom_notes')) || [];
-        
+
         let selectedProject = projects[0] || null;
 
         // NEW: Collaborative room & Agenda state
@@ -1926,7 +2014,7 @@
             // Load initial tab data
             document.getElementById('agenda_date').value = selectedAgendaDate;
             document.getElementById('agenda_font').value = selectedAgendaFont;
-            
+
             reloadAllData();
             switchTab(activeTab);
         });
@@ -1949,8 +2037,6 @@
             // Instantly update header display
             document.getElementById('profile-display-name').textContent = `@${usr.trim()}`;
             document.getElementById('profile-avatar-char').textContent = usr.trim().charAt(0).toUpperCase();
-
-            alert('Profil bilgileriniz başarıyla güncellendi!');
         }
 
         // Toggle Time inputs in Modal
@@ -1963,7 +2049,7 @@
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('theme-icon');
-            
+
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'light');
@@ -1989,12 +2075,12 @@
         function switchTab(tabId) {
             activeTab = tabId;
             localStorage.setItem('active_tab', tabId);
-            
+
             // Hide all tab panels
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
-            
+
             // Show selected tab panel
             const activePanel = document.getElementById(`panel-${tabId}`);
             if (activePanel) activePanel.classList.add('active');
@@ -2008,17 +2094,30 @@
 
             // Update page title
             const titles = {
-                'programim': 'Programım',
-                'notlarim': 'Notlarım',
-                'ajandam': 'Ajandam (Tarihli)',
-                'etkinlikler': 'Etkinlikler',
-                'analiz': 'Analiz ve İstatistikler',
-                'projelerim': 'Projelerim',
-                'ortakalan': 'Ortak Çalışma Alanı',
-                'dilek': 'Dilek ve Şikayet',
-                'ayarlar': 'Ayarlar'
+                tr: {
+                    'programim': 'Programım',
+                    'notlarim': 'Notlarım',
+                    'ajandam': 'Ajandam (Tarihli)',
+                    'etkinlikler': 'Etkinlikler',
+                    'analiz': 'Analiz ve İstatistikler',
+                    'projelerim': 'Projelerim',
+                    'ortakalan': 'Ortak Çalışma Alanı',
+                    'dilek': 'Dilek ve Şikayet',
+                    'ayarlar': 'Ayarlar'
+                },
+                en: {
+                    'programim': 'Weekly Schedule',
+                    'notlarim': 'My Notes',
+                    'ajandam': 'Calendar Journal',
+                    'etkinlikler': 'Events',
+                    'analiz': 'Analysis & Statistics',
+                    'projelerim': 'My Projects',
+                    'ortakalan': 'Collaboration Room',
+                    'dilek': 'Feedback & Support',
+                    'ayarlar': 'Settings'
+                }
             };
-            document.getElementById('current-tab-title').textContent = titles[tabId] || 'Not Defteri';
+            document.getElementById('current-tab-title').textContent = titles[currentLang][tabId] || 'Not Defteri';
 
             // Special updates for specific tabs
             if (tabId === 'projelerim') {
@@ -2066,7 +2165,7 @@
         function populateProjectDropdown() {
             const dropdown = document.getElementById('project_select');
             if (!dropdown) return;
-            
+
             dropdown.innerHTML = '<option value="">Proje Yok</option>';
             projects.forEach(p => {
                 const opt = document.createElement('option');
@@ -2084,14 +2183,14 @@
 
             if (hasTime || isEvent || projectName) {
                 event.preventDefault();
-                
+
                 const title = document.getElementById('title') ? document.getElementById('title').value : '';
                 const content = document.getElementById('content') ? document.getElementById('content').value : '';
                 const category = document.getElementById('category') ? document.getElementById('category').value : 'other';
                 const priority = document.getElementById('priority') ? document.getElementById('priority').value : 'medium';
                 const due_date = document.getElementById('due_date') ? document.getElementById('due_date').value : '';
                 const tags = document.getElementById('tags') ? document.getElementById('tags').value : '';
-                
+
                 const start_time = (hasTime && document.getElementById('start_time')) ? document.getElementById('start_time').value : null;
                 const end_time = (hasTime && document.getElementById('end_time')) ? document.getElementById('end_time').value : null;
 
@@ -2102,7 +2201,7 @@
                     priority: priority,
                     priorityDisplay: priority === 'high' ? 'Yüksek' : (priority === 'medium' ? 'Orta' : 'Düşük'),
                     category: category,
-                    categoryDisplay: category, 
+                    categoryDisplay: category,
                     dueDate: due_date || null,
                     dueDateDisplay: due_date ? due_date.split('-').reverse().join('.') : null,
                     completed: false,
@@ -2118,7 +2217,7 @@
 
                 customNotes.push(customNoteObj);
                 localStorage.setItem('custom_notes', JSON.stringify(customNotes));
-                
+
                 if (isEvent) {
                     customEvents.push({
                         id: customNoteObj.id,
@@ -2131,7 +2230,6 @@
                     localStorage.setItem('custom_events', JSON.stringify(customEvents));
                 }
 
-                alert('Görev başarıyla eklendi!');
                 closeAddNoteModal();
                 reloadAllData();
             }
@@ -2143,7 +2241,7 @@
             buildProgramimCalendar(notes);
             buildNotlarimGrid(notes);
             updateCompletionStats(notes);
-            
+
             if (activeTab === 'projelerim') {
                 renderProjectsSection();
             } else if (activeTab === 'etkinlikler') {
@@ -2185,20 +2283,17 @@
             return [...djangoNotes, ...activeCustomNotes];
         }
 
-        // Delete custom note
         function deleteCustomNote(id) {
-            if (confirm('Bu notu silmek istediğinizden emin misiniz?')) {
-                const deletedCustomIds = JSON.parse(localStorage.getItem('deleted_custom_ids')) || [];
-                deletedCustomIds.push(id);
-                localStorage.setItem('deleted_custom_ids', JSON.stringify(deletedCustomIds));
-                
-                customNotes = customNotes.filter(n => n.id !== id);
-                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
-                customEvents = customEvents.filter(e => e.id !== id);
-                localStorage.setItem('custom_events', JSON.stringify(customEvents));
+            const deletedCustomIds = JSON.parse(localStorage.getItem('deleted_custom_ids')) || [];
+            deletedCustomIds.push(id);
+            localStorage.setItem('deleted_custom_ids', JSON.stringify(deletedCustomIds));
 
-                reloadAllData();
-            }
+            customNotes = customNotes.filter(n => n.id !== id);
+            localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+            customEvents = customEvents.filter(e => e.id !== id);
+            localStorage.setItem('custom_events', JSON.stringify(customEvents));
+
+            reloadAllData();
         }
 
         // Toggle custom note status
@@ -2217,10 +2312,11 @@
             if (!container) return;
 
             container.innerHTML = '';
-            
-            // Days of the week in Turkish
+
+            // Days of the week
             const turkishDays = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-            
+            const englishDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
             // Generate columns for today and next 7 days (8 days total, including the same day next week)
             const today = new Date();
             const dateColumns = [];
@@ -2228,15 +2324,15 @@
             for (let i = 0; i < 8; i++) {
                 const colDate = new Date();
                 colDate.setDate(today.getDate() + i);
-                
+
                 const yyyy = colDate.getFullYear();
                 const mm = String(colDate.getMonth() + 1).padStart(2, '0');
                 const dd = String(colDate.getDate()).padStart(2, '0');
-                
+
                 const isoDateStr = `${yyyy}-${mm}-${dd}`;
                 const displayDateStr = `${dd}.${mm}.${yyyy}`;
-                const dayName = turkishDays[colDate.getDay()];
-                
+                const dayName = currentLang === 'en' ? englishDays[colDate.getDay()] : turkishDays[colDate.getDay()];
+
                 dateColumns.push({
                     iso: isoDateStr,
                     display: displayDateStr,
@@ -2249,8 +2345,8 @@
             // Create a general column for items with no date or other dates
             const otherColumn = {
                 iso: 'other',
-                display: 'Genel Notlar',
-                dayName: 'Bitiş Tarihi Olmayanlar',
+                display: currentLang === 'en' ? 'General Notes' : 'Genel Notlar',
+                dayName: currentLang === 'en' ? 'No Due Date' : 'Bitiş Tarihi Olmayanlar',
                 isToday: false,
                 notes: []
             };
@@ -2278,23 +2374,28 @@
                 }
 
                 // Column header
+                const countText = currentLang === 'en'
+                    ? (col.notes.length === 1 ? '1 Note' : `${col.notes.length} Notes`)
+                    : `${col.notes.length} Not`;
+
                 let headerHtml = `
                     <div class="column-header">
                         <div class="column-date-info">
                             <span class="column-date">${col.display}</span>
                             <span class="column-day">${col.dayName}</span>
                         </div>
-                        <span class="column-task-count">${col.notes.length} Not</span>
+                        <span class="column-task-count">${countText}</span>
                     </div>
                 `;
 
                 // Tasks list
                 let tasksHtml = '<div class="column-tasks-container">';
                 if (col.notes.length === 0) {
+                    const emptyText = currentLang === 'en' ? 'No tasks found' : 'Görev bulunmuyor';
                     tasksHtml += `
                         <div class="empty-column-state">
                             <i class="far fa-clipboard" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
-                            Görev bulunmuyor
+                            ${emptyText}
                         </div>
                     `;
                 } else {
@@ -2306,9 +2407,10 @@
 
                 // Add button
                 const dateParam = col.iso === 'other' ? '' : col.iso;
+                const addBtnText = currentLang === 'en' ? 'Add Task' : 'Görev Ekle';
                 const addBtnHtml = `
                     <button class="column-add-btn" onclick="openAddNoteModal('${dateParam}')">
-                        <i class="fas fa-plus"></i> Görev Ekle
+                        <i class="fas fa-plus"></i> ${addBtnText}
                     </button>
                 `;
 
@@ -2320,15 +2422,15 @@
         // Render individual task card HTML
         function renderTaskCard(note) {
             const isCustom = String(note.id).startsWith('custom-');
-            
+
             const toggleHandler = isCustom ? `toggleCustomNoteStatus('${note.id}')` : `window.location.href='${note.toggleUrl}'`;
             const editHandler = isCustom ? `alert('Bu yerel veya özel bir nottur, detaylarını açarak görebilirsiniz.')` : `window.location.href='${note.editUrl}'`;
-            const deleteHandler = isCustom ? `deleteCustomNote('${note.id}')` : `if(confirm('Bu notu silmek istediğinizden emin misiniz?')) { window.location.href='${note.deleteUrl}'; }`;
+            const deleteHandler = isCustom ? `deleteCustomNote('${note.id}')` : `window.location.href='${note.deleteUrl}';`;
 
-            const timeBadge = (note.start_time && note.end_time) ? 
+            const timeBadge = (note.start_time && note.end_time) ?
                 `<span class="task-badge time-badge"><i class="far fa-clock"></i> ${note.start_time} - ${note.end_time}</span>` : '';
 
-            const projectBadge = note.projectName ? 
+            const projectBadge = note.projectName ?
                 `<span class="task-badge project-badge"><i class="fas fa-folder"></i> ${note.projectName}</span>` : '';
 
             return `
@@ -2339,7 +2441,7 @@
                     </div>
                     <div class="task-card-content">${note.content}</div>
                     <div class="task-card-meta">
-                        <span class="task-badge category">${note.categoryDisplay}</span>
+                        <span class="task-badge category">${getCategoryLabel(note.category)}</span>
                         ${timeBadge}
                         ${projectBadge}
                         ${note.tags.map(t => t.trim() ? `<span class="task-badge tag">#${t.trim()}</span>` : '').join('')}
@@ -2385,10 +2487,8 @@
         // Update statistics completion percentage circle
         function updateCompletionStats(notes) {
             const total = notes.length;
-            if (total === 0) return;
-
             const completed = notes.filter(n => n.completed).length;
-            const percentage = Math.round((completed / total) * 100);
+            const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
 
             const circle = document.getElementById('completion-circle');
             const percentText = document.getElementById('completion-percent-text');
@@ -2401,7 +2501,11 @@
                 percentText.textContent = `${percentage}%`;
             }
             if (desc) {
-                desc.textContent = `Toplam ${total} notunuzdan ${completed} tanesi tamamlandı. Hedeflerinize ulaşmak için devam edin!`;
+                if (currentLang === 'en') {
+                    desc.textContent = `Out of ${total} total notes, ${completed} have been completed. Keep going to reach your goals!`;
+                } else {
+                    desc.textContent = `Toplam ${total} notunuzdan ${completed} tanesi tamamlandı. Hedeflerinize ulaşmak için devam edin!`;
+                }
             }
         }
 
@@ -2460,22 +2564,19 @@
             document.getElementById('event_end').value = '';
             document.getElementById('event_description').value = '';
 
-            alert('Etkinlik eklendi ve Programım kısmına yansıtıldı!');
             renderEventsList();
             reloadAllData();
         }
 
         function deleteCustomEvent(id) {
-            if (confirm('Bu etkinliği silmek istediğinizden emin misiniz?')) {
-                customEvents = customEvents.filter(e => e.id !== id);
-                localStorage.setItem('custom_events', JSON.stringify(customEvents));
-                
-                customNotes = customNotes.filter(n => n.id !== id);
-                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+            customEvents = customEvents.filter(e => e.id !== id);
+            localStorage.setItem('custom_events', JSON.stringify(customEvents));
 
-                renderEventsList();
-                reloadAllData();
-            }
+            customNotes = customNotes.filter(n => n.id !== id);
+            localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+
+            renderEventsList();
+            reloadAllData();
         }
 
         function renderEventsList() {
@@ -2497,11 +2598,11 @@
             sortedEvents.forEach(e => {
                 const dateFormatted = e.date ? e.date.split('-').reverse().join('.') : 'Tarihsiz';
                 const timeStr = (e.start && e.end) ? ` | 🕒 ${e.start} - ${e.end}` : '';
-                
+
                 const item = document.createElement('div');
                 item.className = 'project-note-card';
                 item.style.borderLeft = '4px solid var(--secondary)';
-                
+
                 item.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start;">
                         <h4 style="font-weight: 700; color: var(--dark);"><i class="fas fa-glass-cheers" style="color: var(--secondary); margin-right: 6px;"></i>${e.title}</h4>
@@ -2537,21 +2638,19 @@
 
         function deleteProject(name, event) {
             if (event) event.stopPropagation();
-            if (confirm(`"${name}" projesini silmek istediğinizden emin misiniz? Bu projeyle ilişkili notlar silinmez.`)) {
-                projects = projects.filter(p => p !== name);
-                localStorage.setItem('projects', JSON.stringify(projects));
-                
-                if (selectedProject === name) {
-                    selectedProject = projects[0] || null;
-                }
-                
-                customNotes.forEach(n => {
-                    if (n.projectName === name) n.projectName = null;
-                });
-                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+            projects = projects.filter(p => p !== name);
+            localStorage.setItem('projects', JSON.stringify(projects));
 
-                renderProjectsSection();
+            if (selectedProject === name) {
+                selectedProject = projects[0] || null;
             }
+
+            customNotes.forEach(n => {
+                if (n.projectName === name) n.projectName = null;
+            });
+            localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+
+            renderProjectsSection();
         }
 
         function openAddNoteForProject() {
@@ -2571,7 +2670,7 @@
                         const item = document.createElement('div');
                         item.className = `panel-list-item ${selectedProject === p ? 'selected' : ''}`;
                         item.onclick = () => selectProject(p);
-                        
+
                         item.innerHTML = `
                             <span><i class="fas fa-folder" style="margin-right: 8px;"></i>${p}</span>
                             <i class="fas fa-trash-alt" style="opacity: 0.7; cursor: pointer;" onclick="deleteProject('${p}', event)"></i>
@@ -2587,7 +2686,7 @@
 
             if (notesContainer) {
                 notesContainer.innerHTML = '';
-                
+
                 if (!selectedProject) {
                     titleEl.textContent = 'Proje Notları';
                     if (addBtn) addBtn.style.display = 'none';
@@ -2611,10 +2710,10 @@
                     projectNotes.forEach(note => {
                         const noteCard = document.createElement('div');
                         noteCard.className = 'project-note-card';
-                        
+
                         const isCustom = String(note.id).startsWith('custom-');
-                        const deleteHandler = isCustom ? `deleteCustomNote('${note.id}')` : `if(confirm('Bu notu silmek istediğinizden emin misiniz?')) { window.location.href='${note.deleteUrl}'; }`;
-                        
+                        const deleteHandler = isCustom ? `deleteCustomNote('${note.id}')` : `window.location.href='${note.deleteUrl}';`;
+
                         noteCard.innerHTML = `
                             <div style="display: flex; justify-content: space-between; align-items: start;">
                                 <h4 style="font-weight: 700; color: var(--dark);">${note.title}</h4>
@@ -2623,8 +2722,8 @@
                             <p style="font-size: 0.85rem; color: var(--dark);">${note.content}</p>
                             <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
                                 <span class="task-badge category">${note.categoryDisplay}</span>
-                                <span class="task-badge" style="background: rgba(99,102,241,0.1); color: var(--primary);">Öncelik: ${note.priorityDisplay}</span>
-                                ${note.dueDateDisplay ? `<span class="task-badge" style="background: rgba(16,185,129,0.1); color: var(--success);"><i class="far fa-calendar"></i> Bitiş: ${note.dueDateDisplay}</span>` : ''}
+                                <span class="task-badge" style="background: rgba(99,102,241,0.1); color: var(--primary);">${UI_LANG[currentLang]['priority-badge']}${note.priorityDisplay}</span>
+                                ${note.dueDateDisplay ? `<span class="task-badge" style="background: rgba(16,185,129,0.1); color: var(--success);"><i class="far fa-calendar"></i> ${(UI_LANG[currentLang]['due-badge'] || 'Bitiş: ')}${note.dueDateDisplay}</span>` : ''}
                             </div>
                         `;
                         notesContainer.appendChild(noteCard);
@@ -2641,7 +2740,7 @@
             // Load saved note for this specific date
             const agendaData = JSON.parse(localStorage.getItem('agenda_diary_data')) || {};
             const text = agendaData[selectedAgendaDate] || `Bugün (${selectedAgendaDate.split('-').reverse().join('.')}) yapacaklarımı buraya gerçek bir ajanda gibi yazıyorum...`;
-            
+
             const editor = document.getElementById('notebook-page-content');
             if (editor) {
                 editor.innerHTML = text;
@@ -2655,7 +2754,7 @@
 
             const text = editor.innerHTML;
             const agendaData = JSON.parse(localStorage.getItem('agenda_diary_data')) || {};
-            
+
             agendaData[selectedAgendaDate] = text;
             localStorage.setItem('agenda_diary_data', JSON.stringify(agendaData));
         }
@@ -2663,7 +2762,7 @@
         function changeAgendaFont() {
             selectedAgendaFont = document.getElementById('agenda_font').value;
             localStorage.setItem('selected_agenda_font', selectedAgendaFont);
-            
+
             const editor = document.getElementById('notebook-page-content');
             if (editor) {
                 editor.style.fontFamily = selectedAgendaFont;
@@ -2679,8 +2778,6 @@
             }
             activeCollabRoom = roomId;
             localStorage.setItem('active_collab_room', roomId);
-            
-            alert(`Oda oluşturuldu: ${roomId}`);
             renderCollabRoomDetails();
         }
 
@@ -2693,17 +2790,14 @@
 
             activeCollabRoom = inputVal;
             localStorage.setItem('active_collab_room', inputVal);
-            
+
             document.getElementById('collab_join_id').value = '';
-            alert(`Odaya katılın dı: ${inputVal}`);
             renderCollabRoomDetails();
         }
 
         function copyCollabCode() {
             if (!activeCollabRoom) return;
-            navigator.clipboard.writeText(activeCollabRoom).then(() => {
-                alert('Oda kodu panoya kopyalandı!');
-            });
+            navigator.clipboard.writeText(activeCollabRoom);
         }
 
         function openCollabNoteInputs() {
@@ -2746,13 +2840,11 @@
         }
 
         function deleteCollabNote(noteId) {
-            if (confirm('Bu ortak notu silmek istediğinizden emin misiniz?')) {
-                const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
-                if (collabNotesData[activeCollabRoom]) {
-                    collabNotesData[activeCollabRoom] = collabNotesData[activeCollabRoom].filter(n => n.id !== noteId);
-                    localStorage.setItem('collab_rooms_notes', JSON.stringify(collabNotesData));
-                    renderCollabNotesList();
-                }
+            const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
+            if (collabNotesData[activeCollabRoom]) {
+                collabNotesData[activeCollabRoom] = collabNotesData[activeCollabRoom].filter(n => n.id !== noteId);
+                localStorage.setItem('collab_rooms_notes', JSON.stringify(collabNotesData));
+                renderCollabNotesList();
             }
         }
 
@@ -2760,7 +2852,7 @@
             const displayBox = document.getElementById('active-room-display');
             const codeText = document.getElementById('active-room-code-text');
             const addBtn = document.getElementById('btn-add-collab-note');
-            
+
             if (!activeCollabRoom) {
                 if (displayBox) displayBox.style.display = 'none';
                 if (addBtn) addBtn.style.display = 'none';
@@ -2777,25 +2869,37 @@
         function renderCollabNotesList() {
             const container = document.getElementById('collab-notes-container');
             const titleEl = document.getElementById('collab-notes-title');
-            
+
             if (!container) return;
             container.innerHTML = '';
 
+            const dict = UI_LANG[currentLang];
+
             if (!activeCollabRoom) {
-                titleEl.textContent = 'Ortak Notlar';
-                container.innerHTML = '<div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">Lütfen sol taraftan bir odaya katılın veya yeni bir tane oluşturun.</div>';
+                if (titleEl) titleEl.textContent = dict['collab-notes-title'];
+                const placeholderText = currentLang === 'en'
+                    ? 'Please join a collaboration room from the left panel or create a new one.'
+                    : 'Lütfen sol taraftan bir ortak çalışma odasına katılın veya yeni bir tane oluşturun.';
+                container.innerHTML = `<div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">${placeholderText}</div>`;
                 return;
             }
 
-            titleEl.textContent = `"${activeCollabRoom}" Odası Ortak Notları`;
+            if (titleEl) {
+                titleEl.textContent = currentLang === 'en'
+                    ? `Shared Notes of Room "${activeCollabRoom}"`
+                    : `"${activeCollabRoom}" Odası Ortak Notları`;
+            }
 
             const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
             const notes = collabNotesData[activeCollabRoom] || [];
 
             if (notes.length === 0) {
+                const noNotesText = currentLang === 'en'
+                    ? 'There are no shared notes in this room yet. Add the first one using the button on the top right!'
+                    : 'Bu odada henüz ortak bir not yok. Sağ üstteki butondan ilk ortak notu ekleyin!';
                 container.innerHTML = `
                     <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
-                        Bu odada henüz ortak bir not yok. Sağ üstteki butondan ilk ortak notu ekleyin!
+                        ${noNotesText}
                     </div>
                 `;
                 return;
@@ -2805,7 +2909,7 @@
                 const card = document.createElement('div');
                 card.className = 'project-note-card';
                 card.style.borderLeft = '4px solid var(--primary)';
-                
+
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start;">
                         <h4 style="font-weight: 700; color: var(--dark);">${n.title}</h4>
@@ -2817,6 +2921,437 @@
                 container.appendChild(card);
             });
         }
+
+        // --- Translation & Localization System ---
+        let currentLang = localStorage.getItem('language') || 'tr';
+
+        const UI_LANG = {
+            tr: {
+                "sidebar-profile": "Profil Ayarları",
+                "sidebar-program": "Programım",
+                "sidebar-notlarim": "Notlarım",
+                "sidebar-ajandam": "Ajandam (Tarihli)",
+                "sidebar-etkinlikler": "Etkinlikler",
+                "sidebar-analiz": "Analiz",
+                "sidebar-projects": "Projelerim",
+                "sidebar-collab": "Ortak Alan",
+                "sidebar-dilek": "Dilek ve Şikayet",
+                "sidebar-settings": "Ayarlar",
+                "sidebar-logout": "Güvenli Çıkış",
+                "topbar-subtitle": "Kusursuz Kişisel Asistanınız",
+                "topbar-profile": "Profil Ayarları",
+                "topbar-logout": "Çıkış Yap",
+                "search-placeholder": "Notlarında veya etiketlerde ara...",
+                "title-program": "Haftalık Programım",
+                "label-stats": "İstatistikler",
+                "label-filter-search": "Ara",
+                "search-input-placeholder": "Başlık veya içerikte ara...",
+                "label-filter-priority": "Önem Seviyesi",
+                "label-filter-category": "Kategori",
+                "label-filter-tag": "Etiket",
+                "filter-priority-all": "Tümü",
+                "filter-priority-high": "Yüksek",
+                "filter-priority-medium": "Orta",
+                "filter-priority-low": "Düşük",
+                "tab-filter-completed": "Tamamlanan Notlar",
+                "tab-filter-active": "Aktif Notlar",
+                "tab-filter-all": "Tümü",
+                "btn-today": "Bugün",
+                "btn-week": "Bu Hafta",
+                "btn-overdue": "Gecikmişler",
+                "label-chart-priority": "Önem Dağılımı",
+                "label-chart-high": "Yüksek Önemli",
+                "label-chart-today": "Bugünkü Görevler",
+                "title-notes": "Ajanda & Günlük",
+                "label-font-select": "Ajanda Fontu",
+                "btn-notes-save": "Hafızaya Kaydet",
+                "title-collab": "Ortak Çalışma Odası",
+                "label-room-code": "Oda Kodunuz",
+                "btn-create-room": "Yeni Oda Oluştur",
+                "btn-join-room": "Odaya Katıl",
+                "btn-add-room-note": "Bu Odaya Not Ekle",
+                "title-projects": "Projelerim",
+                "btn-add-project-note": "Bu Projeye Not Ekle",
+                "project-placeholder": "Lütfen sol panelden bir proje seçin veya yeni bir tane ekleyin.",
+                "title-settings": "Ayarlar ve Profil",
+                "title-profile-settings": "Profil Ayarları",
+                "label-username": "Kullanıcı Adı",
+                "label-email": "E-posta Adresi",
+                "label-phone": "Telefon Numarası",
+                "btn-save-profile": "Bilgileri Kaydet",
+                "label-dark-theme": "Koyu Tema",
+                "btn-theme-change": "Değiştir",
+                "label-lang-header": "Dil / Language",
+                "label-lang-select": "Uygulama Dili / App Language",
+                "title-data-mgmt": "Veri Yönetimi",
+                "btn-export": "Dışa Aktar (JSON)",
+                "btn-import": "İçe Aktar (JSON)",
+                "modal-title-new": "Yeni Not Oluştur",
+                "label-form-title": "Not Başlığı",
+                "label-form-content": "Detaylar",
+                "label-form-category": "Kategori",
+                "label-form-priority": "Önem Seviyesi",
+                "label-form-due": "Bitiş Tarihi",
+                "label-form-time": "Saat Ekle",
+                "label-form-start": "Başlangıç Saati",
+                "label-form-end": "Bitiş Saati",
+                "label-form-project": "Proje Seçin",
+                "btn-form-save": "Kaydet",
+                "btn-form-cancel": "İptal",
+
+                "header-dates": "Tarihler",
+                "header-notes": "Notlarım",
+                "header-agenda": "Ajandam (Tarihli)",
+                "label-agenda-date": "Ajanda Tarihi:",
+                "label-agenda-font": "Yazı Tipi:",
+                "header-events": "Etkinlikler",
+                "label-add-event": "Etkinlik Ekle",
+                "label-event-title": "Etkinlik Adı",
+                "label-event-date": "Tarih",
+                "label-event-desc": "Açıklama / Konum",
+                "btn-add-event-submit": "Etkinlik Ekle",
+                "label-events-list": "Etkinlik Listesi",
+                "header-analysis": "Analiz",
+                "label-stat-total": "Toplam Not",
+                "label-stat-completed": "Tamamlanan",
+                "label-stat-active": "Aktif",
+                "label-stat-overdue": "Gecikmiş",
+                "label-chart-percent": "Tamamlama Oranı",
+                "header-projects": "Projelerim",
+                "label-projects-list-title": "Projeler",
+                "header-collab": "Ortak Alan",
+                "label-collab-title": "Ortak Çalışma Odası",
+                "btn-create-collab-room": "Yeni Ortak Alan Oluştur",
+                "label-collab-or": "- veya -",
+                "label-collab-join": "Oda Kimliği/Kodu ile Katıl",
+                "btn-collab-join": "Katıl",
+                "label-collab-active-room": "Aktif Oda:",
+                "btn-collab-copy-code": "Kodu Kopyala",
+                "header-feedback": "Dilek ve Şikayet",
+                "label-feedback-subject": "Konu",
+                "label-feedback-message": "Mesajınız",
+                "btn-feedback-submit": "Geri Bildirim Gönder",
+                "header-settings": "Ayarlar ve Profil",
+                "btn-add-note-shortcut": "Yeni Not Ekle",
+
+                "label-form-has-time-range": "Saat aralığı belirt",
+                "label-form-start-time": "Başlangıç",
+                "label-form-end-time": "Bitiş",
+                "label-event-start-time": "Başlangıç",
+                "label-event-end-time": "Bitiş",
+                "profile_email": "E-posta tanımlanmamış",
+                "profile_phone": "Telefon tanımlanmamış",
+
+                "collab-notes-title": "Ortak Notlar",
+                "btn-add-collab-note": "Not Ekle",
+                "label-collab-note-title": "Not Başlığı",
+                "label-collab-note-content": "Not Detayı",
+                "btn-collab-note-cancel": "İptal",
+                "btn-collab-note-save": "Odaya Not Ekle",
+
+                // Dynamic
+                "priority-badge": "Önem Seviyesi: ",
+                "priority-high": "Yüksek",
+                "priority-medium": "Orta",
+                "priority-low": "Düşük",
+                "due-badge": "Bitiş: ",
+                "empty-proj-notes": "Bu projeye ait henüz bir not bulunmuyor. Sağ üstteki butondan ilk notunuzu ekleyin!"
+            },
+            en: {
+                "sidebar-profile": "Profile Settings",
+                "sidebar-program": "My Schedule",
+                "sidebar-notlarim": "My Notes",
+                "sidebar-ajandam": "Calendar Journal",
+                "sidebar-etkinlikler": "Events",
+                "sidebar-analiz": "Analytics",
+                "sidebar-projects": "My Projects",
+                "sidebar-collab": "Shared Area",
+                "sidebar-dilek": "Feedback & Support",
+                "sidebar-settings": "Settings",
+                "sidebar-logout": "Safe Logout",
+                "topbar-subtitle": "Your Perfect Personal Assistant",
+                "topbar-profile": "Profile Settings",
+                "topbar-logout": "Logout",
+                "search-placeholder": "Search in notes or tags...",
+                "title-program": "Weekly Schedule",
+                "label-stats": "Statistics",
+                "label-filter-search": "Search",
+                "search-input-placeholder": "Search in title or content...",
+                "label-filter-priority": "Importance Level",
+                "label-filter-category": "Category",
+                "label-filter-tag": "Tag",
+                "filter-priority-all": "All",
+                "filter-priority-high": "High",
+                "filter-priority-medium": "Medium",
+                "filter-priority-low": "Low",
+                "tab-filter-completed": "Completed Notes",
+                "tab-filter-active": "Active Notes",
+                "tab-filter-all": "All",
+                "btn-today": "Today",
+                "btn-week": "This Week",
+                "btn-overdue": "Overdue",
+                "label-chart-priority": "Importance Dist.",
+                "label-chart-high": "High Importance",
+                "label-chart-today": "Today's Tasks",
+                "title-notes": "Notebook & Journal",
+                "label-font-select": "Journal Font",
+                "btn-notes-save": "Save to Memory",
+                "title-collab": "Collaboration Room",
+                "label-room-code": "Your Room Code",
+                "btn-create-room": "Create New Room",
+                "btn-join-room": "Join Room",
+                "btn-add-room-note": "Add Note to This Room",
+                "title-projects": "My Projects",
+                "btn-add-project-note": "Add Note to This Project",
+                "project-placeholder": "Please select a project from the left panel or add a new one.",
+                "title-settings": "Settings and Profile",
+                "title-profile-settings": "Profile Settings",
+                "label-username": "Username",
+                "label-email": "Email Address",
+                "label-phone": "Phone Number",
+                "btn-save-profile": "Save Info",
+                "label-dark-theme": "Dark Theme",
+                "btn-theme-change": "Change",
+                "label-lang-header": "Language / Dil",
+                "label-lang-select": "App Language / Uygulama Dili",
+                "title-data-mgmt": "Data Management",
+                "btn-export": "Export (JSON)",
+                "btn-import": "Import (JSON)",
+                "modal-title-new": "Create New Note",
+                "label-form-title": "Note Title",
+                "label-form-content": "Details",
+                "label-form-category": "Category",
+                "label-form-priority": "Importance Level",
+                "label-form-due": "Due Date",
+                "label-form-time": "Add Time",
+                "label-form-start": "Start Time",
+                "label-form-end": "End Time",
+                "label-form-project": "Select Project",
+                "btn-form-save": "Save",
+                "btn-form-cancel": "Cancel",
+
+                "header-dates": "Dates",
+                "header-notes": "My Notes",
+                "header-agenda": "My Journal",
+                "label-agenda-date": "Journal Date:",
+                "label-agenda-font": "Font Type:",
+                "header-events": "Events",
+                "label-add-event": "Add Event",
+                "label-event-title": "Event Title",
+                "label-event-date": "Date",
+                "label-event-desc": "Description / Location",
+                "btn-add-event-submit": "Add Event",
+                "label-events-list": "Events List",
+                "header-analysis": "Analytics",
+                "label-stat-total": "Total Notes",
+                "label-stat-completed": "Completed",
+                "label-stat-active": "Active",
+                "label-stat-overdue": "Overdue",
+                "label-chart-percent": "Completion Rate",
+                "header-projects": "My Projects",
+                "label-projects-list-title": "Projects",
+                "header-collab": "Shared Area",
+                "label-collab-title": "Collaboration Room",
+                "btn-create-collab-room": "Create New Room",
+                "label-collab-or": "- or -",
+                "label-collab-join": "Join with Room Code",
+                "btn-collab-join": "Join",
+                "label-collab-active-room": "Active Room:",
+                "btn-collab-copy-code": "Copy Code",
+                "header-feedback": "Feedback & Support",
+                "label-feedback-subject": "Subject",
+                "label-feedback-message": "Your Message",
+                "btn-feedback-submit": "Send Feedback",
+                "header-settings": "Settings & Profile",
+                "btn-add-note-shortcut": "New Note",
+
+                "label-form-has-time-range": "Specify time range",
+                "label-form-start-time": "Start",
+                "label-form-end-time": "End",
+                "label-event-start-time": "Start",
+                "label-event-end-time": "End",
+                "profile_email": "No email set",
+                "profile_phone": "No phone set",
+
+                "collab-notes-title": "Shared Notes",
+                "btn-add-collab-note": "Add Note",
+                "label-collab-note-title": "Note Title",
+                "label-collab-note-content": "Note Details",
+                "btn-collab-note-cancel": "Cancel",
+                "btn-collab-note-save": "Add Note to Room",
+
+                // Dynamic
+                "priority-badge": "Importance: ",
+                "priority-high": "High",
+                "priority-medium": "Medium",
+                "priority-low": "Low",
+                "due-badge": "Due: ",
+                "empty-proj-notes": "There are no notes in this project yet. Use the top right button to add your first note!"
+            }
+        };
+
+        function getPriorityLabel(priorityValue) {
+            const dict = UI_LANG[currentLang];
+            const cleanVal = String(priorityValue).toLowerCase().trim();
+            if (cleanVal === 'high' || cleanVal === 'yüksek') return dict['priority-high'];
+            if (cleanVal === 'medium' || cleanVal === 'orta') return dict['priority-medium'];
+            if (cleanVal === 'low' || cleanVal === 'düşük') return dict['priority-low'];
+            return priorityValue;
+        }
+
+        function getCategoryLabel(catValue) {
+            const cleanVal = String(catValue).toLowerCase().trim();
+            const dict = {
+                tr: { personal: "Kişisel", work: "İş", shopping: "Alışveriş", health: "Sağlık", study: "Eğitim", other: "Diğer" },
+                en: { personal: "Personal", work: "Work", shopping: "Shopping", health: "Health", study: "Study", other: "Other" }
+            };
+            if (cleanVal === 'personal' || cleanVal === 'kişisel') return dict[currentLang].personal;
+            if (cleanVal === 'work' || cleanVal === 'iş') return dict[currentLang].work;
+            if (cleanVal === 'shopping' || cleanVal === 'alışveriş') return dict[currentLang].shopping;
+            if (cleanVal === 'health' || cleanVal === 'sağlık') return dict[currentLang].health;
+            if (cleanVal === 'study' || cleanVal === 'eğitim') return dict[currentLang].study;
+            if (cleanVal === 'other' || cleanVal === 'diğer') return dict[currentLang].other;
+            return catValue;
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            applyLanguage();
+        }
+
+        function applyLanguage() {
+            const dict = UI_LANG[currentLang];
+
+            // Set select value
+            const selectEl = document.getElementById('app_language');
+            if (selectEl) selectEl.value = currentLang;
+
+            // Translate static elements with keys
+            Object.keys(dict).forEach(key => {
+                const el = document.getElementById(key);
+                if (el) {
+                    if (el.tagName === 'INPUT' && el.placeholder) {
+                        el.placeholder = dict[key];
+                    } else {
+                        const icon = el.querySelector('i');
+                        if (icon) {
+                            const iconClone = icon.cloneNode(true);
+                            el.innerHTML = '';
+                            el.appendChild(iconClone);
+                            el.appendChild(document.createTextNode(' ' + dict[key]));
+                        } else {
+                            el.textContent = dict[key];
+                        }
+                    }
+                }
+            });
+
+            // Sidebar menu spans
+            const sidebarMap = {
+                'menu-programim': 'sidebar-program',
+                'menu-notlarim': 'sidebar-notlarim',
+                'menu-ajandam': 'sidebar-ajandam',
+                'menu-etkinlikler': 'sidebar-etkinlikler',
+                'menu-analiz': 'sidebar-analiz',
+                'menu-projelerim': 'sidebar-projects',
+                'menu-ortakalan': 'sidebar-collab',
+                'menu-dilek': 'sidebar-dilek',
+                'menu-ayarlar': 'sidebar-settings'
+            };
+            Object.keys(sidebarMap).forEach(menuId => {
+                const menuItem = document.getElementById(menuId);
+                if (menuItem) {
+                    const span = menuItem.querySelector('span');
+                    if (span) span.textContent = dict[sidebarMap[menuId]];
+                }
+            });
+
+            // Document title & placeholders
+            const searchField = document.getElementById('search-input-field');
+            if (searchField) searchField.placeholder = dict['search-input-placeholder'];
+
+            const filterPriorityLabel = document.getElementById('label-filter-priority');
+            if (filterPriorityLabel) filterPriorityLabel.textContent = dict['label-filter-priority'];
+
+            const filterCategoryLabel = document.getElementById('label-filter-category');
+            if (filterCategoryLabel) filterCategoryLabel.textContent = dict['label-filter-category'];
+
+            const filterPriorityAll = document.getElementById('filter-priority-all');
+            if (filterPriorityAll) filterPriorityAll.textContent = dict['filter-priority-all'];
+            const filterPriorityHigh = document.getElementById('filter-priority-high');
+            if (filterPriorityHigh) filterPriorityHigh.textContent = dict['filter-priority-high'];
+            const filterPriorityMedium = document.getElementById('filter-priority-medium');
+            if (filterPriorityMedium) filterPriorityMedium.textContent = dict['filter-priority-medium'];
+            const filterPriorityLow = document.getElementById('filter-priority-low');
+            if (filterPriorityLow) filterPriorityLow.textContent = dict['filter-priority-low'];
+
+            const chartPriority = document.getElementById('label-chart-priority');
+            if (chartPriority) chartPriority.textContent = dict['label-chart-priority'];
+            const chartHigh = document.getElementById('label-chart-high');
+            if (chartHigh) chartHigh.textContent = dict['label-chart-high'];
+
+            const formPriorityLabel = document.getElementById('label-form-priority');
+            if (formPriorityLabel) formPriorityLabel.textContent = dict['label-form-priority'];
+
+            const darkThemeLabel = document.getElementById('label-dark-theme');
+            if (darkThemeLabel) darkThemeLabel.textContent = dict['label-dark-theme'];
+            const btnThemeChange = document.getElementById('btn-theme-change');
+            if (btnThemeChange) btnThemeChange.textContent = dict['btn-theme-change'];
+            const labelLangHeader = document.getElementById('label-lang-header');
+            if (labelLangHeader) labelLangHeader.textContent = dict['label-lang-header'];
+            const labelLangSelect = document.getElementById('label-lang-select');
+            if (labelLangSelect) labelLangSelect.textContent = dict['label-lang-select'];
+
+            // Translate Category option values dynamically
+            const categorySelects = document.querySelectorAll('select[name="category"], select#category');
+            const categoryTranslations = {
+                tr: {
+                    personal: "Kişisel",
+                    work: "İş",
+                    shopping: "Alışveriş",
+                    health: "Sağlık",
+                    study: "Eğitim",
+                    other: "Diğer"
+                },
+                en: {
+                    personal: "Personal",
+                    work: "Work",
+                    shopping: "Shopping",
+                    health: "Health",
+                    study: "Study",
+                    other: "Other"
+                }
+            };
+            categorySelects.forEach(select => {
+                const options = select.querySelectorAll('option');
+                options.forEach(opt => {
+                    const val = opt.value;
+                    if (categoryTranslations[currentLang][val]) {
+                        opt.textContent = categoryTranslations[currentLang][val];
+                    } else if (val === "") {
+                        opt.textContent = currentLang === 'en' ? "All" : "Tümü";
+                    }
+                });
+            });
+
+            // Re-render sections that contain dynamic text
+            if (typeof renderProjectsSection === 'function') {
+                renderProjectsSection();
+            }
+            if (typeof reloadAllData === 'function') {
+                reloadAllData();
+            }
+            if (typeof renderCollabNotesList === 'function') {
+                renderCollabNotesList();
+            }
+        }
+
+        // Run localization on load
+        document.addEventListener('DOMContentLoaded', () => {
+            applyLanguage();
+        });
     </script>
 </body>
+
 </html>

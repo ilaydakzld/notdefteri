@@ -132,7 +132,7 @@
             </div>
 
             <div class="form-group">
-                <label for="priority">Öncelik:</label>
+                <label for="priority">Önem Seviyesi:</label>
                 <select id="priority" name="priority">
                     {% for value, label in Note.PRIORITY_CHOICES %}
                         <option value="{{ value }}" {% if note.priority == value %}selected{% endif %}>{{ label }}</option>

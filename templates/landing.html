@@ -24,6 +24,14 @@
             --glass-blur: 16px;
         }
 
+        [data-theme="dark"] {
+            --light: #0f172a;
+            --dark: #f8fafc;
+            --glass-bg: rgba(15, 23, 42, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -39,6 +47,64 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body[data-theme="dark"] {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%);
+            color: #f1f5f9;
+        }
+
+        body[data-theme="dark"] header {
+            background: rgba(15, 23, 42, 0.55);
+        }
+
+        body[data-theme="dark"] .feature-card {
+            background: rgba(15, 23, 42, 0.55);
+        }
+
+        body[data-theme="dark"] .feature-card:hover {
+            background: rgba(30, 41, 59, 0.65);
+        }
+
+        body[data-theme="dark"] .feature-card p {
+            color: #cbd5e1;
+        }
+
+        body[data-theme="dark"] .step-card {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        body[data-theme="dark"] .tab-text p {
+            color: #cbd5e1;
+        }
+
+        body[data-theme="dark"] .tab-text ul li {
+            color: #cbd5e1;
+        }
+
+        body[data-theme="dark"] .mock-note {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        body[data-theme="dark"] .mock-note.event {
+            background: linear-gradient(135deg, #2e1065 0%, #4d1d4f 100%);
+        }
+
+        body[data-theme="dark"] .mock-note.agenda {
+            background: #27272a;
+            color: #f4f4f5;
+            background-image: linear-gradient(#3f3f46 1.5px, transparent 1.5px);
+        }
+
+        body[data-theme="dark"] footer {
+            background: rgba(15, 23, 42, 0.4);
+            color: #94a3b8;
+        }
+
+        body[data-theme="dark"] .hero p {
+            color: #cbd5e1;
         }
 
         /* Glass Header Navigation */
@@ -504,7 +570,10 @@
             <i class="fas fa-sticky-note"></i>
             Not Defteri
         </a>
-        <div class="nav-buttons">
+        <div class="nav-buttons" style="display: flex; align-items: center; gap: 15px;">
+            <button onclick="toggleTheme()" title="Temayı Değiştir" style="background: none; border: none; cursor: pointer; color: var(--dark); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 8px; border-radius: 50%; width: 40px; height: 40px; transition: background 0.2s ease;">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
             <a href="{% url 'login' %}" class="nav-btn login">Giriş Yap</a>
             <a href="{% url 'register' %}" class="nav-btn register">Kayıt Ol</a>
         </div>
@@ -565,7 +634,7 @@
                         <p>Zaman kolonları sayesinde görevlerinize saat aralıkları belirleyerek planlayın. Etkinliklerinizi ve projelerinizi takvim üzerinde listeleyin.</p>
                         <ul>
                             <li><i class="fas fa-check-circle"></i> Saat aralık belirtmeli görev kartları</li>
-                            <li><i class="fas fa-check-circle"></i> Yıldızlı (⭐) ve öncelikli etkinlik rozetleri</li>
+                            <li><i class="fas fa-check-circle"></i> Yıldızlı (⭐) ve önem seviyeli etkinlik rozetleri</li>
                             <li><i class="fas fa-check-circle"></i> Günlük not sayacı ve hızlı görev ekleme</li>
                         </ul>
                     </div>
@@ -665,5 +734,29 @@
     <footer>
         <p>&copy; 2026 Not Defteri Uygulaması. Tüm Hakları Saklıdır.</p>
     </footer>
+
+    <script>
+        // Apply saved theme immediately
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                if (icon) icon.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                if (icon) icon.className = 'fas fa-sun';
+            }
+        }
+    </script>
 </body>
 </html>
