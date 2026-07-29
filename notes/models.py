@@ -70,9 +70,11 @@ class Feedback(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     admin_reply = models.TextField(blank=True, null=True)
     replied_at = models.DateTimeField(null=True, blank=True)
+    is_deleted_by_admin = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created_at']
+
 
 
     def __str__(self):

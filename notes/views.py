@@ -346,7 +346,7 @@ def get_admin_feedbacks(request):
         return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
 
     status_filter = request.GET.get('status', 'all')
-    feedbacks = Feedback.objects.all().order_by('-created_at')
+    feedbacks = Feedback.objects.filter(is_deleted_by_admin=False).order_by('-created_at')
     if status_filter in ['pending', 'in_progress', 'resolved']:
         feedbacks = feedbacks.filter(status=status_filter)
 
@@ -364,11 +364,12 @@ def get_admin_feedbacks(request):
             'date': f.created_at.strftime('%d.%m.%Y %H:%M')
         })
 
+    active_feedbacks = Feedback.objects.filter(is_deleted_by_admin=False)
     stats = {
-        'total': Feedback.objects.count(),
-        'pending': Feedback.objects.filter(status='pending').count(),
-        'in_progress': Feedback.objects.filter(status='in_progress').count(),
-        'resolved': Feedback.objects.filter(status='resolved').count(),
+        'total': active_feedbacks.count(),
+        'pending': active_feedbacks.filter(status='pending').count(),
+        'in_progress': active_feedbacks.filter(status='in_progress').count(),
+        'resolved': active_feedbacks.filter(status='resolved').count(),
     }
 
     return JsonResponse({'success': True, 'feedbacks': data, 'stats': stats})
@@ -428,9 +429,11 @@ def delete_feedback(request, feedback_id):
 
     if request.method == 'POST':
         feedback = get_object_or_404(Feedback, id=feedback_id)
-        feedback.delete()
+        feedback.is_deleted_by_admin = True
+        feedback.save()
         return JsonResponse({'success': True})
     return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
 
 
 
