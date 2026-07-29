@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
-from .models import Note
+from .models import Note, CollabNote, Feedback
 from django.db.models import Q, Count
+
+
 from django.http import JsonResponse, HttpResponse
 from datetime import date, datetime, timedelta
 import json
@@ -232,5 +234,175 @@ def landing(request):
     if request.user.is_authenticated:
         return redirect('notehome')
     return render(request, 'landing.html')
+
+
+@login_required
+def get_collab_notes(request, room_id):
+    room_id = room_id.strip().upper()
+    notes = CollabNote.objects.filter(room_id=room_id).order_by('-created_at')
+    data = []
+    for n in notes:
+        data.append({
+            'id': n.id,
+            'title': n.title,
+            'content': n.content,
+            'author': n.author_name or (n.author.username if n.author else 'Anonim'),
+            'date': n.created_at.strftime('%d.%m.%Y %H:%M')
+        })
+    return JsonResponse({'success': True, 'notes': data})
+
+
+@login_required
+def add_collab_note(request, room_id):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body.decode('utf-8')) if request.body else {}
+            title = body.get('title', '').strip()
+            content = body.get('content', '').strip()
+        except Exception:
+            title = request.POST.get('title', '').strip()
+            content = request.POST.get('content', '').strip()
+
+        if not title:
+            return JsonResponse({'success': False, 'error': 'Başlık gereklidir.'}, status=400)
+
+        room_id = room_id.strip().upper()
+        author_name = request.user.username if request.user.is_authenticated else 'Anonim'
+
+        note = CollabNote.objects.create(
+            room_id=room_id,
+            author=request.user if request.user.is_authenticated else None,
+            author_name=author_name,
+            title=title,
+            content=content
+        )
+        return JsonResponse({
+            'success': True,
+            'note': {
+                'id': note.id,
+                'title': note.title,
+                'content': note.content,
+                'author': note.author_name,
+                'date': note.created_at.strftime('%d.%m.%Y %H:%M')
+            }
+        })
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
+def delete_collab_note(request, note_id):
+    if request.method == 'POST':
+        note = get_object_or_404(CollabNote, id=note_id)
+        note.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
+def submit_feedback(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body.decode('utf-8')) if request.body else {}
+            subject = body.get('subject', '').strip()
+            message = body.get('message', '').strip()
+        except Exception:
+            subject = request.POST.get('subject', '').strip()
+            message = request.POST.get('message', '').strip()
+
+        if not subject or not message:
+            return JsonResponse({'success': False, 'error': 'Konu ve mesaj zorunludur.'}, status=400)
+
+        Feedback.objects.create(
+            user=request.user,
+            user_name=request.user.username or 'Anonim',
+            subject=subject,
+            message=message
+        )
+        return JsonResponse({'success': True, 'message': 'Geri bildiriminiz başarıyla alındı.'})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
+def get_user_feedbacks(request):
+    feedbacks = Feedback.objects.filter(user=request.user).order_by('-created_at')
+    data = []
+    for f in feedbacks:
+        data.append({
+            'id': f.id,
+            'subject': f.subject,
+            'message': f.message,
+            'status': f.status,
+            'status_display': f.get_status_display(),
+            'date': f.created_at.strftime('%d.%m.%Y %H:%M')
+        })
+    return JsonResponse({'success': True, 'feedbacks': data})
+
+
+@login_required
+def get_admin_feedbacks(request):
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
+
+    status_filter = request.GET.get('status', 'all')
+    feedbacks = Feedback.objects.all().order_by('-created_at')
+    if status_filter in ['pending', 'in_progress', 'resolved']:
+        feedbacks = feedbacks.filter(status=status_filter)
+
+    data = []
+    for f in feedbacks:
+        data.append({
+            'id': f.id,
+            'user': f.user_name or (f.user.username if f.user else 'Anonim'),
+            'subject': f.subject,
+            'message': f.message,
+            'status': f.status,
+            'status_display': f.get_status_display(),
+            'date': f.created_at.strftime('%d.%m.%Y %H:%M')
+        })
+
+    stats = {
+        'total': Feedback.objects.count(),
+        'pending': Feedback.objects.filter(status='pending').count(),
+        'in_progress': Feedback.objects.filter(status='in_progress').count(),
+        'resolved': Feedback.objects.filter(status='resolved').count(),
+    }
+
+    return JsonResponse({'success': True, 'feedbacks': data, 'stats': stats})
+
+
+@login_required
+def update_feedback_status(request, feedback_id):
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
+
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body.decode('utf-8')) if request.body else {}
+            new_status = body.get('status')
+        except Exception:
+            new_status = request.POST.get('status')
+
+        if new_status not in ['pending', 'in_progress', 'resolved']:
+            return JsonResponse({'success': False, 'error': 'Geçersiz durum.'}, status=400)
+
+        feedback = get_object_or_404(Feedback, id=feedback_id)
+        feedback.status = new_status
+        feedback.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
+def delete_feedback(request, feedback_id):
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
+
+    if request.method == 'POST':
+        feedback = get_object_or_404(Feedback, id=feedback_id)
+        feedback.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
 
 

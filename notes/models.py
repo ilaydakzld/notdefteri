@@ -38,3 +38,41 @@ class Note(models.Model):
         if self.tags:
             return [tag.strip() for tag in self.tags.split(',')]
         return []
+
+
+class CollabNote(models.Model):
+    room_id = models.CharField(max_length=50, db_index=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    author_name = models.CharField(max_length=150, default='Anonim')
+    title = models.CharField(max_length=200)
+    content = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"[{self.room_id}] {self.title}"
+
+
+class Feedback(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Beklemede'),
+        ('in_progress', 'İnceleniyor'),
+        ('resolved', 'Çözüldü'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user_name = models.CharField(max_length=150, blank=True)
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"[{self.get_status_display()}] {self.subject}"
+
+

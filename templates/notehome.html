@@ -1388,7 +1388,15 @@
                         <i class="far fa-envelope"></i> <span>Dilek ve Şikayet</span>
                     </a>
                 </li>
+                {% if user.is_superuser %}
+                <li class="menu-item" id="menu-gelentalepler">
+                    <a href="#" onclick="switchTab('gelentalepler')" style="color: #f59e0b;">
+                        <i class="fas fa-inbox"></i> <span style="font-weight: 700;">Gelen Talepler (Yönetici)</span>
+                    </a>
+                </li>
+                {% endif %}
                 <li class="menu-item" id="menu-ayarlar">
+
                     <a href="#" onclick="switchTab('ayarlar')">
                         <i class="fas fa-sliders-h"></i> <span>Ayarlar</span>
                     </a>
@@ -1805,17 +1813,57 @@
                     <div class="feedback-form">
                         <div class="form-group">
                             <label id="label-feedback-subject">Konu</label>
-                            <input type="text" placeholder="Görüşünüzün başlığı...">
+                            <input type="text" id="feedback_subject" placeholder="Görüşünüzün başlığı...">
                         </div>
                         <div class="form-group">
                             <label id="label-feedback-message">Mesajınız</label>
-                            <textarea
+                            <textarea id="feedback_message"
                                 placeholder="Geliştirilmesini istediğiniz özellikleri veya karşılaştığınız sorunları buraya yazabilirsiniz..."></textarea>
                         </div>
                         <button type="button" class="btn-save" id="btn-feedback-submit"
-                            onclick="alert('Geri bildiriminiz gönderildi! Teşekkür ederiz.')">Geri Bildirim Gönder</button>
+                            onclick="submitFeedback()">Geri Bildirim Gönder</button>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 15px;">Gönderdiğim Taleplerim</h3>
+                        <div id="user-feedbacks-container" style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Dynamic user feedbacks -->
+                        </div>
                     </div>
                 </div>
+
+                {% if user.is_superuser %}
+                <!-- TAB: Gelen Talepler (Superuser Yönetici Paneli) -->
+                <div class="tab-panel" id="panel-gelentalepler">
+                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>Gelen Dilek ve Şikayetler (Yönetici Paneli)</h2>
+                        <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
+                            <i class="fas fa-user-shield"></i> Yönetici Modu
+                        </span>
+                    </div>
+
+                    <!-- Filter Stats -->
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <button class="btn-save" onclick="filterAdminFeedbacks('all')" style="width: auto; padding: 8px 16px; background: var(--primary);">
+                            Tümü (<span id="stat-admin-total">0</span>)
+                        </button>
+                        <button class="btn-cancel" onclick="filterAdminFeedbacks('pending')" style="width: auto; padding: 8px 16px; border: 1px solid #ef4444; color: #ef4444;">
+                            Beklemede (<span id="stat-admin-pending">0</span>)
+                        </button>
+                        <button class="btn-cancel" onclick="filterAdminFeedbacks('in_progress')" style="width: auto; padding: 8px 16px; border: 1px solid #f59e0b; color: #f59e0b;">
+                            İnceleniyor (<span id="stat-admin-inprogress">0</span>)
+                        </button>
+                        <button class="btn-cancel" onclick="filterAdminFeedbacks('resolved')" style="width: auto; padding: 8px 16px; border: 1px solid #10b981; color: #10b981;">
+                            Çözüldü (<span id="stat-admin-resolved">0</span>)
+                        </button>
+                    </div>
+
+                    <div id="admin-feedbacks-container" style="display: flex; flex-direction: column; gap: 16px;">
+                        <!-- Dynamic superuser admin feedbacks list -->
+                    </div>
+                </div>
+                {% endif %}
+
 
                 <!-- TAB: Ayarlar & Profil Ayarları -->
                 <div class="tab-panel" id="panel-ayarlar">
@@ -2130,7 +2178,12 @@
                 loadAgendaPage();
             } else if (tabId === 'ortakalan') {
                 renderCollabRoomDetails();
+            } else if (tabId === 'dilek') {
+                loadUserFeedbacks();
+            } else if (tabId === 'gelentalepler') {
+                loadAdminFeedbacks('all');
             }
+
 
             // Close mobile sidebar after navigation
             if (window.innerWidth <= 992) {
@@ -2769,7 +2822,18 @@
             }
         }
 
-        // NEW: 5. ORTAK ALAN LOGIC (Room Create/Join and shared Notes)
+        // NEW: 5. ORTAK ALAN LOGIC (Room Create/Join and shared Notes with Backend Sync)
+        function getCsrfToken() {
+            const el = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (el) return el.value;
+            const cookies = document.cookie.split(';');
+            for (let c of cookies) {
+                c = c.trim();
+                if (c.startsWith('csrftoken=')) return c.substring('csrftoken='.length);
+            }
+            return '';
+        }
+
         function createCollabRoom() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let roomId = '';
@@ -2807,44 +2871,57 @@
             }
         }
 
-        function addCollabNote() {
+        async function addCollabNote() {
             const title = document.getElementById('collab_note_title').value.trim();
             const content = document.getElementById('collab_note_content').value.trim();
 
             if (!title) {
-                alert('Lütfen bir başlık girin.');
+                alert(currentLang === 'en' ? 'Please enter a title.' : 'Lütfen bir başlık girin.');
                 return;
             }
 
-            const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
-            if (!collabNotesData[activeCollabRoom]) {
-                collabNotesData[activeCollabRoom] = [];
+            if (!activeCollabRoom) {
+                alert(currentLang === 'en' ? 'No active room.' : 'Aktif bir oda yok.');
+                return;
             }
 
-            const newNote = {
-                id: 'collab-note-' + Date.now(),
-                title: title,
-                content: content,
-                date: new Date().toLocaleString('tr-TR')
-            };
-
-            collabNotesData[activeCollabRoom].push(newNote);
-            localStorage.setItem('collab_rooms_notes', JSON.stringify(collabNotesData));
-
-            // Clear inputs
-            document.getElementById('collab_note_title').value = '';
-            document.getElementById('collab_note_content').value = '';
-            document.getElementById('collab-note-form-area').style.display = 'none';
-
-            renderCollabNotesList();
+            try {
+                const response = await fetch(`/collab/${activeCollabRoom}/add/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ title, content })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    document.getElementById('collab_note_title').value = '';
+                    document.getElementById('collab_note_content').value = '';
+                    document.getElementById('collab-note-form-area').style.display = 'none';
+                    renderCollabNotesList();
+                } else {
+                    alert(res.error || 'Hata oluştu');
+                }
+            } catch (err) {
+                console.error('Error adding collab note:', err);
+            }
         }
 
-        function deleteCollabNote(noteId) {
-            const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
-            if (collabNotesData[activeCollabRoom]) {
-                collabNotesData[activeCollabRoom] = collabNotesData[activeCollabRoom].filter(n => n.id !== noteId);
-                localStorage.setItem('collab_rooms_notes', JSON.stringify(collabNotesData));
-                renderCollabNotesList();
+        async function deleteCollabNote(noteId) {
+            try {
+                const response = await fetch(`/collab/note/${noteId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCsrfToken()
+                    }
+                });
+                const res = await response.json();
+                if (res.success) {
+                    renderCollabNotesList();
+                }
+            } catch (err) {
+                console.error('Error deleting collab note:', err);
             }
         }
 
@@ -2864,19 +2941,20 @@
             if (addBtn) addBtn.style.display = 'block';
 
             renderCollabNotesList();
+            startCollabPolling();
         }
 
-        function renderCollabNotesList() {
+        async function renderCollabNotesList() {
             const container = document.getElementById('collab-notes-container');
             const titleEl = document.getElementById('collab-notes-title');
 
             if (!container) return;
-            container.innerHTML = '';
 
-            const dict = UI_LANG[currentLang];
+            const dict = typeof UI_LANG !== 'undefined' ? UI_LANG[currentLang] : {};
 
             if (!activeCollabRoom) {
-                if (titleEl) titleEl.textContent = dict['collab-notes-title'];
+                container.innerHTML = '';
+                if (titleEl && dict) titleEl.textContent = dict['collab-notes-title'] || 'Ortak Notlar';
                 const placeholderText = currentLang === 'en'
                     ? 'Please join a collaboration room from the left panel or create a new one.'
                     : 'Lütfen sol taraftan bir ortak çalışma odasına katılın veya yeni bir tane oluşturun.';
@@ -2890,37 +2968,236 @@
                     : `"${activeCollabRoom}" Odası Ortak Notları`;
             }
 
-            const collabNotesData = JSON.parse(localStorage.getItem('collab_rooms_notes')) || {};
-            const notes = collabNotesData[activeCollabRoom] || [];
+            try {
+                const response = await fetch(`/collab/${activeCollabRoom}/notes/`);
+                const res = await response.json();
 
-            if (notes.length === 0) {
-                const noNotesText = currentLang === 'en'
-                    ? 'There are no shared notes in this room yet. Add the first one using the button on the top right!'
-                    : 'Bu odada henüz ortak bir not yok. Sağ üstteki butondan ilk ortak notu ekleyin!';
-                container.innerHTML = `
-                    <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
-                        ${noNotesText}
-                    </div>
-                `;
+                if (!res.success || !res.notes || res.notes.length === 0) {
+                    const noNotesText = currentLang === 'en'
+                        ? 'There are no shared notes in this room yet. Add the first one using the button on the top right!'
+                        : 'Bu odada henüz ortak bir not yok. Sağ üstteki butondan ilk ortak notu ekleyin!';
+                    container.innerHTML = `
+                        <div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">
+                            ${noNotesText}
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                res.notes.forEach(n => {
+                    const card = document.createElement('div');
+                    card.className = 'project-note-card';
+                    card.style.borderLeft = '4px solid var(--primary)';
+
+                    const authorLabel = currentLang === 'en' ? 'Added by' : 'Yazan';
+                    const dateLabel = currentLang === 'en' ? 'Date' : 'Tarih';
+
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <h4 style="font-weight: 700; color: var(--dark);">${n.title}</h4>
+                            <button class="task-action-btn delete-btn" onclick="deleteCollabNote('${n.id}')"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--dark); margin-top: 6px; white-space: pre-wrap;">${n.content}</p>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 10px; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 6px;">
+                            <span><i class="far fa-user"></i> ${authorLabel}: ${n.author}</span>
+                            <span><i class="far fa-clock"></i> ${dateLabel}: ${n.date}</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Error fetching collab notes:', err);
+            }
+        }
+
+        let collabPollInterval = null;
+        function startCollabPolling() {
+            if (collabPollInterval) clearInterval(collabPollInterval);
+            if (activeCollabRoom) {
+                collabPollInterval = setInterval(() => {
+                    renderCollabNotesList();
+                }, 3000);
+            }
+        }
+
+        // --- DILEK VE SIKAYET / FEEDBACK LOGIC ---
+        async function submitFeedback() {
+            const subject = document.getElementById('feedback_subject').value.trim();
+            const message = document.getElementById('feedback_message').value.trim();
+
+            if (!subject || !message) {
+                alert(currentLang === 'en' ? 'Please fill in both subject and message.' : 'Lütfen hem konu başlığını hem de mesajınızı girin.');
                 return;
             }
 
-            notes.forEach(n => {
-                const card = document.createElement('div');
-                card.className = 'project-note-card';
-                card.style.borderLeft = '4px solid var(--primary)';
-
-                card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: start;">
-                        <h4 style="font-weight: 700; color: var(--dark);">${n.title}</h4>
-                        <button class="task-action-btn delete-btn" onclick="deleteCollabNote('${n.id}')"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                    <p style="font-size: 0.85rem; color: var(--dark);">${n.content}</p>
-                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px;"><i class="far fa-clock"></i> Eklendi: ${n.date}</p>
-                `;
-                container.appendChild(card);
-            });
+            try {
+                const response = await fetch('/feedback/submit/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ subject, message })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    alert(currentLang === 'en' ? 'Your feedback has been sent! Thank you.' : 'Geri bildiriminiz başarıyla gönderildi! Teşekkür ederiz.');
+                    document.getElementById('feedback_subject').value = '';
+                    document.getElementById('feedback_message').value = '';
+                    loadUserFeedbacks();
+                } else {
+                    alert(res.error || 'Hata oluştu');
+                }
+            } catch (err) {
+                console.error('Error submitting feedback:', err);
+            }
         }
+
+        async function loadUserFeedbacks() {
+            const container = document.getElementById('user-feedbacks-container');
+            if (!container) return;
+
+            try {
+                const response = await fetch('/feedback/my-list/');
+                const res = await response.json();
+                if (res.success && res.feedbacks && res.feedbacks.length > 0) {
+                    container.innerHTML = '';
+                    res.feedbacks.forEach(f => {
+                        const card = document.createElement('div');
+                        card.className = 'project-note-card';
+
+                        let statusBadge = '<span style="background: rgba(239,68,68,0.1); color: #ef4444; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">Beklemede</span>';
+                        if (f.status === 'in_progress') {
+                            statusBadge = '<span style="background: rgba(245,158,11,0.1); color: #f59e0b; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">İnceleniyor</span>';
+                        } else if (f.status === 'resolved') {
+                            statusBadge = '<span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">Çözüldü</span>';
+                        }
+
+                        card.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <h4 style="font-weight: 700; color: var(--dark);">${f.subject}</h4>
+                                ${statusBadge}
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--dark); margin-top: 6px; white-space: pre-wrap;">${f.message}</p>
+                            <p style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 8px;"><i class="far fa-clock"></i> Tarih: ${f.date}</p>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = `<div style="color: #64748b; font-style: italic; text-align: center; padding: 20px 0;">Henüz gönderdiğiniz bir talep bulunmuyor.</div>`;
+                }
+            } catch (err) {
+                console.error('Error loading user feedbacks:', err);
+            }
+        }
+
+        let currentAdminFilter = 'all';
+
+        async function loadAdminFeedbacks(filterStatus = 'all') {
+            const container = document.getElementById('admin-feedbacks-container');
+            if (!container) return;
+
+            currentAdminFilter = filterStatus;
+
+            try {
+                const response = await fetch(`/feedback/admin/list/?status=${filterStatus}`);
+                const res = await response.json();
+                if (res.success) {
+                    if (res.stats) {
+                        const totalEl = document.getElementById('stat-admin-total');
+                        const pendingEl = document.getElementById('stat-admin-pending');
+                        const inprogressEl = document.getElementById('stat-admin-inprogress');
+                        const resolvedEl = document.getElementById('stat-admin-resolved');
+                        if (totalEl) totalEl.textContent = res.stats.total;
+                        if (pendingEl) pendingEl.textContent = res.stats.pending;
+                        if (inprogressEl) inprogressEl.textContent = res.stats.in_progress;
+                        if (resolvedEl) resolvedEl.textContent = res.stats.resolved;
+                    }
+
+                    if (!res.feedbacks || res.feedbacks.length === 0) {
+                        container.innerHTML = `<div style="color: #64748b; font-style: italic; text-align: center; padding: 40px 0;">Bu filtreye ait herhangi bir talep bulunamadı.</div>`;
+                        return;
+                    }
+
+                    container.innerHTML = '';
+                    res.feedbacks.forEach(f => {
+                        const card = document.createElement('div');
+                        card.className = 'project-note-card';
+                        card.style.borderLeft = '4px solid ' + (f.status === 'resolved' ? '#10b981' : (f.status === 'in_progress' ? '#f59e0b' : '#ef4444'));
+
+                        card.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: start; gap: 10px;">
+                                <div>
+                                    <h4 style="font-weight: 700; color: var(--dark); font-size: 1.05rem;">${f.subject}</h4>
+                                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-top: 2px;">
+                                        <i class="far fa-user"></i> Gönderen: <strong>@${f.user}</strong> &nbsp;|&nbsp; <i class="far fa-clock"></i> ${f.date}
+                                    </div>
+                                </div>
+                                <button class="task-action-btn delete-btn" onclick="deleteAdminFeedback(${f.id})" title="Talebi Sil"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--dark); margin-top: 10px; white-space: pre-wrap; background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border);">${f.message}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                                <span style="font-size: 0.8rem; font-weight: 700; color: #64748b;">Talep Durumu:</span>
+                                <select onchange="updateAdminFeedbackStatus(${f.id}, this.value)" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border); font-weight: 700; font-size: 0.8rem; background: var(--glass-bg); color: var(--dark);">
+                                    <option value="pending" ${f.status === 'pending' ? 'selected' : ''}>⏳ Beklemede</option>
+                                    <option value="in_progress" ${f.status === 'in_progress' ? 'selected' : ''}>🔍 İnceleniyor</option>
+                                    <option value="resolved" ${f.status === 'resolved' ? 'selected' : ''}>✅ Çözüldü</option>
+                                </select>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading admin feedbacks:', err);
+            }
+        }
+
+        function filterAdminFeedbacks(status) {
+            loadAdminFeedbacks(status);
+        }
+
+        async function updateAdminFeedbackStatus(feedbackId, newStatus) {
+            try {
+                const response = await fetch(`/feedback/admin/${feedbackId}/status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    loadAdminFeedbacks(currentAdminFilter);
+                } else {
+                    alert(res.error || 'Güncelleme hatası');
+                }
+            } catch (err) {
+                console.error('Error updating status:', err);
+            }
+        }
+
+        async function deleteAdminFeedback(feedbackId) {
+            if (!confirm('Bu talebi silmek istediğinizden emin misiniz?')) return;
+            try {
+                const response = await fetch(`/feedback/admin/${feedbackId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCsrfToken()
+                    }
+                });
+                const res = await response.json();
+                if (res.success) {
+                    loadAdminFeedbacks(currentAdminFilter);
+                }
+            } catch (err) {
+                console.error('Error deleting feedback:', err);
+            }
+        }
+
+
 
         // --- Translation & Localization System ---
         let currentLang = localStorage.getItem('language') || 'tr';
