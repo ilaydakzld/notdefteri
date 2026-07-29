@@ -18,6 +18,8 @@ urlpatterns = [
     path('feedback/my-list/', views.get_user_feedbacks, name='get_user_feedbacks'),
     path('feedback/admin/list/', views.get_admin_feedbacks, name='get_admin_feedbacks'),
     path('feedback/admin/<int:feedback_id>/status/', views.update_feedback_status, name='update_feedback_status'),
+    path('feedback/admin/<int:feedback_id>/reply/', views.reply_feedback, name='reply_feedback'),
     path('feedback/admin/<int:feedback_id>/delete/', views.delete_feedback, name='delete_feedback'),
 ]
+
 

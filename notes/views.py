@@ -333,6 +333,8 @@ def get_user_feedbacks(request):
             'message': f.message,
             'status': f.status,
             'status_display': f.get_status_display(),
+            'admin_reply': f.admin_reply,
+            'replied_at': f.replied_at.strftime('%d.%m.%Y %H:%M') if f.replied_at else None,
             'date': f.created_at.strftime('%d.%m.%Y %H:%M')
         })
     return JsonResponse({'success': True, 'feedbacks': data})
@@ -357,6 +359,8 @@ def get_admin_feedbacks(request):
             'message': f.message,
             'status': f.status,
             'status_display': f.get_status_display(),
+            'admin_reply': f.admin_reply,
+            'replied_at': f.replied_at.strftime('%d.%m.%Y %H:%M') if f.replied_at else None,
             'date': f.created_at.strftime('%d.%m.%Y %H:%M')
         })
 
@@ -393,6 +397,31 @@ def update_feedback_status(request, feedback_id):
 
 
 @login_required
+def reply_feedback(request, feedback_id):
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
+
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body.decode('utf-8')) if request.body else {}
+            reply_text = body.get('reply', '').strip()
+        except Exception:
+            reply_text = request.POST.get('reply', '').strip()
+
+        if not reply_text:
+            return JsonResponse({'success': False, 'error': 'Cevap metni boş olamaz.'}, status=400)
+
+        feedback = get_object_or_404(Feedback, id=feedback_id)
+        feedback.admin_reply = reply_text
+        feedback.replied_at = datetime.now()
+        if feedback.status == 'pending':
+            feedback.status = 'in_progress'
+        feedback.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
 def delete_feedback(request, feedback_id):
     if not request.user.is_superuser:
         return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
@@ -402,6 +431,7 @@ def delete_feedback(request, feedback_id):
         feedback.delete()
         return JsonResponse({'success': True})
     return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
 
 
 

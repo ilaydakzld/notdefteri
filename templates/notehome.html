@@ -1348,6 +1348,13 @@
             </div>
 
             <ul class="sidebar-menu">
+                {% if user.is_superuser %}
+                <li class="menu-item active" id="menu-gelentalepler">
+                    <a href="#" onclick="switchTab('gelentalepler')" style="color: #f59e0b;">
+                        <i class="fas fa-inbox"></i> <span style="font-weight: 700;">Gelen Talepler (Yönetici)</span>
+                    </a>
+                </li>
+                {% else %}
                 <li class="menu-item active" id="menu-programim">
                     <a href="#" onclick="switchTab('programim')">
                         <i class="far fa-calendar-alt"></i> <span>Programım</span>
@@ -1388,20 +1395,14 @@
                         <i class="far fa-envelope"></i> <span>Dilek ve Şikayet</span>
                     </a>
                 </li>
-                {% if user.is_superuser %}
-                <li class="menu-item" id="menu-gelentalepler">
-                    <a href="#" onclick="switchTab('gelentalepler')" style="color: #f59e0b;">
-                        <i class="fas fa-inbox"></i> <span style="font-weight: 700;">Gelen Talepler (Yönetici)</span>
-                    </a>
-                </li>
-                {% endif %}
                 <li class="menu-item" id="menu-ayarlar">
-
                     <a href="#" onclick="switchTab('ayarlar')">
                         <i class="fas fa-sliders-h"></i> <span>Ayarlar</span>
                     </a>
                 </li>
+                {% endif %}
             </ul>
+
         </aside>
 
         <!-- Main Workspace -->
@@ -2023,7 +2024,12 @@
     <script>
         // Global variables and state
         let currentTheme = localStorage.getItem('theme') || 'light';
+        {% if user.is_superuser %}
+        let activeTab = 'gelentalepler';
+        {% else %}
         let activeTab = localStorage.getItem('active_tab') || 'programim';
+        {% endif %}
+
 
         // Load project, events, notes, collab rooms and agenda data from localStorage
         let projects = JSON.parse(localStorage.getItem('projects')) || [];
@@ -3074,12 +3080,20 @@
                             statusBadge = '<span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">Çözüldü</span>';
                         }
 
+                        const replyHtml = f.admin_reply ? `
+                            <div style="margin-top: 10px; background: rgba(99, 102, 241, 0.08); border: 1px solid var(--primary-light); padding: 10px 14px; border-radius: 8px;">
+                                <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary);"><i class="fas fa-reply"></i> Yönetici Yanıtı (${f.replied_at}):</div>
+                                <p style="font-size: 0.85rem; color: var(--dark); margin-top: 4px; white-space: pre-wrap;">${f.admin_reply}</p>
+                            </div>
+                        ` : '';
+
                         card.innerHTML = `
                             <div style="display: flex; justify-content: space-between; align-items: start;">
                                 <h4 style="font-weight: 700; color: var(--dark);">${f.subject}</h4>
                                 ${statusBadge}
                             </div>
                             <p style="font-size: 0.85rem; color: var(--dark); margin-top: 6px; white-space: pre-wrap;">${f.message}</p>
+                            ${replyHtml}
                             <p style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 8px;"><i class="far fa-clock"></i> Tarih: ${f.date}</p>
                         `;
                         container.appendChild(card);
@@ -3126,6 +3140,13 @@
                         card.className = 'project-note-card';
                         card.style.borderLeft = '4px solid ' + (f.status === 'resolved' ? '#10b981' : (f.status === 'in_progress' ? '#f59e0b' : '#ef4444'));
 
+                        const existingReplyHtml = f.admin_reply ? `
+                            <div style="margin-top: 10px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); padding: 10px 14px; border-radius: 8px;">
+                                <div style="font-size: 0.78rem; font-weight: 700; color: #10b981;"><i class="fas fa-check-circle"></i> Mevcut Yönetici Yanıtı (${f.replied_at}):</div>
+                                <p style="font-size: 0.85rem; color: var(--dark); margin-top: 4px; white-space: pre-wrap;">${f.admin_reply}</p>
+                            </div>
+                        ` : '';
+
                         card.innerHTML = `
                             <div style="display: flex; justify-content: space-between; align-items: start; gap: 10px;">
                                 <div>
@@ -3137,7 +3158,18 @@
                                 <button class="task-action-btn delete-btn" onclick="deleteAdminFeedback(${f.id})" title="Talebi Sil"><i class="fas fa-trash-alt"></i></button>
                             </div>
                             <p style="font-size: 0.9rem; color: var(--dark); margin-top: 10px; white-space: pre-wrap; background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border);">${f.message}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                            
+                            ${existingReplyHtml}
+
+                            <div style="margin-top: 12px; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 10px;">
+                                <label style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Kullanıcıya Yanıt Gönder / Güncelle:</label>
+                                <div style="display: flex; gap: 8px; margin-top: 6px;">
+                                    <input type="text" id="admin_reply_input_${f.id}" placeholder="Yanıtınızı buraya yazın..." value="${f.admin_reply || ''}" style="flex: 1; padding: 8px 12px; font-size: 0.85rem; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--dark);">
+                                    <button class="btn-save" onclick="replyAdminFeedback(${f.id})" style="width: auto; padding: 8px 16px; font-size: 0.8rem;"><i class="fas fa-paper-plane"></i> Yanıtla</button>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 10px;">
                                 <span style="font-size: 0.8rem; font-weight: 700; color: #64748b;">Talep Durumu:</span>
                                 <select onchange="updateAdminFeedbackStatus(${f.id}, this.value)" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border); font-weight: 700; font-size: 0.8rem; background: var(--glass-bg); color: var(--dark);">
                                     <option value="pending" ${f.status === 'pending' ? 'selected' : ''}>⏳ Beklemede</option>
@@ -3151,6 +3183,37 @@
                 }
             } catch (err) {
                 console.error('Error loading admin feedbacks:', err);
+            }
+        }
+
+        async function replyAdminFeedback(feedbackId) {
+            const inputEl = document.getElementById(`admin_reply_input_${feedbackId}`);
+            if (!inputEl) return;
+            const replyText = inputEl.value.trim();
+
+            if (!replyText) {
+                alert('Lütfen bir yanıt metni girin.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/feedback/admin/${feedbackId}/reply/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ reply: replyText })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    alert('Yanıtınız başarıyla kaydedildi ve kullanıcıya iletildi.');
+                    loadAdminFeedbacks(currentAdminFilter);
+                } else {
+                    alert(res.error || 'Yanıt gönderme hatası');
+                }
+            } catch (err) {
+                console.error('Error replying feedback:', err);
             }
         }
 
@@ -3172,6 +3235,7 @@
                 if (res.success) {
                     loadAdminFeedbacks(currentAdminFilter);
                 } else {
+
                     alert(res.error || 'Güncelleme hatası');
                 }
             } catch (err) {

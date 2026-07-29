@@ -68,9 +68,12 @@ class Feedback(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    admin_reply = models.TextField(blank=True, null=True)
+    replied_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['-created_at']
+
 
     def __str__(self):
         return f"[{self.get_status_display()}] {self.subject}"
