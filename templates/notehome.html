@@ -2224,10 +2224,25 @@
 
         function closeAddNoteModal() {
             document.getElementById('add-note-modal').classList.remove('open');
-            document.getElementById('due_date').value = '';
-            document.getElementById('project_select').value = '';
-            document.getElementById('has_time_range').checked = false;
-            document.getElementById('is_event_cb').checked = false;
+            const titleEl = document.getElementById('title');
+            const contentEl = document.getElementById('content');
+            const tagsEl = document.getElementById('tags');
+            const startTimeEl = document.getElementById('start_time');
+            const endTimeEl = document.getElementById('end_time');
+            const dueDateEl = document.getElementById('due_date');
+            const projectSelectEl = document.getElementById('project_select');
+            const timeRangeCb = document.getElementById('has_time_range');
+            const eventCb = document.getElementById('is_event_cb');
+
+            if (titleEl) titleEl.value = '';
+            if (contentEl) contentEl.value = '';
+            if (tagsEl) tagsEl.value = '';
+            if (startTimeEl) startTimeEl.value = '';
+            if (endTimeEl) endTimeEl.value = '';
+            if (dueDateEl) dueDateEl.value = '';
+            if (projectSelectEl) projectSelectEl.value = '';
+            if (timeRangeCb) timeRangeCb.checked = false;
+            if (eventCb) eventCb.checked = false;
             toggleTimeInputs();
         }
 
@@ -2245,17 +2260,27 @@
             });
         }
 
-        // Form Submit interception for custom hybrid data saving
+        // Form Submit interception for custom hybrid data saving with double-submit protection
+        let isSubmittingNote = false;
         function handleFormSubmit(event) {
             const hasTime = document.getElementById('has_time_range').checked;
             const isEvent = document.getElementById('is_event_cb').checked;
             const projectName = document.getElementById('project_select') ? document.getElementById('project_select').value : '';
 
+            if (isSubmittingNote) {
+                event.preventDefault();
+                return false;
+            }
+
             if (hasTime || isEvent || projectName) {
                 event.preventDefault();
+                isSubmittingNote = true;
 
-                const title = document.getElementById('title') ? document.getElementById('title').value : '';
-                const content = document.getElementById('content') ? document.getElementById('content').value : '';
+                const saveBtn = event.target ? event.target.querySelector('button[type="submit"]') : null;
+                if (saveBtn) saveBtn.disabled = true;
+
+                const title = document.getElementById('title') ? document.getElementById('title').value.trim() : '';
+                const content = document.getElementById('content') ? document.getElementById('content').value.trim() : '';
                 const category = document.getElementById('category') ? document.getElementById('category').value : 'other';
                 const priority = document.getElementById('priority') ? document.getElementById('priority').value : 'medium';
                 const due_date = document.getElementById('due_date') ? document.getElementById('due_date').value : '';
@@ -2264,8 +2289,24 @@
                 const start_time = (hasTime && document.getElementById('start_time')) ? document.getElementById('start_time').value : null;
                 const end_time = (hasTime && document.getElementById('end_time')) ? document.getElementById('end_time').value : null;
 
+                // Prevent immediate duplicate entries
+                const now = Date.now();
+                const isDuplicate = customNotes.some(n =>
+                    n.title === title &&
+                    n.content === content &&
+                    (n.projectName || null) === (projectName || null) &&
+                    (now - parseInt(String(n.id).replace('custom-', '') || '0')) < 5000
+                );
+
+                if (isDuplicate) {
+                    if (saveBtn) saveBtn.disabled = false;
+                    isSubmittingNote = false;
+                    closeAddNoteModal();
+                    return;
+                }
+
                 const customNoteObj = {
-                    id: 'custom-' + Date.now(),
+                    id: 'custom-' + now,
                     title: title,
                     content: content,
                     priority: priority,
@@ -2302,6 +2343,15 @@
 
                 closeAddNoteModal();
                 reloadAllData();
+
+                setTimeout(() => {
+                    isSubmittingNote = false;
+                    if (saveBtn) saveBtn.disabled = false;
+                }, 800);
+            } else {
+                isSubmittingNote = true;
+                const saveBtn = event.target ? event.target.querySelector('button[type="submit"]') : null;
+                if (saveBtn) saveBtn.disabled = true;
             }
         }
 
@@ -2321,7 +2371,7 @@
             }
         }
 
-        // Get Django notes merged with custom localStorage notes
+        // Get Django notes merged with custom localStorage notes (with automatic deduplication)
         function getCombinedNotes() {
             const djangoNotes = [];
             document.querySelectorAll('.raw-note').forEach(element => {
@@ -2348,9 +2398,29 @@
             });
 
             const deletedCustomIds = JSON.parse(localStorage.getItem('deleted_custom_ids')) || [];
-            const activeCustomNotes = customNotes.filter(n => !deletedCustomIds.includes(n.id));
 
-            return [...djangoNotes, ...activeCustomNotes];
+            // Deduplicate customNotes array to clean up any past duplicate submissions
+            const uniqueCustomNotes = [];
+            const seenKeys = new Set();
+            let hasDuplicates = false;
+
+            customNotes.forEach(n => {
+                if (deletedCustomIds.includes(n.id)) return;
+                const contentKey = `${n.title}_${n.content}_${n.projectName || ''}_${n.dueDate || ''}`;
+                if (!seenKeys.has(contentKey)) {
+                    seenKeys.add(contentKey);
+                    uniqueCustomNotes.push(n);
+                } else {
+                    hasDuplicates = true;
+                }
+            });
+
+            if (hasDuplicates) {
+                customNotes = uniqueCustomNotes;
+                localStorage.setItem('custom_notes', JSON.stringify(customNotes));
+            }
+
+            return [...djangoNotes, ...uniqueCustomNotes];
         }
 
         function deleteCustomNote(id) {
@@ -2531,13 +2601,16 @@
             `;
         }
 
-        // Build Notlarım Grid view
+        // Build Notlarım Grid view (excludes project notes)
         function buildNotlarimGrid(notes) {
             const grid = document.getElementById('all-notes-grid');
             if (!grid) return;
 
+            // Only display general notes that do not belong to a specific project
+            const notlarimNotes = notes.filter(n => !n.projectName);
+
             grid.innerHTML = '';
-            if (notes.length === 0) {
+            if (notlarimNotes.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
                         <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
@@ -2547,7 +2620,7 @@
                 return;
             }
 
-            notes.forEach(note => {
+            notlarimNotes.forEach(note => {
                 const cardEl = document.createElement('div');
                 cardEl.innerHTML = renderTaskCard(note);
                 grid.appendChild(cardEl.firstElementChild);
@@ -2580,17 +2653,28 @@
         }
 
         // 2. ETKİNLİKLER TAB LOGIC
+        let isSubmittingEvent = false;
         function addCustomEvent() {
-            const title = document.getElementById('event_title').value;
+            if (isSubmittingEvent) return;
+
+            const title = document.getElementById('event_title').value ? document.getElementById('event_title').value.trim() : '';
             const date = document.getElementById('event_date').value;
             const start = document.getElementById('event_start').value;
             const end = document.getElementById('event_end').value;
-            const desc = document.getElementById('event_description').value;
+            const desc = document.getElementById('event_description').value ? document.getElementById('event_description').value.trim() : '';
 
             if (!title || !date) {
                 alert('Lütfen etkinlik adını ve tarihini doldurun.');
                 return;
             }
+
+            // Prevent duplicate event submission within 5 seconds
+            const isDuplicate = customEvents.some(e => e.title === title && e.date === date && (Date.now() - parseInt(String(e.id).replace('custom-event-', '') || '0')) < 5000);
+            if (isDuplicate) return;
+
+            isSubmittingEvent = true;
+            const submitBtn = document.getElementById('btn-add-event-submit');
+            if (submitBtn) submitBtn.disabled = true;
 
             const newEvent = {
                 id: 'custom-event-' + Date.now(),
@@ -2635,6 +2719,13 @@
             document.getElementById('event_description').value = '';
 
             renderEventsList();
+            reloadAllData();
+
+            setTimeout(() => {
+                isSubmittingEvent = false;
+                if (submitBtn) submitBtn.disabled = false;
+            }, 800);
+        }
             reloadAllData();
         }
 
@@ -2888,7 +2979,10 @@
             }
         }
 
+        let isSubmittingCollab = false;
         async function addCollabNote() {
+            if (isSubmittingCollab) return;
+
             const title = document.getElementById('collab_note_title').value.trim();
             const content = document.getElementById('collab_note_content').value.trim();
 
@@ -2901,6 +2995,10 @@
                 alert(currentLang === 'en' ? 'No active room.' : 'Aktif bir oda yok.');
                 return;
             }
+
+            isSubmittingCollab = true;
+            const btn = document.getElementById('btn-collab-note-save');
+            if (btn) btn.disabled = true;
 
             try {
                 const response = await fetch(`/collab/${activeCollabRoom}/add/`, {
@@ -2922,6 +3020,9 @@
                 }
             } catch (err) {
                 console.error('Error adding collab note:', err);
+            } finally {
+                isSubmittingCollab = false;
+                if (btn) btn.disabled = false;
             }
         }
 
@@ -3039,7 +3140,10 @@
         }
 
         // --- DILEK VE SIKAYET / FEEDBACK LOGIC ---
+        let isSubmittingFeedback = false;
         async function submitFeedback() {
+            if (isSubmittingFeedback) return;
+
             const subject = document.getElementById('feedback_subject').value.trim();
             const message = document.getElementById('feedback_message').value.trim();
 
@@ -3047,6 +3151,10 @@
                 alert(currentLang === 'en' ? 'Please fill in both subject and message.' : 'Lütfen hem konu başlığını hem de mesajınızı girin.');
                 return;
             }
+
+            isSubmittingFeedback = true;
+            const btn = document.getElementById('btn-feedback-submit');
+            if (btn) btn.disabled = true;
 
             try {
                 const response = await fetch('/feedback/submit/', {
@@ -3068,6 +3176,9 @@
                 }
             } catch (err) {
                 console.error('Error submitting feedback:', err);
+            } finally {
+                isSubmittingFeedback = false;
+                if (btn) btn.disabled = false;
             }
         }
 
