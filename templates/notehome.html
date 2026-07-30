@@ -1958,9 +1958,9 @@
                         <input type="text" id="title" name="title" required placeholder="Not veya görev başlığı...">
                     </div>
                     <div class="form-group">
-                        <label for="content">Detaylar</label>
-                        <textarea id="content" name="content" required
-                            placeholder="Detayları buraya yazın..."></textarea>
+                        <label for="content">Detaylar (İsteğe Bağlı)</label>
+                        <textarea id="content" name="content"
+                            placeholder="Detayları buraya yazın (isteğe bağlı)..."></textarea>
                     </div>
                     <div class="form-group">
                         <label for="category">Kategori</label>
@@ -2186,19 +2186,27 @@
 
             // Special updates for specific tabs
             if (tabId === 'projelerim') {
+                stopCollabPolling();
                 renderProjectsSection();
             } else if (tabId === 'etkinlikler') {
+                stopCollabPolling();
                 renderEventsList();
             } else if (tabId === 'programim') {
+                stopCollabPolling();
                 reloadAllData();
             } else if (tabId === 'ajandam') {
+                stopCollabPolling();
                 loadAgendaPage();
             } else if (tabId === 'ortakalan') {
                 renderCollabRoomDetails();
             } else if (tabId === 'dilek') {
+                stopCollabPolling();
                 loadUserFeedbacks();
             } else if (tabId === 'gelentalepler') {
+                stopCollabPolling();
                 loadAdminFeedbacks('all');
+            } else {
+                stopCollabPolling();
             }
 
 
@@ -3130,10 +3138,21 @@
         let collabPollInterval = null;
         function startCollabPolling() {
             if (collabPollInterval) clearInterval(collabPollInterval);
-            if (activeCollabRoom) {
+            if (activeTab === 'ortakalan' && activeCollabRoom) {
                 collabPollInterval = setInterval(() => {
-                    renderCollabNotesList();
-                }, 3000);
+                    if (activeTab === 'ortakalan' && activeCollabRoom) {
+                        renderCollabNotesList();
+                    } else {
+                        stopCollabPolling();
+                    }
+                }, 5000);
+            }
+        }
+
+        function stopCollabPolling() {
+            if (collabPollInterval) {
+                clearInterval(collabPollInterval);
+                collabPollInterval = null;
             }
         }
 

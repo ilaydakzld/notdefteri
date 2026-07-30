@@ -17,26 +17,27 @@ def custom_logout(request):
 @login_required
 def notehome(request):
     if request.method == 'POST':
-        title = request.POST['title']
-        content = request.POST['content']
+        title = request.POST.get('title', '').strip()
+        content = request.POST.get('content', '').strip()
         due_date = request.POST.get('due_date')
         priority = request.POST.get('priority', 'medium')
         category = request.POST.get('category', 'other')
         tags = request.POST.get('tags', '')
 
-        note_data = {
-            'user': request.user,
-            'title': title,
-            'content': content,
-            'priority': priority,
-            'category': category,
-            'tags': tags
-        }
+        if title:
+            note_data = {
+                'user': request.user,
+                'title': title,
+                'content': content,
+                'priority': priority,
+                'category': category,
+                'tags': tags
+            }
 
-        if due_date:
-            note_data['due_date'] = due_date
+            if due_date:
+                note_data['due_date'] = due_date
 
-        Note.objects.create(**note_data)
+            Note.objects.create(**note_data)
         return redirect('notehome')
 
     notes = Note.objects.filter(user=request.user)
@@ -82,14 +83,15 @@ def notehome(request):
         notes = notes.filter(due_date=due_datetime)
 
     # Bugün, bu hafta, gelecek filtreler
+    today_date = date.today()
     if filter_type == 'today':
-        notes = notes.filter(due_date=date.today())
+        notes = notes.filter(due_date=today_date)
     elif filter_type == 'week':
-        start_date = date.today()
+        start_date = today_date
         end_date = start_date + timedelta(days=7)
         notes = notes.filter(due_date__range=[start_date, end_date])
     elif filter_type == 'overdue':
-        notes = notes.filter(due_date__lt=date.today(), is_completed=False)
+        notes = notes.filter(due_date__lt=today_date, is_completed=False)
 
     # Tamamlanma durumuna göre filtreleme
     if show_completed == 'completed':
@@ -97,30 +99,50 @@ def notehome(request):
     elif show_completed == 'active':
         notes = notes.filter(is_completed=False)
 
-    # İstatistikler
-    user_notes = Note.objects.filter(user=request.user)
+    # Single-pass in-memory evaluation for stats & categories (Performance Boost)
+    user_notes = list(Note.objects.filter(user=request.user))
+    total_count = len(user_notes)
+    completed_count = 0
+    active_count = 0
+    overdue_count = 0
+    today_count = 0
+    high_priority_count = 0
+    cat_counts = {}
+    all_tags = set()
+
+    for n in user_notes:
+        if n.is_completed:
+            completed_count += 1
+        else:
+            active_count += 1
+            if n.priority == 'high':
+                high_priority_count += 1
+            if n.due_date and n.due_date < today_date:
+                overdue_count += 1
+
+        if n.due_date == today_date:
+            today_count += 1
+
+        cat_counts[n.category] = cat_counts.get(n.category, 0) + 1
+        if n.tags:
+            all_tags.update(n.get_tags_list())
+
     stats = {
-        'total': user_notes.count(),
-        'completed': user_notes.filter(is_completed=True).count(),
-        'active': user_notes.filter(is_completed=False).count(),
-        'overdue': user_notes.filter(due_date__lt=date.today(), is_completed=False).count(),
-        'today': user_notes.filter(due_date=date.today()).count(),
-        'high_priority': user_notes.filter(priority='high', is_completed=False).count(),
+        'total': total_count,
+        'completed': completed_count,
+        'active': active_count,
+        'overdue': overdue_count,
+        'today': today_count,
+        'high_priority': high_priority_count,
     }
 
-    # Kategorilere göre gruplama
-    categories = user_notes.values('category').annotate(count=Count('category'))
-
-    # Tüm etiketleri al
-    all_tags = set()
-    for note in user_notes:
-        all_tags.update(note.get_tags_list())
+    categories = [{'category': cat, 'count': cnt} for cat, cnt in cat_counts.items()]
 
     return render(request, 'notehome.html', {
         'notes': notes,
         'filter_type': filter_type,
         'show_completed': show_completed,
-        'today': date.today(),
+        'today': today_date,
         'stats': stats,
         'categories': categories,
         'all_tags': sorted(all_tags),
