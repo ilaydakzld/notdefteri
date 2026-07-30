@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Defteri - Kişisel Dashboard</title>
+    <title>Planlayıcım - Kişisel Dashboard</title>
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Architects+Daughter&family=Special+Elite&display=swap"
@@ -1335,6 +1335,10 @@
 
         <!-- Sidebar -->
         <aside id="app-sidebar" class="sidebar">
+            <div class="brand-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 20px 10px 20px;">
+                <img src="{% static 'logo.png' %}" alt="Planlayıcım Logo" style="width: 40px; height: 40px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);">
+                <span style="font-size: 1.35rem; font-weight: 800; background: linear-gradient(135deg, #a855f7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">Planlayıcım</span>
+            </div>
             <div class="profile-container">
                 <div class="profile-avatar-wrapper" id="profile-avatar-char">
                     {{ user.username|slice:":1"|upper }}
@@ -2182,7 +2186,7 @@
                     'ayarlar': 'Settings'
                 }
             };
-            document.getElementById('current-tab-title').textContent = titles[currentLang][tabId] || 'Not Defteri';
+            document.getElementById('current-tab-title').textContent = titles[currentLang][tabId] || 'Planlayıcım';
 
             // Special updates for specific tabs
             if (tabId === 'projelerim') {

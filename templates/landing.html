@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Defteri - Kusursuz Kişisel Asistanınız</title>
+    <title>Planlayıcım - Kusursuz Kişisel Asistanınız</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -566,9 +566,9 @@
 
     <!-- Header Navigation -->
     <header>
-        <a href="#" class="logo">
-            <i class="fas fa-sticky-note"></i>
-            Not Defteri
+        <a href="#" class="logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+            <img src="{% static 'logo.png' %}" alt="Planlayıcım Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);">
+            <span>Planlayıcım</span>
         </a>
         <div class="nav-buttons" style="display: flex; align-items: center; gap: 15px;">
             <button onclick="toggleTheme()" title="Temayı Değiştir" style="background: none; border: none; cursor: pointer; color: var(--dark); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 8px; border-radius: 50%; width: 40px; height: 40px; transition: background 0.2s ease;">
@@ -583,7 +583,7 @@
         <!-- Hero Section -->
         <section class="hero">
             <h1>Zamanınızı ve Notlarınızı <br><span>Tek Arayüzden Yönetin</span></h1>
-            <p>Not Defteri, günlük programınızı 8 günlük akıllı planlama takvimiyle takip etmenizi, defter görünümlü kişisel ajandanızı yazmanızı ve güvenli ortak çalışma odalarında ekip arkadaşlarınızla birlikte not almanızı sağlar.</p>
+            <p>Planlayıcım, günlük programınızı 8 günlük akıllı planlama takvimiyle takip etmenizi, defter görünümlü kişisel ajandanızı yazmanızı ve güvenli ortak çalışma odalarında ekip arkadaşlarınızla birlikte not almanızı sağlar.</p>
             <div class="cta-group">
                 <a href="{% url 'register' %}" class="cta-btn primary">Şimdi Keşfet</a>
                 <a href="#features" class="cta-btn secondary">Nasıl Çalışır?</a>
@@ -732,7 +732,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Not Defteri Uygulaması. Tüm Hakları Saklıdır.</p>
+        <p>&copy; 2026 Planlayıcım Uygulaması. Tüm Hakları Saklıdır.</p>
     </footer>
 
     <script>
