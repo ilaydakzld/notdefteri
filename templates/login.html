@@ -245,12 +245,6 @@
             </div>
         {% endif %}
 
-        <!-- Login Tabs -->
-        <div class="login-tabs">
-            <button class="tab-btn active" id="tab-username" onclick="setLoginMethod('username')">Kullanıcı Adı / E-posta</button>
-            <button class="tab-btn" id="tab-phone" onclick="setLoginMethod('phone')">Telefon ile</button>
-        </div>
-
         <form method="post" action="">
             {% csrf_token %}
             
@@ -260,12 +254,6 @@
                     {{ field }}
                 </div>
             {% endfor %}
-
-            <!-- Mock phone field for demonstration, toggled by tabs -->
-            <div class="form-group" id="mock-phone-group" style="display: none;">
-                <label for="mock_phone">Telefon Numarası</label>
-                <input type="tel" id="mock_phone" placeholder="0555 555 55 55">
-            </div>
 
             <button type="submit" class="btn-submit"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
         </form>
@@ -279,26 +267,5 @@
             </p>
         </div>
     </div>
-
-    <script>
-        function setLoginMethod(method) {
-            const tabUsername = document.getElementById('tab-username');
-            const tabPhone = document.getElementById('tab-phone');
-            const mockPhoneGroup = document.getElementById('mock-phone-group');
-            const usernameLabel = document.querySelector('label[for="id_username"]');
-
-            if (method === 'username') {
-                tabUsername.classList.add('active');
-                tabPhone.classList.remove('active');
-                if (mockPhoneGroup) mockPhoneGroup.style.display = 'none';
-                if (usernameLabel) usernameLabel.textContent = "Kullanıcı Adı";
-            } else {
-                tabUsername.classList.remove('active');
-                tabPhone.classList.add('active');
-                if (mockPhoneGroup) mockPhoneGroup.style.display = 'flex';
-                if (usernameLabel) usernameLabel.textContent = "Telefon Bağlantılı Kullanıcı Adı";
-            }
-        }
-    </script>
 </body>
 </html>

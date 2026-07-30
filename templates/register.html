@@ -261,12 +261,6 @@
             </div>
         {% endif %}
 
-        <!-- Register Method Tabs -->
-        <div class="register-tabs">
-            <button class="tab-btn active" id="tab-email" onclick="setRegisterMethod('email')">E-posta ile</button>
-            <button class="tab-btn" id="tab-phone" onclick="setRegisterMethod('phone')">Telefon ile</button>
-        </div>
-
         <form method="post" action="">
             {% csrf_token %}
             
@@ -280,12 +274,6 @@
                 </div>
             {% endfor %}
 
-            <!-- Mock phone field for demonstration, toggled by tabs -->
-            <div class="form-group" id="mock-phone-group" style="display: none;">
-                <label for="mock_phone">Telefon Numarası</label>
-                <input type="tel" id="mock_phone" placeholder="0555 555 55 55">
-            </div>
-
             <button type="submit" class="btn-submit"><i class="fas fa-user-plus"></i> Kayıt Ol</button>
         </form>
 
@@ -298,24 +286,5 @@
             </p>
         </div>
     </div>
-
-    <script>
-        function setRegisterMethod(method) {
-            const tabEmail = document.getElementById('tab-email');
-            const tabPhone = document.getElementById('tab-phone');
-            const mockPhoneGroup = document.getElementById('mock-phone-group');
-            
-            // Django registration typically expects username, so let's keep username but toggle description
-            if (method === 'email') {
-                tabEmail.classList.add('active');
-                tabPhone.classList.remove('active');
-                if (mockPhoneGroup) mockPhoneGroup.style.display = 'none';
-            } else {
-                tabEmail.classList.remove('active');
-                tabPhone.classList.add('active');
-                if (mockPhoneGroup) mockPhoneGroup.style.display = 'flex';
-            }
-        }
-    </script>
 </body>
 </html>
