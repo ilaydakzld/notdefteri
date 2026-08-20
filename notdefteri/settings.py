@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1g0(48c+dc(7vhd%)(_52mqn+ialb#v3j^t!8_=72^(bca!0vu'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1g0(48c+dc(7vhd%)(_52mqn+ialb#v3j^t!8_=72^(bca!0vu')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
 # CSRF Trusted Origins - Vercel deployment ve local development için gerekli
 CSRF_TRUSTED_ORIGINS = [

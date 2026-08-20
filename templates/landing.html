@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'logo_round.png' %}">
     <title>Planlayıcım - Kişisel Asistanınız & Akıllı Verimlilik Platformu</title>
     <!-- Google Fonts -->
     <link
@@ -55,7 +56,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 40%, #e0f2fe 70%, #f1f5f9 100%);
+            background: #fafafa;
             min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
@@ -890,8 +891,9 @@
             <h1>Tüm Gününüz ve Notlarınız <br><span>Tek Bir Arayüzde Düzenlensin</span></h1>
 
             <p>
-                Programım, Notlarım, Ajandam, Etkinlikler, Analiz, Projelerim, Ortak Alan, Dilek & Şikayet ve Ayarlar.
-                Tüm verimlilik ihtiyaçlarınız için geliştirilmiş, <strong>%100 tamamen ücretsiz</strong> akıllı kişisel
+                Ekip arkadaşlarınızla ortak alandan notlar paylaşın, programınızı düzenleyin ve hayatınızı
+                kolaylaştırın.
+                Tüm verimlilik ihtiyaçlarınız için geliştirilmiş, <strong>Tamamen ücretsiz</strong> akıllı kişisel
                 asistanınız.
             </p>
 
@@ -1234,7 +1236,7 @@
         <section class="stats-bar">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <h3>%100 Ücretsiz</h3>
+                    <h3>Tamamen Ücretsiz</h3>
                     <p>Sınırsız Kullanım</p>
                 </div>
                 <div class="stat-item">
@@ -1243,7 +1245,7 @@
                 </div>
                 <div class="stat-item">
                     <h3>Canlı İşbirliği</h3>
-                    <p>Özel Oda Kodu</p>
+                    <p>Özel Oda </p>
                 </div>
                 <div class="stat-item">
                     <h3>7/24</h3>
@@ -1277,7 +1279,8 @@
                 <div class="feature-card">
                     <div class="feature-card-header">
                         <div class="feature-icon-box" style="color:var(--secondary); background:rgba(236,72,153,0.15);">
-                            <i class="far fa-clipboard"></i></div>
+                            <i class="far fa-clipboard"></i>
+                        </div>
                         <h3>2. Notlarım</h3>
                     </div>
                     <p>Fikirlerinizi, ders notlarınızı veya kişisel yapılacaklar listenizi renkli etiketler ve
@@ -1355,10 +1358,10 @@
                                 class="fas fa-users"></i></div>
                         <h3>7. Ortak Alan</h3>
                     </div>
-                    <p>Rastgele üretilen tamamen güvenli özel oda kodlarıyla arkadaşlarınızı davet edin ve eş zamanlı
+                    <p>Tamamen güvenli özel odalar ile arkadaşlarınızı davet edin ve eş zamanlı
                         ortak notlar alın.</p>
                     <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Güvenli özel oda kodları</li>
+                        <li><i class="fas fa-check-circle"></i> Güvenli özel odalar</li>
                         <li><i class="fas fa-check-circle"></i> Anlık canlı paylaşımlı notlar</li>
                     </ul>
                 </div>
@@ -1388,8 +1391,8 @@
                     <p>Tema tercihlerinizi değiştirin, profil bilgilerinizi güncelleyin ve verilerinizi kaybetmemek için
                         JSON formatında dışa aktarın.</p>
                     <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> JSON veri aktarma me yedekleme</li>
-                        <li><i class="fas fa-check-circle"></i> Aydınlık / Karanlık mod toggle</li>
+                        <li><i class="fas fa-check-circle"></i> JSON veri aktarma ve yedekleme</li>
+                        <li><i class="fas fa-check-circle"></i> Aydınlık / Karanlık mod</li>
                     </ul>
                 </div>
             </div>
@@ -1398,7 +1401,8 @@
         <!-- Modern Compact Call to Action Banner -->
         <section class="cta-banner">
             <h2>Zamanınızı ve Notlarınızı Kontrol Altına Alın</h2>
-            <p>Saniyeler içinde <strong>%100 ücretsiz</strong> hesabınızı oluşturun ve verimliliğinizi artırmaya hemen başlayın.</p>
+            <p>Saniyeler içinde <strong>ücretsiz</strong> hesabınızı oluşturun ve verimliliğinizi artırmaya hemen
+                başlayın.</p>
             <a href="{% url 'register' %}" class="cta-btn primary">
                 Ücretsiz Hesabını Oluştur <i class="fas fa-arrow-right"></i>
             </a>

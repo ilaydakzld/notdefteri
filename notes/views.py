@@ -261,7 +261,7 @@ def landing(request):
 @login_required
 def get_collab_notes(request, room_id):
     room_id = room_id.strip().upper()
-    notes = CollabNote.objects.filter(room_id=room_id).order_by('-created_at')
+    notes = CollabNote.objects.filter(room_id=room_id).select_related('author').order_by('-created_at')
     data = []
     for n in notes:
         data.append({
@@ -368,7 +368,7 @@ def get_admin_feedbacks(request):
         return JsonResponse({'success': False, 'error': 'Bu işlem için yetkiniz yoktur.'}, status=403)
 
     status_filter = request.GET.get('status', 'all')
-    feedbacks = Feedback.objects.filter(is_deleted_by_admin=False).order_by('-created_at')
+    feedbacks = Feedback.objects.filter(is_deleted_by_admin=False).select_related('user').order_by('-created_at')
     if status_filter in ['pending', 'in_progress', 'resolved']:
         feedbacks = feedbacks.filter(status=status_filter)
 

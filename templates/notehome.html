@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'logo_round.png' %}">
     <title>Planlayıcım - Kişisel Dashboard</title>
     <!-- Google Fonts -->
     <link
@@ -2613,13 +2614,13 @@
             `;
         }
 
-        // Build Notlarım Grid view (excludes project notes)
+        // Build Notlarım Grid view (excludes project notes and completed notes/tasks)
         function buildNotlarimGrid(notes) {
             const grid = document.getElementById('all-notes-grid');
             if (!grid) return;
 
-            // Only display general notes that do not belong to a specific project
-            const notlarimNotes = notes.filter(n => !n.projectName);
+            // Only display general notes that do not belong to a specific project and are not completed
+            const notlarimNotes = notes.filter(n => !n.projectName && !n.completed);
 
             grid.innerHTML = '';
             if (notlarimNotes.length === 0) {
