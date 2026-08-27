@@ -5,46 +5,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{% static 'logo_round.png' %}">
     <title>Planlayıcım - Kişisel Asistanınız & Akıllı Verimlilik Platformu</title>
-    <!-- Google Fonts -->
+    <link rel="icon" type="image/png" href="{% static 'logo_round.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- dotLottie Player -->
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
     <style>
         :root {
-            --primary: #6366f1;
+            --primary: #5e61f4;
             --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --accent: #10b981;
+            --primary-dark: #3b3db8;
+            --secondary: #8b5cf6;
+            --accent: #38bdf8;
             --warning: #f59e0b;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.65);
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.08);
-            --glass-blur: 16px;
-            --sidebar-bg: #111827;
-            --sidebar-active: #6366f1;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-        }
-
-        [data-theme="dark"] {
-            --light: #090d16;
             --dark: #f8fafc;
-            --card-bg: rgba(15, 23, 42, 0.7);
+            --light: #090d16;
             --glass-bg: rgba(15, 23, 42, 0.6);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
-            --sidebar-bg: #0b0f19;
+            --glass-blur: 16px;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
+        }
+
+        [data-theme="light"] {
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 10px 30px -5px rgba(94, 97, 244, 0.08);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
         }
 
         * {
@@ -56,17 +56,13 @@
         }
 
         body {
-            background: #fafafa;
+            background: var(--light);
             min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        body[data-theme="dark"] {
-            background: linear-gradient(135deg, #090d16 0%, #1e1b4b 45%, #0f172a 80%, #020617 100%);
         }
 
         /* Glass Header Navigation */
@@ -107,172 +103,122 @@
             height: 40px;
             border-radius: 12px;
             object-fit: cover;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         .nav-links {
             display: flex;
-            gap: 28px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: width 0.25s ease;
-            border-radius: 2px;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-buttons {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .theme-toggle-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid var(--glass-border);
-            cursor: pointer;
-            color: var(--text-main);
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            transition: all 0.2s ease;
-        }
-
-        .theme-toggle-btn:hover {
-            transform: rotate(15deg) scale(1.05);
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--primary);
-        }
-
-        .nav-btn {
-            text-decoration: none;
-            padding: 10px 22px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.25s ease;
-        }
-
-        .nav-btn.login {
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            background: transparent;
-        }
-
-        .nav-btn.login:hover {
-            background: rgba(99, 102, 241, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .nav-btn.register {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .nav-btn.register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 150px 20px 60px;
-            text-align: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
             align-items: center;
             gap: 20px;
         }
 
-        .badge-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 20px;
-            border-radius: 30px;
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: var(--accent);
-            font-size: 0.88rem;
+        .nav-btn {
+            text-decoration: none;
             font-weight: 700;
-            letter-spacing: 0.5px;
-            animation: fadeIn 0.6s ease;
-        }
-
-        .badge-pill i {
             font-size: 0.95rem;
-            color: var(--accent);
+            transition: all 0.2s ease;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            line-height: 1.2;
+        .nav-btn.login {
             color: var(--text-main);
-            letter-spacing: -1px;
-            max-width: 900px;
-            animation: fadeInUp 0.8s ease 0.1s both;
         }
 
-        .hero h1 span {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .nav-btn.login:hover {
+            color: var(--primary);
         }
 
-        .hero p {
-            font-size: 1.2rem;
+        .nav-btn.register {
+            padding: 10px 24px;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(94, 97, 244, 0.3);
+        }
+
+        .nav-btn.register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(94, 97, 244, 0.45);
+        }
+
+        .btn-theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: transform 0.2s;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-theme-toggle:hover {
+            transform: scale(1.15);
+            color: var(--primary);
+        }
+
+        /* Hero Section (Centered Mascot) */
+        .hero-section-new {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding: 140px 5% 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-content-centered {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-lottie-container-centered {
+            width: 280px;
+            height: 280px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 15px 30px rgba(94, 97, 244, 0.15));
+        }
+
+        .hero-title-centered {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-desc-centered {
+            font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 780px;
             line-height: 1.65;
-            font-weight: 500;
-            animation: fadeInUp 0.8s ease 0.2s both;
+            max-width: 680px;
+            margin-bottom: 32px;
         }
 
-        .cta-group {
+        .hero-cta-centered {
             display: flex;
             gap: 16px;
-            margin-top: 10px;
-            animation: fadeInUp 0.8s ease 0.3s both;
+            justify-content: center;
         }
 
         .cta-btn {
             text-decoration: none;
-            padding: 16px 40px;
+            padding: 14px 36px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -280,450 +226,104 @@
         }
 
         .cta-btn.primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary);
             color: white;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 6px 20px rgba(94, 97, 244, 0.35);
         }
 
         .cta-btn.primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 12px 30px rgba(94, 97, 244, 0.5);
         }
 
-        /* Interactive Sidebar Preview Showcase */
-        .preview-showcase {
-            width: 100%;
-            max-width: 1100px;
-            margin: 40px auto 0;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            display: flex;
-            animation: fadeInUp 1s ease 0.4s both;
-            min-height: 520px;
-        }
-
-        /* Mock Sidebar styling matching user image */
-        .mock-sidebar {
-            width: 240px;
-            background: #111827;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-            flex-shrink: 0;
-        }
-
-        .mock-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 14px;
-            color: #9ca3af;
-            font-size: 0.92rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            border: none;
-            background: transparent;
-            width: 100%;
-        }
-
-        .mock-menu-item:hover {
-            color: #f3f4f6;
+        .cta-btn.secondary {
             background: rgba(255, 255, 255, 0.05);
-        }
-
-        .mock-menu-item.active {
-            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-        }
-
-        .mock-menu-item i {
-            font-size: 1.1rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Main Viewport in Preview */
-        .mock-viewport {
-            flex: 1;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            background: rgba(0, 0, 0, 0.02);
-            overflow-y: auto;
-        }
-
-        body[data-theme="dark"] .mock-viewport {
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .viewport-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .viewport-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        .viewport-title i {
-            color: var(--primary);
-        }
-
-        .module-tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .module-tab-content.active {
-            display: block;
-        }
-
-        /* Module Specific Mock UI Cards */
-        .mock-card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-        }
-
-        .mock-widget {
-            background: var(--card-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .mock-widget h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .mock-timeline-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            border-radius: 10px;
-            background: rgba(99, 102, 241, 0.06);
-            margin-bottom: 8px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .mock-timeline-time {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--primary);
-            min-width: 80px;
-        }
-
-        .mock-timeline-text {
-            font-size: 0.85rem;
-            font-weight: 600;
             color: var(--text-main);
         }
 
-        .notebook-paper {
-            background: #fffdf7;
-            color: #1e293b;
-            border-radius: 16px;
-            padding: 24px 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            background-image: linear-gradient(#e5e7eb 1.5px, transparent 1.5px);
-            background-size: 100% 30px;
-            line-height: 30px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.4rem;
-            border-left: 3px double #f43f5e;
-            position: relative;
+        [data-theme="light"] .cta-btn.secondary {
+            background: white;
+            border-color: #cbd5e1;
         }
 
-        body[data-theme="dark"] .notebook-paper {
-            background: #1e293b;
-            color: #f1f5f9;
-            background-image: linear-gradient(#334155 1.5px, transparent 1.5px);
-        }
-
-        .progress-bar-wrap {
-            height: 10px;
-            background: rgba(0, 0, 0, 0.08);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            border-radius: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: width 0.5s ease;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            padding: 50px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: var(--glass-shadow);
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-item p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-top: 4px;
-        }
-
-        /* Main Section Titles */
-        .section-title {
-            text-align: center;
-            font-size: 2.3rem;
-            font-weight: 900;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            letter-spacing: -0.5px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.05rem;
-            color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 50px;
-            font-weight: 500;
-        }
-
-        /* Features Section (9 Modules Grid with Colorful Bubble Icon Boxes) */
-        .features-container {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 32px 26px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.12);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-card-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        /* Colorful Bubble Icon Box */
-        .feature-icon-box {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--primary);
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        .feature-card p {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-weight: 500;
-            margin-bottom: 16px;
-        }
-
-        /* Bullet Points: Ensure NO black dots (list-style: none) */
-        .feature-bullets {
-            list-style: none !important;
-            list-style-type: none !important;
-            padding-left: 0 !important;
-            margin: 0;
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-top: 14px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .feature-bullets li {
-            list-style: none !important;
-            list-style-type: none !important;
-            font-size: 0.86rem;
-            font-weight: 600;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feature-bullets li i {
-            color: var(--accent);
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        /* Modern Compact Call to Action Banner */
-        .cta-banner {
-            padding: 42px 32px;
-            max-width: 850px;
-            margin: 40px auto 60px;
-            text-align: center;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .cta-banner:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.15);
-        }
-
-        .cta-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .cta-banner h2 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -0.5px;
-        }
-
-        .cta-banner p {
-            font-size: 0.98rem;
-            color: var(--text-muted);
-            max-width: 520px;
-            line-height: 1.5;
-        }
-
-        .cta-banner .cta-btn.primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-            margin-top: 4px;
-            padding: 14px 32px;
-            font-size: 0.98rem;
-        }
-
-        .cta-banner .cta-btn.primary:hover {
+        .cta-btn.secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Breathing Gradient Background */
+        .gradient-bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .gradient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            mix-blend-mode: screen;
+            animation: breathe 12s infinite alternate ease-in-out;
+        }
+
+        [data-theme="light"] .gradient-blob {
+            mix-blend-mode: multiply;
+            opacity: 0.12;
+            filter: blur(100px);
+        }
+
+        .blob-1 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(94, 97, 244, 0.3) 0%, transparent 70%);
+            top: -10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+            bottom: -10%;
+            right: 10%;
+            animation-delay: -4s;
+        }
+
+        .blob-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
+            top: 30%;
+            right: 30%;
+            animation-delay: -8s;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(30px, -40px) scale(1.15);
+            }
+
+            100% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
         }
 
         /* Footer */
         footer {
             margin-top: auto;
-            background: rgba(15, 23, 42, 0.05);
+            background: rgba(15, 23, 42, 0.03);
             padding: 40px 20px;
             text-align: center;
             font-size: 0.9rem;
@@ -732,21 +332,11 @@
             border-top: 1px solid var(--glass-border);
         }
 
-        body[data-theme="dark"] footer {
+        [data-theme="dark"] footer {
             background: rgba(2, 6, 23, 0.5);
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -759,106 +349,182 @@
             }
         }
 
-        /* Responsive Mobile Optimization */
-        @media (max-width: 992px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* Info Sections Styling */
+        .info-section {
+            padding: 80px 5%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--light);
+            transition: background 0.3s ease;
+        }
+
+        .info-section.darker {
+            background: rgba(15, 23, 42, 0.02);
+        }
+
+        [data-theme="dark"] .info-section.darker {
+            background: rgba(2, 6, 23, 0.3);
+        }
+
+        .info-container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .section-header-centered {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-header-centered h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header-centered p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* 3-Column Feature Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .features-grid {
+                grid-template-columns: 1fr;
             }
+        }
+
+        .feature-card-minimal {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--glass-shadow);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-card-minimal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(94, 97, 244, 0.12);
+        }
+
+        .feature-icon-wrapper {
+            width: 54px;
+            height: 54px;
+            background: rgba(94, 97, 244, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card-minimal:hover .feature-icon-wrapper {
+            background: var(--primary);
+            color: white;
+        }
+
+        .feature-card-minimal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .feature-card-minimal p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Steps Layout (How it Works) */
+        .steps-layout {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            position: relative;
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero {
-                padding-top: 120px;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .cta-group {
+            .steps-layout {
                 flex-direction: column;
-                width: 100%;
-                max-width: 320px;
-            }
-
-            .cta-btn {
-                justify-content: center;
-            }
-
-            /* Responsive Mobile Showcase */
-            .preview-showcase {
-                flex-direction: column;
-                min-height: auto;
-                border-radius: 20px;
-            }
-
-            .mock-sidebar {
-                width: 100%;
-                flex-direction: row;
-                overflow-x: auto;
-                white-space: nowrap;
-                padding: 12px 14px;
-                gap: 8px;
-                border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-
-            .mock-sidebar::-webkit-scrollbar {
-                display: none;
-            }
-
-            .mock-menu-item {
-                flex-shrink: 0;
-                width: auto;
-                padding: 8px 16px;
-                border-radius: 20px;
-                font-size: 0.84rem;
-                gap: 8px;
-            }
-
-            .mock-viewport {
-                padding: 18px 14px;
-            }
-
-            .viewport-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .viewport-title {
-                font-size: 1.15rem;
-            }
-
-            .mock-card-grid {
-                grid-template-columns: 1fr;
+                gap: 50px;
             }
         }
 
-        @media (max-width: 640px) {
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
+        .step-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            position: relative;
+        }
 
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s;
+        }
+
+        .step-item:hover .step-number {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .step-item h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .step-item p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 280px;
         }
     </style>
 </head>
 
 <body>
-
     <!-- Glass Header Navigation -->
     <header>
         <a href="#" class="logo">
@@ -866,555 +532,122 @@
                 onerror="this.src='https://cdn-icons-png.flaticon.com/512/2693/2693507.png'">
             <span>Planlayıcım</span>
         </a>
-
-        <ul class="nav-links">
-            <li><a href="#features">Tüm Modüller</a></li>
-            <li><a href="#demo">Canlı Deneyim</a></li>
-        </ul>
-
-        <div class="nav-buttons">
-            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Temayı Değiştir">
-                <i class="fas fa-moon" id="theme-icon"></i>
+        <div class="nav-links">
+            <button class="btn-theme-toggle" onclick="toggleTheme()" title="Temayı Değiştir">
+                <i class="fas fa-sun" id="theme-icon"></i>
             </button>
             <a href="{% url 'login' %}" class="nav-btn login">Giriş Yap</a>
-            <a href="{% url 'register' %}" class="nav-btn register">Ücretsiz Kayıt Ol</a>
+            <a href="{% url 'register' %}" class="nav-btn register">Kayıt Ol</a>
         </div>
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="badge-pill">
-                <i class="fas fa-check-circle"></i> %100 Ücretsiz
+        <!-- Centered minimal Hero section with Lottie cat mascot and breathing gradient -->
+        <section class="hero-section-new">
+            <div class="gradient-bg-container">
+                <div class="gradient-blob blob-1"></div>
+                <div class="gradient-blob blob-2"></div>
+                <div class="gradient-blob blob-3"></div>
             </div>
 
-            <h1>Tüm Gününüz ve Notlarınız <br><span>Tek Bir Arayüzde Düzenlensin</span></h1>
-
-            <p>
-                Ekip arkadaşlarınızla ortak alandan notlar paylaşın, programınızı düzenleyin ve hayatınızı
-                kolaylaştırın.
-                Tüm verimlilik ihtiyaçlarınız için geliştirilmiş, <strong>Tamamen ücretsiz</strong> akıllı kişisel
-                asistanınız.
-            </p>
-
-            <div class="cta-group">
-                <a href="{% url 'register' %}" class="cta-btn primary">
-                    Hemen Ücretsiz Başla <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <!-- Interactive Live Preview Mockup (Matching User's Sidebar Image) -->
-            <div class="preview-showcase" id="demo">
-                <!-- Left Sidebar -->
-                <div class="mock-sidebar">
-                    <button class="mock-menu-item active" onclick="switchMockTab(this, 'tab-programim')">
-                        <i class="far fa-calendar-alt"></i> Programım
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-notlarim')">
-                        <i class="far fa-clipboard"></i> Notlarım
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-ajandam')">
-                        <i class="far fa-calendar-check"></i> Ajandam (Tarihli)
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-etkinlikler')">
-                        <i class="fas fa-glass-cheers"></i> Etkinlikler
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-analiz')">
-                        <i class="fas fa-chart-line"></i> Analiz
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-projelerim')">
-                        <i class="fas fa-tasks"></i> Projelerim
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-ortak')">
-                        <i class="fas fa-users"></i> Ortak Alan
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-dilek')">
-                        <i class="far fa-envelope"></i> Dilek ve Şikayet
-                    </button>
-                    <button class="mock-menu-item" onclick="switchMockTab(this, 'tab-ayarlar')">
-                        <i class="fas fa-sliders"></i> Ayarlar
-                    </button>
+            <div class="hero-content-centered animate-fade-in-up">
+                <div class="hero-lottie-container-centered">
+                    <dotlottie-player src="https://lottie.host/8cf4ba71-e5fb-44f3-8134-178c4d389417/0CCsdcgNIP.json"
+                        background="transparent" speed="1" loop autoplay style="width: 100%; height: 100%;">
+                    </dotlottie-player>
                 </div>
-
-                <!-- Right Viewport Display -->
-                <div class="mock-viewport">
-
-                    <!-- Tab 1: Programım -->
-                    <div id="tab-programim" class="module-tab-content active">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="far fa-calendar-alt"></i> Programım & Zaman Çizelgesi
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(99, 102, 241, 0.15); color:var(--primary); padding:4px 12px; border-radius:12px;">Bugün
-                                & Gelecek 7 Gün</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Günlük akışınızı saat
-                            saat planlayın, yaklaşan görevlerinizi anında görün.</p>
-
-                        <div class="mock-card-grid">
-                            <div class="mock-widget">
-                                <h4><span>🕒 Bugünün Çizelgesi</span> <i class="fas fa-clock"
-                                        style="color:var(--primary)"></i></h4>
-                                <div class="mock-timeline-item">
-                                    <span class="mock-timeline-time">09:00 - 10:30</span>
-                                    <span class="mock-timeline-text">Yazılım Kod Gözden Geçirme</span>
-                                </div>
-                                <div class="mock-timeline-item"
-                                    style="border-left-color:var(--secondary); background:rgba(236, 72, 153, 0.06);">
-                                    <span class="mock-timeline-time" style="color:var(--secondary);">11:00 -
-                                        12:00</span>
-                                    <span class="mock-timeline-text">Ekip Ortak Planlama Toplantısı</span>
-                                </div>
-                                <div class="mock-timeline-item"
-                                    style="border-left-color:var(--accent); background:rgba(16, 185, 129, 0.06);">
-                                    <span class="mock-timeline-time" style="color:var(--accent);">14:00 - 16:00</span>
-                                    <span class="mock-timeline-text">Ders & Odaklanma Çalışması</span>
-                                </div>
-                            </div>
-
-                            <div class="mock-widget">
-                                <h4><span>⭐ Haftalık İlerleme</span> <i class="fas fa-star"
-                                        style="color:var(--warning)"></i></h4>
-                                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:6px;">Tamamlanan
-                                    Görevler: <strong>14 / 18</strong></p>
-                                <div class="progress-bar-wrap">
-                                    <div class="progress-bar-fill" style="width: 78%;"></div>
-                                </div>
-                                <div
-                                    style="margin-top:16px; font-size:0.8rem; color:var(--text-muted); display:flex; justify-content:space-between;">
-                                    <span>Pazartesi: %90</span>
-                                    <span>Salı: %75</span>
-                                    <span>Çarşamba: %85</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 2: Notlarım -->
-                    <div id="tab-notlarim" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="far fa-clipboard"></i> Notlarım & Kategoriler
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(16, 185, 129, 0.15); color:var(--accent); padding:4px 12px; border-radius:12px;">Hızlı
-                                Arama & Filtreleme</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Dilediğiniz kategoride
-                            not oluşturun, etiketleyin ve saniyeler içinde arayın.</p>
-
-                        <div class="mock-card-grid">
-                            <div class="mock-widget">
-                                <h4><span>📌 Proje Notu</span> <span
-                                        style="font-size:0.7rem; background:rgba(99,102,241,0.1); color:var(--primary); padding:2px 8px; border-radius:6px;">İş</span>
-                                </h4>
-                                <p style="font-size:0.85rem; color:var(--text-main); margin-bottom:10px;">Landing page
-                                    tasarımı responsive uyumluluk kontrolleri tamamlandı.</p>
-                                <span style="font-size:0.75rem; color:var(--text-muted);"><i class="far fa-clock"></i> 2
-                                    saat önce düzenlendi</span>
-                            </div>
-                            <div class="mock-widget">
-                                <h4><span>💡 Fikir Defteri</span> <span
-                                        style="font-size:0.7rem; background:rgba(236,72,153,0.1); color:var(--secondary); padding:2px 8px; border-radius:6px;">Kişisel</span>
-                                </h4>
-                                <p style="font-size:0.85rem; color:var(--text-main); margin-bottom:10px;">Haftalık kitap
-                                    okuma hedefi ve yeni öğrenilecek Python kütüphaneleri listesi.</p>
-                                <span style="font-size:0.75rem; color:var(--text-muted);"><i class="far fa-clock"></i>
-                                    Dün eklendi</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 3: Ajandam -->
-                    <div id="tab-ajandam" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="far fa-calendar-check"></i> Ajandam (Gerçekçi Dijital Defter)
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(236,72,153,0.15); color:var(--secondary); padding:4px 12px; border-radius:12px;">El
-                                Yazısı & Daktilo Fontu</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Güne özel dijital
-                            günlük tutun, nostaljik çizgili kağıt ve el yazısı hissiyatı yaşayın.</p>
-
-                        <div class="notebook-paper">
-                            "Bugün ajandama aldığım notlar otomatik olarak hafızaya kaydedildi. Spiral cilt tasarımı ve
-                            daktilo font seçenekleriyle günlük yazmak inanılmaz keyifli!"
-                        </div>
-                    </div>
-
-                    <!-- Tab 4: Etkinlikler -->
-                    <div id="tab-etkinlikler" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="fas fa-glass-cheers"></i> Etkinlik Takibi & Geri Sayım
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(245,158,11,0.15); color:var(--warning); padding:4px 12px; border-radius:12px;">Özel
-                                Günler & Davetler</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Doğum günleri,
-                            toplantılar ve özel kutlamalarınızı geri sayım sayacıyla kaçırmayın.</p>
-
-                        <div class="mock-card-grid">
-                            <div class="mock-widget" style="border-left: 4px solid var(--warning);">
-                                <h4>🎉 Doğum Günü Partisi <span style="font-size:0.75rem; color:var(--warning);">Kalan:
-                                        3 Gün</span></h4>
-                                <p style="font-size:0.85rem; color:var(--text-muted);">Sürpriz hediye organize edilecek
-                                    ve mekan rezervasyonu teyit edilecek.</p>
-                            </div>
-                            <div class="mock-widget" style="border-left: 4px solid var(--primary);">
-                                <h4>🚀 Ürün Lansmanı <span style="font-size:0.75rem; color:var(--primary);">Kalan: 12
-                                        Gün</span></h4>
-                                <p style="font-size:0.85rem; color:var(--text-muted);">Tüm ekip üyeleriyle son sunum
-                                    provası yapılacak.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 5: Analiz -->
-                    <div id="tab-analiz" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="fas fa-chart-line"></i> Analiz & Verimlilik Grafikleri
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(99,102,241,0.15); color:var(--primary); padding:4px 12px; border-radius:12px;">Anlık
-                                Performans Skoru</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Çalışma sürelerinizi,
-                            tamamlanan görev oranlarınızı görün ve performansınızı artırın.</p>
-
-                        <div class="mock-card-grid">
-                            <div class="mock-widget" style="text-align:center;">
-                                <h4 style="justify-content:center;">Haftalık Verimlilik</h4>
-                                <div style="font-size:2.4rem; font-weight:900; color:var(--primary); margin:10px 0;">%92
-                                </div>
-                                <p style="font-size:0.8rem; color:var(--accent);"><i class="fas fa-arrow-up"></i> Geçen
-                                    haftaya göre +%8 artış</p>
-                            </div>
-                            <div class="mock-widget" style="text-align:center;">
-                                <h4 style="justify-content:center;">Toplam Odak Süresi</h4>
-                                <div style="font-size:2.4rem; font-weight:900; color:var(--secondary); margin:10px 0;">
-                                    28.5 Saat</div>
-                                <p style="font-size:0.8rem; color:var(--text-muted);">Ortalama günlük 4.1 saat</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 6: Projelerim -->
-                    <div id="tab-projelerim" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="fas fa-tasks"></i> Projelerim & Kanban Panosu
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(16,185,129,0.15); color:var(--accent); padding:4px 12px; border-radius:12px;">Görev
-                                Yönetimi</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Projelerinizi adımlara
-                            bölün, Yapılacak / Devam Eden / Tamamlanan sütunlarıyla yönetin.</p>
-
-                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
-                            <div style="background:rgba(0,0,0,0.04); padding:12px; border-radius:12px;">
-                                <div
-                                    style="font-size:0.8rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">
-                                    Yapılacak (2)</div>
-                                <div class="mock-widget"
-                                    style="padding:10px; font-size:0.8rem; font-weight:600; margin-bottom:6px;">API
-                                    Entegrasyonu</div>
-                            </div>
-                            <div style="background:rgba(99,102,241,0.06); padding:12px; border-radius:12px;">
-                                <div
-                                    style="font-size:0.8rem; font-weight:700; color:var(--primary); margin-bottom:8px;">
-                                    Devam Eden (1)</div>
-                                <div class="mock-widget"
-                                    style="padding:10px; font-size:0.8rem; font-weight:600; border-left:3px solid var(--primary);">
-                                    UI Geliştirmeleri</div>
-                            </div>
-                            <div style="background:rgba(16,185,129,0.06); padding:12px; border-radius:12px;">
-                                <div style="font-size:0.8rem; font-weight:700; color:var(--accent); margin-bottom:8px;">
-                                    Tamamlanan (4)</div>
-                                <div class="mock-widget"
-                                    style="padding:10px; font-size:0.8rem; font-weight:600; border-left:3px solid var(--accent);">
-                                    Veritabanı Tasarımı</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 7: Ortak Alan -->
-                    <div id="tab-ortak" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="fas fa-users"></i> Ortak Çalışma Alanı
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(99,102,241,0.15); color:var(--primary); padding:4px 12px; border-radius:12px;">Canlı
-                                Oda Kodu</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Ekip arkadaşlarınızla
-                            tek tıkla oda oluşturun ve canlı olarak aynı notlar üzerinde çalışın.</p>
-
-                        <div class="mock-widget">
-                            <div
-                                style="display:flex; justify-content:space-between; align-items:center; background:rgba(99,102,241,0.1); padding:12px 18px; border-radius:12px; margin-bottom:12px;">
-                                <span style="font-weight:700; font-size:0.9rem;">Canlı Oda Kodu: <code
-                                        style="color:var(--primary); font-size:1.1rem; letter-spacing:1px;">xP9L-q1Nz-3K8M</code></span>
-                                <button
-                                    style="background:var(--primary); color:white; border:none; padding:6px 14px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer;">Kopyala</button>
-                            </div>
-                            <p style="font-size:0.85rem; color:var(--text-muted);"><i class="fas fa-user-check"
-                                    style="color:var(--accent)"></i> 3 Katılımcı Bağlı: Siz, İlayda, Kübra</p>
-                        </div>
-                    </div>
-
-                    <!-- Tab 8: Dilek ve Şikayet -->
-                    <div id="tab-dilek" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="far fa-envelope"></i> Dilek & Şikayet Destek Paneli
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(16,185,129,0.15); color:var(--accent); padding:4px 12px; border-radius:12px;">Anlık
-                                Yanıt Takibi</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Geliştirici ekibine
-                            doğrudan dilek ve geri bildirim iletin, durum güncellemelerini anında alın.</p>
-
-                        <div class="mock-widget">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                                <strong style="font-size:0.9rem;">Öneri: Koyu Tema Zamanlayıcı</strong>
-                                <span
-                                    style="font-size:0.75rem; background:rgba(16,185,129,0.15); color:var(--accent); padding:2px 8px; border-radius:6px; font-weight:700;">Çözüldü</span>
-                            </div>
-                            <p style="font-size:0.85rem; color:var(--text-muted);">Geri bildiriminiz işleme alındı ve
-                                son güncelleme ile sistem optimize edildi.</p>
-                        </div>
-                    </div>
-
-                    <!-- Tab 9: Ayarlar -->
-                    <div id="tab-ayarlar" class="module-tab-content">
-                        <div class="viewport-header">
-                            <div class="viewport-title">
-                                <i class="fas fa-sliders"></i> Ayarlar & Veri Güvenliği
-                            </div>
-                            <span
-                                style="font-size:0.8rem; font-weight:700; background:rgba(99,102,241,0.15); color:var(--primary); padding:4px 12px; border-radius:12px;">JSON
-                                Dışa / İçe Aktar</span>
-                        </div>
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">Tema tercihinizi
-                            özelleştirin, profilinizi yönetin ve tüm verilerinizi tek tıkla bilgisayarınıza yedekleyin.
-                        </p>
-
-                        <div class="mock-card-grid">
-                            <div class="mock-widget">
-                                <h4><span>💾 Veri Yedekleme</span></h4>
-                                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Notlarınızı ve
-                                    ajandanızı JSON formatında indirin.</p>
-                                <button
-                                    style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer; width:100%;">JSON
-                                    Yedek İndir</button>
-                            </div>
-                            <div class="mock-widget">
-                                <h4><span>🎨 Görünüm Modu</span></h4>
-                                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Karanlık ve
-                                    aydınlık tema geçişi yapın.</p>
-                                <button onclick="toggleTheme()"
-                                    style="background:transparent; border:1px solid var(--glass-border); color:var(--text-main); padding:8px 16px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer; width:100%;">Temayı
-                                    Değiştir</button>
-                            </div>
-                        </div>
-                    </div>
-
+                <h1 class="hero-title-centered">Planlayıcım ile hayatınızı düzene sokun, verimliliğinizi artırın.</h1>
+                <p class="hero-desc-centered">
+                    Zamanınızı planlayın, notlarınızı düzenleyin ve tüm işlerinizi tek bir çatı altında toplayarak kargaşadan uzaklaşın.
+                </p>
+                <div class="hero-cta-centered">
+                    <a href="{% url 'login' %}" class="cta-btn primary">Giriş Yap</a>
+                    <a href="{% url 'register' %}" class="cta-btn secondary">Kayıt Ol</a>
                 </div>
             </div>
         </section>
 
-        <!-- Dynamic Quick Stats Bar -->
-        <section class="stats-bar">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>Tamamen Ücretsiz</h3>
-                    <p>Sınırsız Kullanım</p>
-                </div>
-                <div class="stat-item">
-                    <h3>9+ Modül</h3>
-                    <p>Kişisel Verimlilik</p>
-                </div>
-                <div class="stat-item">
-                    <h3>Canlı İşbirliği</h3>
-                    <p>Özel Oda </p>
-                </div>
-                <div class="stat-item">
-                    <h3>7/24</h3>
-                    <p>Geri Bildirim & Destek</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- All 9 Features / Modules Section (Renkli İkon Baloncuklu 9 Modül Kartı) -->
-        <section class="features-container" id="features">
-            <h2 class="section-title">Her İhtiyacınıza Özel 9 Güçlü Araç</h2>
-            <p class="section-subtitle">Planlayıcım; zamanınızı yönetmekten ortak not almaya kadar tüm verimlilik
-                araçlarını <strong>tamamen ücretsiz</strong> sunar.</p>
-
-            <div class="features-grid">
-                <!-- 1. Programım -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box"><i class="far fa-calendar-alt"></i></div>
-                        <h3>1. Programım</h3>
-                    </div>
-                    <p>Bugün dahil gelecek 7 günü kapsayan akıllı zaman çizelgesiyle günlük ve haftalık programınızı
-                        saat saat planlayın.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Saat aralıklı görev blokları</li>
-                        <li><i class="fas fa-check-circle"></i> Anlık günlük not sayacı</li>
-                    </ul>
+        <!-- Planlayıcım Nedir? (What it does Section) -->
+        <section class="info-section">
+            <div class="info-container">
+                <div class="section-header-centered">
+                    <h2>Planlayıcım Ne İşe Yarar?</h2>
+                    <p>Planlayıcım; hayatınızı düzenleyerek kolaylaştırmak, zamanınızı daha verimli kullanmak ve tüm kişisel
+                        notlarınızı tek bir güvenli yerde toplamak için geliştirilmiş akıllı bir asistan platformudur.
+                    </p>
                 </div>
 
-                <!-- 2. Notlarım -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:var(--secondary); background:rgba(236,72,153,0.15);">
-                            <i class="far fa-clipboard"></i>
+                <div class="features-grid">
+                    <!-- Card 1 -->
+                    <div class="feature-card-minimal">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-calendar-check"></i>
                         </div>
-                        <h3>2. Notlarım</h3>
+                        <h3>Zaman ve Görev Yönetimi</h3>
+                        <p>Günlük akışınızı saat saat planlayın, yaklaşan görevlerinizi anında görün ve haftalık
+                            tamamlama grafiklerinizle ilerlemenizi izleyin.</p>
                     </div>
-                    <p>Fikirlerinizi, ders notlarınızı veya kişisel yapılacaklar listenizi renkli etiketler ve
-                        kategorilerle düzenleyin.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Kategoriye göre hızlı filtreleme</li>
-                        <li><i class="fas fa-check-circle"></i> Anında kelime arama motoru</li>
-                    </ul>
-                </div>
-
-                <!-- 3. Ajandam -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:#f43f5e; background:rgba(244,63,94,0.15);"><i
-                                class="far fa-calendar-check"></i></div>
-                        <h3>3. Ajandam (Tarihli)</h3>
+                    <!-- Card 2 -->
+                    <div class="feature-card-minimal">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h3>Gelişmiş Defter ve Ajanda</h3>
+                        <p>Notlarınızı dilediğiniz gibi düzenleyin, tarihli ajanda kayıtları tutarak nostaljik çizgili defter deneyimi yaşayın.</p>
                     </div>
-                    <p>Tamamen çizgili, spiral ciltli nostaljik defter arayüzünde el yazısı veya daktilo yazı tipleriyle
-                        günlük yazmanın tadını çıkarın.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Seçili tarihe otomatik kaydetme</li>
-                        <li><i class="fas fa-check-circle"></i> 4 farklı özelleştirilebilir font</li>
-                    </ul>
-                </div>
-
-                <!-- 4. Etkinlikler -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:var(--warning); background:rgba(245,158,11,0.15);"><i
-                                class="fas fa-glass-cheers"></i></div>
-                        <h3>4. Etkinlikler</h3>
+                    <!-- Card 3 -->
+                    <div class="feature-card-minimal">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Ortak Çalışma ve Analiz</h3>
+                        <p>Canlı çalışma odalarında oda koduyla arkadaşlarınızla eş zamanlı not tutun, çalışma
+                            verimliliğinizi anlık istatistiklerle ölçün.</p>
                     </div>
-                    <p>Yaklaşan doğum günlerini, sınavları ve özel toplantılarınızı takvim rozetleri ve yıldızlı
-                        etkinlik alanıyla takip edin.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Yıldızlı (⭐) önem rozetleri</li>
-                        <li><i class="fas fa-check-circle"></i> Geri sayım ve tarih uyarısı</li>
-                    </ul>
-                </div>
-
-                <!-- 5. Analiz -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:var(--primary); background:rgba(99,102,241,0.15);"><i
-                                class="fas fa-chart-line"></i></div>
-                        <h3>5. Analiz</h3>
-                    </div>
-                    <p>Tamamladığınız görev oranlarını, haftalık odaklanma sürelerinizi ve verimlilik istatistiklerinizi
-                        görsel grafiklerle inceleyin.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Tamamlanma yüzdesi grafikleri</li>
-                        <li><i class="fas fa-check-circle"></i> Haftalık verimlilik raporları</li>
-                    </ul>
-                </div>
-
-                <!-- 6. Projelerim -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:var(--accent); background:rgba(16,185,129,0.15);"><i
-                                class="fas fa-tasks"></i></div>
-                        <h3>6. Projelerim</h3>
-                    </div>
-                    <p>Karmaşık işlerinizi ve grup ödevlerinizi Kanban tarzı panolar ve proje grupları altında düzenli
-                        bir akışa sokun.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Aşama bazlı görev sütunları</li>
-                        <li><i class="fas fa-check-circle"></i> Proje etiketli not gruplama</li>
-                    </ul>
-                </div>
-
-                <!-- 7. Ortak Alan -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:#8b5cf6; background:rgba(139,92,246,0.15);"><i
-                                class="fas fa-users"></i></div>
-                        <h3>7. Ortak Alan</h3>
-                    </div>
-                    <p>Tamamen güvenli özel odalar ile arkadaşlarınızı davet edin ve eş zamanlı
-                        ortak notlar alın.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Güvenli özel odalar</li>
-                        <li><i class="fas fa-check-circle"></i> Anlık canlı paylaşımlı notlar</li>
-                    </ul>
-                </div>
-
-                <!-- 8. Dilek ve Şikayet -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:#06b6d4; background:rgba(6,182,212,0.15);"><i
-                                class="far fa-envelope"></i></div>
-                        <h3>8. Dilek ve Şikayet</h3>
-                    </div>
-                    <p>Uygulama hakkındaki fikirlerinizi, yeni özellik isteklerinizi veya teknik geri bildirimlerinizi
-                        doğrudan ekibe iletin.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> Geri bildirim durum takibi</li>
-                        <li><i class="fas fa-check-circle"></i> Geliştirici yanıtlarını inceleme</li>
-                    </ul>
-                </div>
-
-                <!-- 9. Ayarlar -->
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon-box" style="color:#64748b; background:rgba(100,116,139,0.15);"><i
-                                class="fas fa-sliders"></i></div>
-                        <h3>9. Ayarlar</h3>
-                    </div>
-                    <p>Tema tercihlerinizi değiştirin, profil bilgilerinizi güncelleyin ve verilerinizi kaybetmemek için
-                        JSON formatında dışa aktarın.</p>
-                    <ul class="feature-bullets">
-                        <li><i class="fas fa-check-circle"></i> JSON veri aktarma ve yedekleme</li>
-                        <li><i class="fas fa-check-circle"></i> Aydınlık / Karanlık mod</li>
-                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Modern Compact Call to Action Banner -->
-        <section class="cta-banner">
-            <h2>Zamanınızı ve Notlarınızı Kontrol Altına Alın</h2>
-            <p>Saniyeler içinde <strong>ücretsiz</strong> hesabınızı oluşturun ve verimliliğinizi artırmaya hemen
-                başlayın.</p>
-            <a href="{% url 'register' %}" class="cta-btn primary">
-                Ücretsiz Hesabını Oluştur <i class="fas fa-arrow-right"></i>
-            </a>
+        <!-- Nasıl Çalışır? (How it works Section) -->
+        <section class="info-section darker">
+            <div class="info-container">
+                <div class="section-header-centered">
+                    <h2>Nasıl Kullanılır?</h2>
+                    <p>Planlayıcım platformunu kullanmaya başlamak son derece kolaydır. Üç basit adımda verimliliğinizi
+                        katlayın.</p>
+                </div>
+
+                <div class="steps-layout">
+                    <!-- Step 1 -->
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <h3>Hesabınızı Oluşturun</h3>
+                        <p>Saniyeler içinde tamamen ücretsiz bir hesap açın ve sistem tercihinize göre koyu/açık
+                            temanızı seçin.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <h3>Modülleri Keşfedin</h3>
+                        <p>Planlayıcım yan menüsünü kullanarak ajanda, program, etkinlik hatırlatıcısı ve not
+                            listelerinizi oluşturmaya başlayın.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <h3>Kontrolü Elinize Alın</h3>
+                        <p>Görevlerinizi bitirdikçe işaretleyin, verimlilik skorunuzu takip edin ve arkadaşlarınızla
+                            ortak odalarda çalışın.</p>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer>
         <div
-            style="max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:16px; align-items:center;">
-            <div
-                style="display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.3rem; color:var(--text-main);">
+            style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text-main);">
                 <img src="{% static 'logo.png' %}" alt="Planlayıcım Logo"
                     style="width:30px; height:30px; border-radius:8px;"
                     onerror="this.src='https://cdn-icons-png.flaticon.com/512/2693/2693507.png'">
@@ -1424,12 +657,16 @@
         </div>
     </footer>
 
-    <!-- Interactive Scripts -->
+    <!-- Interactive Theme Switcher Scripts -->
     <script>
-        // Apply saved theme immediately
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        if (currentTheme === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
+        // Apply saved theme immediately (defaulting to dark mode)
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.className = 'fas fa-moon';
+        } else {
+            document.body.removeAttribute('data-theme');
             const icon = document.getElementById('theme-icon');
             if (icon) icon.className = 'fas fa-sun';
         }
@@ -1437,34 +674,14 @@
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('theme-icon');
-            if (body.getAttribute('data-theme') === 'dark') {
+            if (body.getAttribute('data-theme') === 'light') {
                 body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-                if (icon) icon.className = 'fas fa-moon';
-            } else {
-                body.setAttribute('data-theme', 'dark');
                 localStorage.setItem('theme', 'dark');
                 if (icon) icon.className = 'fas fa-sun';
-            }
-        }
-
-        // Switch Mockup Viewport Tabs in Preview Section
-        function switchMockTab(btnElement, targetTabId) {
-            // Remove active from all menu items
-            const menuItems = document.querySelectorAll('.mock-menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-
-            // Set active to clicked menu item
-            btnElement.classList.add('active');
-
-            // Hide all tab contents
-            const contents = document.querySelectorAll('.module-tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-
-            // Show targeted tab content
-            const targetContent = document.getElementById(targetTabId);
-            if (targetContent) {
-                targetContent.classList.add('active');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                if (icon) icon.className = 'fas fa-moon';
             }
         }
     </script>
