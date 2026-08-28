@@ -457,6 +457,41 @@ def delete_feedback(request, feedback_id):
     return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
 
 
+def sitemap_view(request):
+    domain = request.build_absolute_uri('/')[:-1]
+    if 'localhost' not in domain and '127.0.0.1' not in domain:
+        if domain.startswith('http://'):
+            domain = 'https://' + domain[7:]
+    
+    context = {
+        'domain': domain,
+    }
+    return render(request, 'sitemap.xml', context, content_type='application/xml')
+
+
+def robots_txt(request):
+    domain = request.build_absolute_uri('/')[:-1]
+    if 'localhost' not in domain and '127.0.0.1' not in domain:
+        if domain.startswith('http://'):
+            domain = 'https://' + domain[7:]
+    
+    content = f"""User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /delete/
+Disallow: /toggle/
+Disallow: /edit/
+Disallow: /export/
+Disallow: /import/
+Disallow: /collab/
+Disallow: /feedback/
+
+Sitemap: {domain}/sitemap.xml
+"""
+    return HttpResponse(content, content_type="text/plain")
+
+
+
 
 
 

@@ -20,6 +20,9 @@ urlpatterns = [
     path('feedback/admin/<int:feedback_id>/status/', views.update_feedback_status, name='update_feedback_status'),
     path('feedback/admin/<int:feedback_id>/reply/', views.reply_feedback, name='reply_feedback'),
     path('feedback/admin/<int:feedback_id>/delete/', views.delete_feedback, name='delete_feedback'),
+    path('sitemap.xml', views.sitemap_view, name='sitemap'),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
 ]
+
 
 
