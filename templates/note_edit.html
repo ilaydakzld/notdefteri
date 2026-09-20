@@ -1,12 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{% static 'logo_round.png' %}">
     <title>Not Düzenle - Planlayıcım</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -17,7 +19,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #491917 0%, #491917 100%);
             min-height: 100vh;
             padding: 20px;
             color: #333;
@@ -29,11 +31,11 @@
             background: white;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.6);
         }
 
         h1 {
-            color: #667eea;
+            color: #491917;
             margin-bottom: 30px;
             font-size: 2rem;
         }
@@ -62,9 +64,11 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #491917;
+            box-shadow: 0 0 0 3px rgba(49, 25, 23, 0.45);
             outline: none;
         }
 
@@ -79,8 +83,9 @@
             margin-top: 30px;
         }
 
-        button, .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        button,
+        .btn {
+            background: linear-gradient(135deg, #491917 0%, #491917 100%);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -95,7 +100,8 @@
             text-align: center;
         }
 
-        button:hover, .btn:hover {
+        button:hover,
+        .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
@@ -109,6 +115,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1><i class="fas fa-edit"></i> Not Düzenle</h1>
@@ -128,7 +135,7 @@
                 <label for="category">Kategori:</label>
                 <select id="category" name="category">
                     {% for value, label in Note.CATEGORY_CHOICES %}
-                        <option value="{{ value }}" {% if note.category == value %}selected{% endif %}>{{ label }}</option>
+                    <option value="{{ value }}" {% if note.category == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -137,7 +144,7 @@
                 <label for="priority">Önem Seviyesi:</label>
                 <select id="priority" name="priority">
                     {% for value, label in Note.PRIORITY_CHOICES %}
-                        <option value="{{ value }}" {% if note.priority == value %}selected{% endif %}>{{ label }}</option>
+                    <option value="{{ value }}" {% if note.priority == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -159,4 +166,5 @@
         </form>
     </div>
 </body>
+
 </html>

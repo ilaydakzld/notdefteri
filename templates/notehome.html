@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{% static 'logo_round.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'logo_new.png' %}?v=3">
     <title>Planlayıcım - Kişisel Dashboard</title>
     <!-- Google Fonts -->
     <link
@@ -16,29 +16,29 @@
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
+            --primary: #491917;
+            --primary-light: #6a2624;
+            --primary-dark: #32100f;
+            --secondary: #491917;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --info: #06b6d4;
+            --info: #3b82f6;
             --dark: #0f172a;
-            --light: #f8fafc;
+            --light: #ffffff;
             --sidebar-width: 280px;
             --sidebar-collapsed-width: 80px;
             --transition-speed: 0.3s;
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(226, 232, 240, 0.8);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
             --glass-blur: 16px;
         }
 
         [data-theme="dark"] {
             --light: #0f172a;
             --dark: #f8fafc;
-            --glass-bg: rgba(15, 23, 42, 0.55);
+            --glass-bg: rgba(15, 23, 42, 0.7);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
@@ -51,7 +51,7 @@
         }
 
         body {
-            background: radial-gradient(circle at top right, rgba(94, 97, 244, 0.04), transparent 50%), #f8fafc;
+            background: radial-gradient(circle at top right, rgba(94, 97, 244, 0.03), transparent 50%), #f8fafc;
             min-height: 100vh;
             color: #1e293b;
             display: flex;
@@ -96,6 +96,17 @@
 
         .sidebar.collapsed {
             width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.collapsed .brand-header {
+            justify-content: center;
+            padding: 16px 0 10px 0 !important;
+        }
+
+        .sidebar.collapsed .brand-header span,
+        .sidebar.collapsed .profile-info,
+        .sidebar.collapsed .menu-item a span {
+            display: none !important;
         }
 
         /* Profile Area */
@@ -212,7 +223,13 @@
 
         .sidebar.collapsed .menu-item a {
             justify-content: center;
-            padding: 12px 0;
+            padding: 14px 0;
+            gap: 0;
+        }
+
+        .sidebar.collapsed .menu-item a i {
+            font-size: 1.3rem;
+            margin: 0;
         }
 
         .menu-item a i {
@@ -299,9 +316,20 @@
             font-size: 1.35rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, #ff2a5f 0%, #800f2f 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 42, 95, 0.55));
+        }
+
+        .glowing-burgundy-text {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ff2a5f 0%, #800f2f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 42, 95, 0.55));
         }
 
         .topbar-actions {
@@ -1165,7 +1193,7 @@
         }
 
         .split-left-panel {
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
@@ -1175,14 +1203,15 @@
             gap: 12px;
             max-height: 520px;
             overflow-y: auto;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
         }
 
         body[data-theme="dark"] .split-left-panel {
-            background: rgba(30, 41, 59, 0.35);
+            background: rgba(30, 41, 59, 0.5);
         }
 
         .split-right-panel {
-            background: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
@@ -1192,10 +1221,11 @@
             gap: 16px;
             max-height: 520px;
             overflow-y: auto;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
         }
 
         body[data-theme="dark"] .split-right-panel {
-            background: rgba(30, 41, 59, 0.45);
+            background: rgba(30, 41, 59, 0.5);
         }
 
         .panel-list-item {
@@ -1337,9 +1367,11 @@
 
         <!-- Sidebar -->
         <aside id="app-sidebar" class="sidebar">
-            <div class="brand-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 20px 10px 20px;">
-                <img src="{% static 'logo.png' %}" alt="Planlayıcım Logo" style="width: 40px; height: 40px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);">
-                <span style="font-size: 1.35rem; font-weight: 800; background: linear-gradient(135deg, #a855f7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">Planlayıcım</span>
+            <div class="brand-header"
+                style="display: flex; align-items: center; gap: 12px; padding: 20px 20px 10px 20px;">
+                <img src="{% static 'logo_new.png' %}?v=3" alt="Planlayıcım Logo"
+                    style="width: 40px; height: 40px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 14px rgba(255, 42, 95, 0.25);">
+                <span class="glowing-burgundy-text">Planlayıcım</span>
             </div>
             <div class="profile-container">
                 <div class="profile-avatar-wrapper" id="profile-avatar-char">
@@ -1495,7 +1527,9 @@
                                     <label id="label-filter-category">Kategori</label>
                                     <select name="category">
                                         <option value="">Tümü</option>
-                                        {% for value, label in Note.CATEGORY_CHOICES %}<option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+                                        {% for value, label in Note.CATEGORY_CHOICES %}
+                                        <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="filter-item" style="align-self: flex-end;">
@@ -1521,7 +1555,8 @@
                     <!-- Font and date picker row -->
                     <div class="agenda-font-selector-row">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <label for="agenda_date" id="label-agenda-date" style="font-weight: 700;">Ajanda Tarihi:</label>
+                            <label for="agenda_date" id="label-agenda-date" style="font-weight: 700;">Ajanda
+                                Tarihi:</label>
                             <input type="date" id="agenda_date" onchange="loadAgendaPage()"
                                 style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--glass-border);">
                         </div>
@@ -1569,7 +1604,9 @@
                     <div class="split-layout">
                         <!-- Left Panel: Add Event Form -->
                         <div class="split-left-panel">
-                            <h3 id="label-add-event" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Ekle</h3>
+                            <h3 id="label-add-event"
+                                style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">
+                                Etkinlik Ekle</h3>
 
                             <div class="form-group">
                                 <label for="event_title" id="label-event-title">Etkinlik Adı</label>
@@ -1598,12 +1635,15 @@
                                     placeholder="Konum ve notlar..."></textarea>
                             </div>
 
-                            <button type="button" class="btn-save" id="btn-add-event-submit" onclick="addCustomEvent()">Etkinlik Ekle</button>
+                            <button type="button" class="btn-save" id="btn-add-event-submit"
+                                onclick="addCustomEvent()">Etkinlik Ekle</button>
                         </div>
 
                         <!-- Right Panel: Events List -->
                         <div class="split-right-panel">
-                            <h3 id="label-events-list" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">Etkinlik Listesi</h3>
+                            <h3 id="label-events-list"
+                                style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark);">
+                                Etkinlik Listesi</h3>
                             <div id="events-display-container"
                                 style="display: flex; flex-direction: column; gap: 14px;">
                                 <!-- Events will be rendered here dynamically -->
@@ -1679,7 +1719,8 @@
                                 style="display: flex; flex-direction: column; gap: 12px; justify-content: center; height: 100%;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span id="label-chart-high">Yüksek Önemli</span>
-                                    <span style="font-weight: 700; color: var(--danger)">{{ stats.high_priority }}</span>
+                                    <span style="font-weight: 700; color: var(--danger)">{{ stats.high_priority
+                                        }}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span id="label-chart-today">Bugünkü Görevler</span>
@@ -1701,7 +1742,8 @@
                         <div class="split-left-panel">
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <h3 id="label-projects-list-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Projeler</h3>
+                                <h3 id="label-projects-list-title"
+                                    style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Projeler</h3>
                                 <button class="task-action-btn" onclick="addNewProject()" title="Yeni Proje Ekle"><i
                                         class="fas fa-plus"></i></button>
                             </div>
@@ -1740,45 +1782,53 @@
                     <div class="split-layout">
                         <!-- Left Panel: Room Management -->
                         <div class="split-left-panel">
-                            <h3 id="label-collab-title" style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">Ortak Çalışma Odası</h3>
+                            <h3 id="label-collab-title"
+                                style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">
+                                Ortak Çalışma Odası</h3>
 
-                            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-                                <button class="btn-save" id="btn-create-collab-room" onclick="createCollabRoom()"><i class="fas fa-plus-circle"></i> Yeni Ortak Alan Oluştur</button>
+                            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+                                <button class="btn-save" id="btn-create-collab-room" onclick="createCollabRoom()"><i
+                                        class="fas fa-plus-circle"></i> Yeni Ortak Alan Oluştur</button>
 
-                                <div id="label-collab-or" style="text-align: center; font-size: 0.85rem; color: #64748b; font-weight: 600;">- veya -</div>
+                                <div id="label-collab-or"
+                                    style="text-align: center; font-size: 0.85rem; color: #64748b; font-weight: 600;">-
+                                    veya -</div>
 
                                 <div style="display: flex; flex-direction: column; gap: 6px;">
-                                    <label for="collab_join_id" id="label-collab-join" style="font-size: 0.75rem;">Oda Kimliği/Kodu ile Katıl</label>
+                                    <label for="collab_join_id" id="label-collab-join" style="font-size: 0.75rem;">Oda
+                                        Kimliği/Kodu ile Katıl</label>
                                     <div style="display: flex; gap: 8px;">
-                                        <input type="text" id="collab_join_id" placeholder="Kimlik girin (Örn: a1B2c3D4e5F6)">
-                                        <button class="btn-save" id="btn-collab-join" onclick="joinCollabRoom()" style="width: auto; padding: 8px 16px;">Katıl</button>
+                                        <input type="text" id="collab_join_id"
+                                            placeholder="Kimlik girin (Örn: a1B2c3D4e5F6)">
+                                        <button class="btn-save" id="btn-collab-join" onclick="joinCollabRoom()"
+                                            style="width: auto; padding: 8px 16px;">Katıl</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div id="active-room-display"
-                                style="display: none; background: rgba(99, 102, 241, 0.1); border: 1.5px solid var(--primary-light); padding: 16px; border-radius: 12px; margin-top: 10px;">
-                                <span id="label-collab-active-room"
-                                    style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Aktif Oda:</span>
-                                <h4 id="active-room-code-text"
-                                    style="font-size: 1.25rem; font-weight: 800; margin: 4px 0; color: var(--dark);">Oda Kodu</h4>
-                                <button class="btn-cancel" id="btn-collab-copy-code" onclick="copyCollabCode()"
-                                    style="width: 100%; font-size: 0.8rem; padding: 6px; margin-top: 6px;"><i
-                                        class="far fa-copy"></i> Kodu Kopyala</button>
+                            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--dark); margin: 10px 0 6px 0; border-top: 1px solid var(--glass-border); padding-top: 10px; text-transform: uppercase;">
+                                Kayıtlı Odalarınız
+                            </h4>
+                            <div id="collab-rooms-list-container" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+                                <!-- Dynamic list of user's saved/joined rooms -->
                             </div>
                         </div>
 
                         <!-- Right Panel: Shared Notes -->
                         <div class="split-right-panel">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <h3 id="collab-notes-title"
-                                    style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Ortak Notlar</h3>
-                                <button class="btn-save" id="btn-add-collab-note"
-                                    style="width: auto; padding: 6px 12px; font-size: 0.8rem; display: none;"
-                                    onclick="openCollabNoteInputs()">
-                                    <i class="fas fa-plus"></i> Not Ekle
-                                </button>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <h3 id="collab-notes-title" style="font-size: 1.15rem; font-weight: 800; color: var(--dark);">Ortak Notlar</h3>
+                                    <div id="collab-active-room-subtext" style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-top: 2px;">Lütfen sol taraftan bir oda seçin veya yeni oluşturun.</div>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn-cancel" id="btn-collab-copy-code" onclick="copyCollabCode()" style="font-size: 0.8rem; padding: 6px 12px; display: none;">
+                                        <i class="far fa-copy"></i> Kodu Kopyala
+                                    </button>
+                                    <button class="btn-save" id="btn-add-collab-note" style="padding: 6px 14px; font-size: 0.85rem; display: none;" onclick="openCollabNoteInputs()">
+                                        <i class="fas fa-plus"></i> Not Ekle
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Inline note addition form (collapsible) -->
@@ -1796,7 +1846,8 @@
                                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                                     <button class="btn-cancel" id="btn-collab-note-cancel"
                                         onclick="document.getElementById('collab-note-form-area').style.display='none'">İptal</button>
-                                    <button class="btn-save" id="btn-collab-note-save" onclick="addCollabNote()" style="width: auto;">Odaya Not
+                                    <button class="btn-save" id="btn-collab-note-save" onclick="addCollabNote()"
+                                        style="width: auto;">Odaya Not
                                         Ekle</button>
                                 </div>
                             </div>
@@ -1827,12 +1878,13 @@
                             <textarea id="feedback_message"
                                 placeholder="Geliştirilmesini istediğiniz özellikleri veya karşılaştığınız sorunları buraya yazabilirsiniz..."></textarea>
                         </div>
-                        <button type="button" class="btn-save" id="btn-feedback-submit"
-                            onclick="submitFeedback()">Geri Bildirim Gönder</button>
+                        <button type="button" class="btn-save" id="btn-feedback-submit" onclick="submitFeedback()">Geri
+                            Bildirim Gönder</button>
                     </div>
 
                     <div style="margin-top: 30px;">
-                        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 15px;">Gönderdiğim Taleplerim</h3>
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 15px;">
+                            Gönderdiğim Taleplerim</h3>
                         <div id="user-feedbacks-container" style="display: flex; flex-direction: column; gap: 12px;">
                             <!-- Dynamic user feedbacks -->
                         </div>
@@ -1842,34 +1894,43 @@
                 {% if user.is_superuser %}
                 <!-- TAB: Gelen Talepler (Superuser Yönetici Paneli) -->
                 <div class="tab-panel" id="panel-gelentalepler">
-                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
                         <h2>Gelen Dilek ve Şikayetler (Yönetici Paneli)</h2>
-                        <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
+                        <span
+                            style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
                             <i class="fas fa-user-shield"></i> Yönetici Modu
                         </span>
                     </div>
 
                     <!-- Filter Stats & View Controls -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <button class="btn-save" onclick="filterAdminFeedbacks('all')" style="width: auto; padding: 8px 16px; background: var(--primary);">
+                            <button class="btn-save" onclick="filterAdminFeedbacks('all')"
+                                style="width: auto; padding: 8px 16px; background: var(--primary);">
                                 Tümü (<span id="stat-admin-total">0</span>)
                             </button>
-                            <button class="btn-cancel" onclick="filterAdminFeedbacks('pending')" style="width: auto; padding: 8px 16px; border: 1px solid #ef4444; color: #ef4444;">
+                            <button class="btn-cancel" onclick="filterAdminFeedbacks('pending')"
+                                style="width: auto; padding: 8px 16px; border: 1px solid #ef4444; color: #ef4444;">
                                 Beklemede (<span id="stat-admin-pending">0</span>)
                             </button>
-                            <button class="btn-cancel" onclick="filterAdminFeedbacks('in_progress')" style="width: auto; padding: 8px 16px; border: 1px solid #f59e0b; color: #f59e0b;">
+                            <button class="btn-cancel" onclick="filterAdminFeedbacks('in_progress')"
+                                style="width: auto; padding: 8px 16px; border: 1px solid #f59e0b; color: #f59e0b;">
                                 İnceleniyor (<span id="stat-admin-inprogress">0</span>)
                             </button>
-                            <button class="btn-cancel" onclick="filterAdminFeedbacks('resolved')" style="width: auto; padding: 8px 16px; border: 1px solid #10b981; color: #10b981;">
+                            <button class="btn-cancel" onclick="filterAdminFeedbacks('resolved')"
+                                style="width: auto; padding: 8px 16px; border: 1px solid #10b981; color: #10b981;">
                                 Çözüldü (<span id="stat-admin-resolved">0</span>)
                             </button>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn-cancel" onclick="toggleAllAdminCards(true)" style="width: auto; padding: 6px 12px; font-size: 0.8rem; font-weight: 700;">
+                            <button class="btn-cancel" onclick="toggleAllAdminCards(true)"
+                                style="width: auto; padding: 6px 12px; font-size: 0.8rem; font-weight: 700;">
                                 <i class="fas fa-compress-alt"></i> Tümünü Küçült
                             </button>
-                            <button class="btn-cancel" onclick="toggleAllAdminCards(false)" style="width: auto; padding: 6px 12px; font-size: 0.8rem; font-weight: 700;">
+                            <button class="btn-cancel" onclick="toggleAllAdminCards(false)"
+                                style="width: auto; padding: 6px 12px; font-size: 0.8rem; font-weight: 700;">
                                 <i class="fas fa-expand-alt"></i> Tümünü Genişlet
                             </button>
                         </div>
@@ -1890,7 +1951,8 @@
                     </div>
 
                     <div class="feedback-form">
-                        <h3 id="title-profile-settings" style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 16px;"><i
+                        <h3 id="title-profile-settings"
+                            style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 16px;"><i
                                 class="fas fa-user-circle"></i> Profil Ayarları</h3>
 
                         <div class="form-group">
@@ -1993,13 +2055,15 @@
                     <div style="display: flex; gap: 8px; align-items: center; margin: 8px 0;">
                         <input type="checkbox" id="has_time_range" style="width: auto; cursor: pointer;"
                             onchange="toggleTimeInputs()">
-                        <label for="has_time_range" id="label-form-has-time-range" style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Saat
+                        <label for="has_time_range" id="label-form-has-time-range"
+                            style="margin-bottom: 0; cursor: pointer; font-size: 0.85rem;">Saat
                             aralığı belirt</label>
                     </div>
 
                     <div id="time-range-inputs" style="display: none; gap: 10px; margin-bottom: 16px;">
                         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                            <label for="start_time" id="label-form-start-time" style="font-size: 0.75rem;">Başlangıç</label>
+                            <label for="start_time" id="label-form-start-time"
+                                style="font-size: 0.75rem;">Başlangıç</label>
                             <input type="time" id="start_time" name="start_time">
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
@@ -2573,6 +2637,24 @@
             });
         }
 
+        function formatNoteDateWithDay(dueDateStr, dueDateDisplayStr) {
+            if (!dueDateStr && !dueDateDisplayStr) return null;
+            let dateObj = null;
+            if (dueDateStr) {
+                const parts = String(dueDateStr).split('-');
+                if (parts.length === 3) {
+                    dateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                }
+            }
+            const turkishDays = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+            let dayName = '';
+            if (dateObj && !isNaN(dateObj.getTime())) {
+                dayName = turkishDays[dateObj.getDay()];
+            }
+            const dateText = dueDateDisplayStr || (dueDateStr ? String(dueDateStr).split('-').reverse().join('.') : '');
+            return dayName ? `${dateText} (${dayName})` : dateText;
+        }
+
         // Render individual task card HTML
         function renderTaskCard(note) {
             const isCustom = String(note.id).startsWith('custom-');
@@ -2587,8 +2669,15 @@
             const projectBadge = note.projectName ?
                 `<span class="task-badge project-badge"><i class="fas fa-folder"></i> ${note.projectName}</span>` : '';
 
+            const dateFormattedWithDay = formatNoteDateWithDay(note.dueDate, note.dueDateDisplay);
+            const dateHeaderHtml = dateFormattedWithDay ?
+                `<div class="task-date-header" style="font-size: 0.75rem; font-weight: 700; color: #d97706; background: rgba(245, 158, 11, 0.12); padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 8px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                    <i class="far fa-calendar-alt"></i> Tarih: ${dateFormattedWithDay}
+                </div>` : '';
+
             return `
                 <div class="task-card priority-${note.priority} ${note.completed ? 'completed' : ''} ${note.is_event ? 'is-event' : ''}" onclick="${editHandler}">
+                    ${dateHeaderHtml}
                     <div class="task-card-title">
                         ${note.completed ? '<i class="fas fa-check-circle" style="color: var(--success);"></i>' : ''}
                         ${note.title}
@@ -2943,6 +3032,8 @@
         }
 
         // NEW: 5. ORTAK ALAN LOGIC (Room Create/Join and shared Notes with Backend Sync)
+        let myCollabRooms = JSON.parse(localStorage.getItem('my_collab_rooms')) || [];
+
         function getCsrfToken() {
             const el = document.querySelector('[name=csrfmiddlewaretoken]');
             if (el) return el.value;
@@ -2955,33 +3046,103 @@
         }
 
         function createCollabRoom() {
+            const defaultName = `Ortak Oda ${myCollabRooms.length + 1}`;
+            const roomName = prompt(currentLang === 'en' ? 'Enter room name:' : 'Yeni Ortak Alan / Oda Adını Girin:', defaultName);
+            if (!roomName || !roomName.trim()) return;
+
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let roomId = '';
             for (let i = 0; i < 12; i++) {
                 roomId += chars.charAt(Math.floor(Math.random() * chars.length));
             }
+
+            const newRoom = { id: roomId, name: roomName.trim() };
+            myCollabRooms.push(newRoom);
+            localStorage.setItem('my_collab_rooms', JSON.stringify(myCollabRooms));
+
             activeCollabRoom = roomId;
             localStorage.setItem('active_collab_room', roomId);
+
             renderCollabRoomDetails();
         }
 
         function joinCollabRoom() {
-            const inputVal = document.getElementById('collab_join_id').value.trim().toUpperCase();
+            const inputVal = document.getElementById('collab_join_id').value.trim();
             if (!inputVal) {
-                alert('Lütfen geçerli bir Oda Kimliği girin.');
+                alert(currentLang === 'en' ? 'Please enter a valid Room ID.' : 'Lütfen geçerli bir Oda Kimliği girin.');
                 return;
             }
 
-            activeCollabRoom = inputVal;
-            localStorage.setItem('active_collab_room', inputVal);
+            let existing = myCollabRooms.find(r => r.id.toLowerCase() === inputVal.toLowerCase());
+            if (!existing) {
+                const defaultNick = `Oda (${inputVal.substring(0, 6)})`;
+                const roomName = prompt(currentLang === 'en' ? 'Enter a nickname for this room:' : 'Katıldığınız bu oda için bir isim girin:', defaultNick) || defaultNick;
+                existing = { id: inputVal, name: roomName.trim() };
+                myCollabRooms.push(existing);
+                localStorage.setItem('my_collab_rooms', JSON.stringify(myCollabRooms));
+            }
+
+            activeCollabRoom = existing.id;
+            localStorage.setItem('active_collab_room', existing.id);
 
             document.getElementById('collab_join_id').value = '';
             renderCollabRoomDetails();
         }
 
+        function selectCollabRoom(id) {
+            activeCollabRoom = id;
+            localStorage.setItem('active_collab_room', id);
+            renderCollabRoomDetails();
+        }
+
+        function deleteCollabRoom(id, event) {
+            if (event) event.stopPropagation();
+            myCollabRooms = myCollabRooms.filter(r => r.id !== id);
+            localStorage.setItem('my_collab_rooms', JSON.stringify(myCollabRooms));
+
+            if (activeCollabRoom === id) {
+                activeCollabRoom = myCollabRooms.length > 0 ? myCollabRooms[myCollabRooms.length - 1].id : null;
+                if (activeCollabRoom) {
+                    localStorage.setItem('active_collab_room', activeCollabRoom);
+                } else {
+                    localStorage.removeItem('active_collab_room');
+                }
+            }
+
+            renderCollabRoomDetails();
+        }
+
+        function renderCollabRoomsList() {
+            const listContainer = document.getElementById('collab-rooms-list-container');
+            if (!listContainer) return;
+
+            listContainer.innerHTML = '';
+            if (myCollabRooms.length === 0) {
+                listContainer.innerHTML = `<div style="font-size: 0.8rem; color: #64748b; text-align: center; padding: 10px;">Henüz kaydedilmiş ortak oda yok.</div>`;
+                return;
+            }
+
+            myCollabRooms.forEach(room => {
+                const item = document.createElement('div');
+                const isSelected = activeCollabRoom === room.id;
+                item.className = `panel-list-item ${isSelected ? 'selected' : ''}`;
+                item.onclick = () => selectCollabRoom(room.id);
+
+                item.innerHTML = `
+                    <div style="display: flex; flex-direction: column; overflow: hidden; text-overflow: ellipsis;">
+                        <span style="font-weight: 700; font-size: 0.88rem;"><i class="fas fa-users" style="margin-right: 6px;"></i>${room.name}</span>
+                        <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 20px;">Kod: ${room.id}</span>
+                    </div>
+                    <i class="fas fa-trash-alt" style="opacity: 0.7; cursor: pointer; padding: 4px;" onclick="deleteCollabRoom('${room.id}', event)" title="Odayı Listeden Çıkar"></i>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
         function copyCollabCode() {
             if (!activeCollabRoom) return;
             navigator.clipboard.writeText(activeCollabRoom);
+            alert(currentLang === 'en' ? 'Room ID copied to clipboard!' : 'Oda Kimliği panoya kopyalandı!');
         }
 
         function openCollabNoteInputs() {
@@ -3056,19 +3217,31 @@
         }
 
         function renderCollabRoomDetails() {
-            const displayBox = document.getElementById('active-room-display');
-            const codeText = document.getElementById('active-room-code-text');
+            const copyBtn = document.getElementById('btn-collab-copy-code');
             const addBtn = document.getElementById('btn-add-collab-note');
+            const titleEl = document.getElementById('collab-notes-title');
+            const subtextEl = document.getElementById('collab-active-room-subtext');
+
+            renderCollabRoomsList();
+
+            const currentRoom = myCollabRooms.find(r => r.id === activeCollabRoom);
 
             if (!activeCollabRoom) {
-                if (displayBox) displayBox.style.display = 'none';
                 if (addBtn) addBtn.style.display = 'none';
+                if (copyBtn) copyBtn.style.display = 'none';
+                if (titleEl) titleEl.textContent = 'Ortak Notlar';
+                if (subtextEl) subtextEl.textContent = 'Lütfen sol taraftan bir oda seçin veya yeni oluşturun.';
+                renderCollabNotesList();
                 return;
             }
 
-            if (displayBox) displayBox.style.display = 'block';
-            if (codeText) codeText.textContent = activeCollabRoom;
-            if (addBtn) addBtn.style.display = 'block';
+            const roomNameStr = currentRoom ? currentRoom.name : 'Ortak Çalışma Odası';
+
+            if (addBtn) addBtn.style.display = 'inline-flex';
+            if (copyBtn) copyBtn.style.display = 'inline-flex';
+
+            if (titleEl) titleEl.textContent = `"${roomNameStr}" Odası Ortak Notları`;
+            if (subtextEl) subtextEl.innerHTML = `<i class="fas fa-key" style="margin-right: 4px;"></i>Oda Kimliği/Kodu: <strong style="color: var(--primary);">${activeCollabRoom}</strong>`;
 
             renderCollabNotesList();
             startCollabPolling();
