@@ -81,3 +81,20 @@ class Feedback(models.Model):
         return f"[{self.get_status_display()}] {self.subject}"
 
 
+class UserExam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exams')
+    title = models.CharField(max_length=200)
+    category = models.CharField(max_length=50, default='YKS')
+    date_time = models.DateTimeField()
+    notes = models.TextField(blank=True, default='')
+    is_pinned = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['date_time']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title}"
+
+
+

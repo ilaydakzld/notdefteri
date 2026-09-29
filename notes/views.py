@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
-from .models import Note, CollabNote, Feedback
+from .models import Note, CollabNote, Feedback, UserExam
 from django.db.models import Q, Count
 
 
@@ -489,6 +489,116 @@ Disallow: /feedback/
 Sitemap: {domain}/sitemap.xml
 """
     return HttpResponse(content, content_type="text/plain")
+
+
+@login_required
+def get_user_exams(request):
+    exams = UserExam.objects.filter(user=request.user)
+    data = []
+    for e in exams:
+        data.append({
+            'id': e.id,
+            'title': e.title,
+            'category': e.category,
+            'dateTime': e.date_time.strftime('%Y-%m-%dT%H:%M'),
+            'notes': e.notes,
+            'isPinned': e.is_pinned
+        })
+    return JsonResponse({'success': True, 'exams': data})
+
+
+@login_required
+def save_user_exam(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body.decode('utf-8')) if request.body else {}
+            exam_id = body.get('id')
+            title = body.get('title', '').strip()
+            category = body.get('category', 'YKS')
+            date_time_str = body.get('dateTime')
+            notes = body.get('notes', '').strip()
+            is_pinned = body.get('isPinned', False)
+        except Exception:
+            exam_id = request.POST.get('id')
+            title = request.POST.get('title', '').strip()
+            category = request.POST.get('category', 'YKS')
+            date_time_str = request.POST.get('dateTime')
+            notes = request.POST.get('notes', '').strip()
+            is_pinned = request.POST.get('isPinned') == 'true'
+
+        if not title or not date_time_str:
+            return JsonResponse({'success': False, 'error': 'Başlık ve tarih zorunludur.'}, status=400)
+
+        try:
+            dt = datetime.strptime(date_time_str, '%Y-%m-%dT%H:%M')
+        except ValueError:
+            try:
+                dt = datetime.fromisoformat(date_time_str)
+            except Exception:
+                return JsonResponse({'success': False, 'error': 'Geçersiz tarih formatı.'}, status=400)
+
+        if exam_id:
+            try:
+                exam = UserExam.objects.get(id=exam_id, user=request.user)
+                exam.title = title
+                exam.category = category
+                exam.date_time = dt
+                exam.notes = notes
+                exam.save()
+            except UserExam.DoesNotExist:
+                exam = UserExam.objects.create(
+                    user=request.user,
+                    title=title,
+                    category=category,
+                    date_time=dt,
+                    notes=notes,
+                    is_pinned=is_pinned
+                )
+        else:
+            exam = UserExam.objects.create(
+                user=request.user,
+                title=title,
+                category=category,
+                date_time=dt,
+                notes=notes,
+                is_pinned=is_pinned
+            )
+
+        return JsonResponse({
+            'success': True,
+            'exam': {
+                'id': exam.id,
+                'title': exam.title,
+                'category': exam.category,
+                'dateTime': exam.date_time.strftime('%Y-%m-%dT%H:%M'),
+                'notes': exam.notes,
+                'isPinned': exam.is_pinned
+            }
+        })
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
+def delete_user_exam(request, exam_id):
+    if request.method == 'POST':
+        exam = get_object_or_404(UserExam, id=exam_id, user=request.user)
+        exam.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
+
+
+@login_required
+def toggle_pin_user_exam(request, exam_id):
+    if request.method == 'POST':
+        exam = get_object_or_404(UserExam, id=exam_id, user=request.user)
+        if not exam.is_pinned:
+            UserExam.objects.filter(user=request.user, is_pinned=True).update(is_pinned=False)
+            exam.is_pinned = True
+        else:
+            exam.is_pinned = False
+        exam.save()
+        return JsonResponse({'success': True, 'isPinned': exam.is_pinned})
+    return JsonResponse({'success': False, 'error': 'Geçersiz yöntem.'}, status=405)
 
 
 

@@ -20,6 +20,10 @@ urlpatterns = [
     path('feedback/admin/<int:feedback_id>/status/', views.update_feedback_status, name='update_feedback_status'),
     path('feedback/admin/<int:feedback_id>/reply/', views.reply_feedback, name='reply_feedback'),
     path('feedback/admin/<int:feedback_id>/delete/', views.delete_feedback, name='delete_feedback'),
+    path('exams/list/', views.get_user_exams, name='get_user_exams'),
+    path('exams/save/', views.save_user_exam, name='save_user_exam'),
+    path('exams/<int:exam_id>/delete/', views.delete_user_exam, name='delete_user_exam'),
+    path('exams/<int:exam_id>/pin/', views.toggle_pin_user_exam, name='toggle_pin_user_exam'),
     path('sitemap.xml', views.sitemap_view, name='sitemap'),
     path('robots.txt', views.robots_txt, name='robots_txt'),
 ]

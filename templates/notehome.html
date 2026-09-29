@@ -399,6 +399,67 @@
             color: white;
         }
 
+        /* Sticky Exam Badge & Mobile Topbar Fixes */
+        .sticky-exam-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #4f46e5;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            max-width: 240px;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+
+        body[data-theme="dark"] .sticky-exam-badge {
+            background: rgba(99, 102, 241, 0.22);
+            border-color: rgba(129, 140, 248, 0.4);
+            color: #a5b4fc;
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                padding: 0 10px !important;
+                gap: 6px !important;
+            }
+            .topbar-left {
+                gap: 6px !important;
+                min-width: 0 !important;
+                flex: 1 1 auto !important;
+            }
+            .topbar-actions {
+                flex-shrink: 0 !important;
+                gap: 6px !important;
+            }
+            .page-title {
+                display: none !important;
+            }
+            .sticky-exam-badge {
+                max-width: 160px !important;
+                padding: 3px 8px !important;
+                font-size: 0.75rem !important;
+            }
+            #sticky-exam-time {
+                font-size: 0.78rem !important;
+            }
+            .btn-note-text {
+                display: none !important;
+            }
+            .btn-add-note-shortcut {
+                padding: 8px 10px !important;
+            }
+        }
+
         /* Content Area Panels */
         .content-body {
             flex-grow: 1;
@@ -1453,26 +1514,26 @@
 
             <!-- Topbar -->
             <header class="topbar">
-                <div class="topbar-left" style="display: flex; align-items: center; gap: 14px;">
+                <div class="topbar-left" style="display: flex; align-items: center; gap: 10px; flex-shrink: 1; min-width: 0;">
                     <button class="sidebar-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
                     <span class="page-title" id="current-tab-title">Programım</span>
 
-                    <!-- Sticky Exam Countdown Badge -->
-                    <div id="sticky-exam-badge" class="sticky-exam-badge" style="display: none; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; color: var(--success); cursor: pointer; backdrop-filter: blur(8px);" onclick="switchTab('sinavlar')" title="Sınavlarım & Etüt sekmesine git">
-                        <i class="fas fa-stopwatch"></i>
-                        <span id="sticky-exam-title">Sınav:</span>
-                        <span id="sticky-exam-time" style="font-family: monospace; font-size: 0.88rem;">00g 00s 00d 00s</span>
-                        <button onclick="event.stopPropagation(); unpinStickyExam();" style="background: none; border: none; color: inherit; margin-left: 4px; cursor: pointer; opacity: 0.7;" title="Sabitlemeyi Kaldır"><i class="fas fa-times"></i></button>
+                    <!-- Sticky Exam Countdown Badge (Violet/Indigo palette, NOT GREEN) -->
+                    <div id="sticky-exam-badge" class="sticky-exam-badge" style="display: none;" onclick="switchTab('sinavlar')" title="Sınavlarım & Etüt sekmesine git">
+                        <i class="fas fa-clock" style="flex-shrink: 0;"></i>
+                        <span id="sticky-exam-title" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sınav:</span>
+                        <span id="sticky-exam-time" style="font-family: monospace; flex-shrink: 0;">00g 00s 00d 00s</span>
+                        <button onclick="event.stopPropagation(); unpinStickyExam();" style="background: none; border: none; color: inherit; margin-left: 2px; cursor: pointer; opacity: 0.7; flex-shrink: 0;" title="Sabitlemeyi Kaldır"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
-                <div class="topbar-actions">
+                <div class="topbar-actions" style="flex-shrink: 0; display: flex; align-items: center; gap: 8px;">
                     <button class="btn-theme-toggle" onclick="toggleTheme()" title="Temayı Değiştir">
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
                     <button class="btn-add-note-shortcut" id="btn-add-note-shortcut" onclick="openAddNoteModal()">
-                        <i class="fas fa-plus"></i> Yeni Not Ekle
+                        <i class="fas fa-plus"></i> <span class="btn-note-text">Yeni Not Ekle</span>
                     </button>
                     <a href="{% url 'logout' %}" class="btn-logout-shortcut" title="Çıkış Yap">
                         <i class="fas fa-sign-out-alt"></i>
@@ -4573,16 +4634,43 @@
         // -------------------------------------------------------------
         // EXAM (SINAV) & POMODORO (ETÜT) MODULE LOGIC
         // -------------------------------------------------------------
-        let customExams = JSON.parse(localStorage.getItem('custom_exams')) || [
-            {
-                id: 'exam_demo_1',
-                title: 'YKS - Yükseköğretim Kurumları Sınavı',
-                category: 'YKS',
-                dateTime: '2026-06-20T10:00',
-                notes: 'TYT ve AYT sınav giriş belgelerini unutma!'
+        let customExams = [];
+        let pinnedExamId = null;
+
+        function getCSRFToken() {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, 10) === ('csrftoken=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(10));
+                        break;
+                    }
+                }
             }
-        ];
-        let pinnedExamId = localStorage.getItem('pinned_exam_id') || 'exam_demo_1';
+            if (!cookieValue) {
+                const input = document.querySelector('input[name="csrfmiddlewaretoken"]');
+                if (input) cookieValue = input.value;
+            }
+            return cookieValue || '';
+        }
+
+        async function loadUserExams() {
+            try {
+                const response = await fetch('/exams/list/');
+                const data = await response.json();
+                if (data.success) {
+                    customExams = data.exams || [];
+                    const pinned = customExams.find(e => e.isPinned);
+                    pinnedExamId = pinned ? pinned.id : null;
+                    renderExamsSection();
+                    updateStickyExamBadge();
+                }
+            } catch (err) {
+                console.error('Exams loading error:', err);
+            }
+        }
 
         // Pomodoro State
         let pomodoroMode = 'study'; // 'study' (25), 'shortBreak' (5), 'longBreak' (15)
@@ -4601,7 +4689,7 @@
             const modalTitle = document.getElementById('exam-modal-title');
 
             if (examId) {
-                const exam = customExams.find(e => e.id === examId);
+                const exam = customExams.find(e => String(e.id) === String(examId));
                 if (exam) {
                     idInput.value = exam.id;
                     titleInput.value = exam.title || '';
@@ -4626,7 +4714,7 @@
             document.getElementById('add-exam-modal').classList.remove('open');
         }
 
-        function saveCustomExam() {
+        async function saveCustomExam() {
             const id = document.getElementById('exam_id_input').value;
             const title = document.getElementById('exam_title_input').value.trim();
             const category = document.getElementById('exam_category_input').value;
@@ -4642,63 +4730,73 @@
                 return;
             }
 
-            if (id) {
-                const exam = customExams.find(e => e.id === id);
-                if (exam) {
-                    exam.title = title;
-                    exam.category = category;
-                    exam.dateTime = dateTime;
-                    exam.notes = notes;
-                }
-            } else {
-                const newExam = {
-                    id: 'exam_' + Date.now(),
-                    title: title,
-                    category: category,
-                    dateTime: dateTime,
-                    notes: notes
-                };
-                customExams.push(newExam);
-                if (!pinnedExamId) {
-                    pinnedExamId = newExam.id;
-                    localStorage.setItem('pinned_exam_id', pinnedExamId);
-                }
-            }
-
-            localStorage.setItem('custom_exams', JSON.stringify(customExams));
-            closeAddExamModal();
-            renderExamsSection();
-            updateStickyExamBadge();
-        }
-
-        function deleteCustomExam(examId) {
-            if (!confirm('Bu sınav kaydını silmek istediğinize emin misiniz?')) return;
-            customExams = customExams.filter(e => e.id !== examId);
-            if (pinnedExamId === examId) {
-                pinnedExamId = customExams.length > 0 ? customExams[0].id : null;
-                if (pinnedExamId) {
-                    localStorage.setItem('pinned_exam_id', pinnedExamId);
+            try {
+                const response = await fetch('/exams/save/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        id: id ? parseInt(id) : null,
+                        title: title,
+                        category: category,
+                        dateTime: dateTime,
+                        notes: notes
+                    })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    closeAddExamModal();
+                    await loadUserExams();
                 } else {
-                    localStorage.removeItem('pinned_exam_id');
+                    alert(res.error || 'Sınav kaydedilemedi.');
                 }
+            } catch (err) {
+                alert('Bir hata oluştu.');
+                console.error(err);
             }
-            localStorage.setItem('custom_exams', JSON.stringify(customExams));
-            renderExamsSection();
-            updateStickyExamBadge();
         }
 
-        function pinExamToTopbar(examId) {
-            pinnedExamId = examId;
-            localStorage.setItem('pinned_exam_id', pinnedExamId);
-            renderExamsSection();
-            updateStickyExamBadge();
+        async function deleteCustomExam(examId) {
+            if (!confirm('Bu sınav kaydını silmek istediğinize emin misiniz?')) return;
+            try {
+                const response = await fetch(`/exams/${examId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken()
+                    }
+                });
+                const res = await response.json();
+                if (res.success) {
+                    await loadUserExams();
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
 
-        function unpinStickyExam() {
-            pinnedExamId = null;
-            localStorage.removeItem('pinned_exam_id');
-            renderExamsSection();
-            updateStickyExamBadge();
+        async function pinExamToTopbar(examId) {
+            try {
+                const response = await fetch(`/exams/${examId}/pin/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken()
+                    }
+                });
+                const res = await response.json();
+                if (res.success) {
+                    await loadUserExams();
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function unpinStickyExam() {
+            if (pinnedExamId) {
+                await pinExamToTopbar(pinnedExamId);
+            }
         }
 
         function formatExamCountdown(targetISO) {
@@ -4820,19 +4918,26 @@
             const timeEl = document.getElementById('sticky-exam-time');
             if (!badge || !titleEl || !timeEl) return;
 
-            if (!pinnedExamId) {
+            if (customExams.length === 0) {
                 badge.style.display = 'none';
                 return;
             }
 
-            const exam = customExams.find(e => e.id === pinnedExamId);
+            let exam = null;
+            if (pinnedExamId) {
+                exam = customExams.find(e => String(e.id) === String(pinnedExamId));
+            }
+            if (!exam && customExams.length > 0) {
+                exam = customExams[0];
+            }
+
             if (!exam) {
                 badge.style.display = 'none';
                 return;
             }
 
             const countdown = formatExamCountdown(exam.dateTime);
-            titleEl.textContent = (exam.title.length > 15 ? exam.title.substring(0, 15) + '...' : exam.title) + ':';
+            titleEl.textContent = (exam.title.length > 10 ? exam.title.substring(0, 10) + '...' : exam.title) + ':';
             timeEl.textContent = countdown.text;
             badge.style.display = 'inline-flex';
         }
@@ -5405,7 +5510,7 @@
         // Run localization, clock & alarm update on load
         document.addEventListener('DOMContentLoaded', () => {
             applyLanguage();
-            updateStickyExamBadge();
+            loadUserExams();
             updateLiveDigitalClock();
             renderAlarmsList();
         });

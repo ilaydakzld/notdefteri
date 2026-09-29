@@ -30,12 +30,20 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
-# CSRF Trusted Origins - Vercel deployment ve local development için gerekli
+# CSRF Trusted Origins - Vercel deployment, planlayicim.com ve local development için gerekli
 CSRF_TRUSTED_ORIGINS = [
+    'https://planlayicim.com',
+    'https://www.planlayicim.com',
+    'https://*.planlayicim.com',
     'https://*.vercel.app',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
 ]
+
+env_csrf_origins = os.environ.get('CSRF_TRUSTED_ORIGINS')
+if env_csrf_origins:
+    CSRF_TRUSTED_ORIGINS.extend([origin.strip() for origin in env_csrf_origins.split(',') if origin.strip()])
+
 
 
 # Application definition
